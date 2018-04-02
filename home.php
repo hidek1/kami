@@ -1,18 +1,4 @@
-<?php
- require('dbconnect.php');
- $sql = 'SELECT * FROM `eventItiran`';
-    $stmt = $dbh->prepare($sql);
-      $stmt->execute();
-      while(true) {
-      $eventItiran = $stmt->fetch(PDO::FETCH_ASSOC);
-      if ($eventItiran == false) {
-         break;
-      }
-   $eventItirans[] = $eventItiran;
-     } 
-   var_dump($eventItirans)
- ?>
-
+<?php  ?>
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
