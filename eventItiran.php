@@ -37,12 +37,12 @@
 
  
   
-
   //SQL(テーブルから列を抽出する
   $keigo =@$_GET['s'];
+
+  if (strlen($keigo)>0){
   $search_sql ="SELECT * FROM `kami_events`";
   //キーワードが入力されているときはwhere以下を組み立てる
-  if (strlen($keigo)>0){
     //受け取ったキーワードの全角スペースを半角スペースに変換する
     $text2 = str_replace("　", " ", $keigo);
 
@@ -52,25 +52,32 @@
     //分割された個々のキーワードをSQLの条件where句に反映する
     $where = "WHERE ";
 
-   for($i = 0; $i <count($array);$i++){
-      $where .= "(kami_events LIKE '%$array[$i]%')";
-
+   for($i = 0; $i < count($array);$i++){
+      $where .= "(event_name LIKE '%$array[$i]%' OR detail LIKE '%$array[$i]%')";
       if ($i <count($array) -1){
         $where .= " AND ";
       }
      }
-    }
+
+     // var_dump($search_sql);exit;
+    $search_sql = $search_sql . ' ' . $where;
+    var_dump($search_sql);exit;
 
     $search_stmt = $dbh->prepare($search_sql);
-    $search_stmt->execute($where);
-      while(true) {
-    $kami_search_event = $search_stmt->fetch(PDO::FETCH_ASSOC);
+    $search_stmt->execute();
+    $kami_search_events = array();
+
+    while(true) {
+      $kami_search_event = $search_stmt->fetch(PDO::FETCH_ASSOC);
     if ($kami_search_event == false) {
          break;
       }
+      $kami_search_events[] = $kami_search_event;
     }
-    $kami_search_events[] = $kami_search_event;
-var_dump($kami_search_events);
+
+      //  var_dump($kami_search_events);
+      // // exit();
+  }
 
  ?>
 
@@ -211,7 +218,7 @@ var_dump($kami_search_events);
       <center>
       <div class="row current-cat">
          <div class="col-full">
-            <h1>イベント一覧：<?php echo $_GET['s']?></h1>
+            <h1>イベント一覧：<?php echo $_GET['s']; ?></h1>
          </div>         
       </div>
        </center>
