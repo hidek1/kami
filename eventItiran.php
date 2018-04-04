@@ -9,9 +9,72 @@
          break;
       }
    $kami_events[] = $kami_event;
-     } 
-   var_dump($kami_events)
+     }
+
+
+
+
+// $keyword = mb_convert_kana($keyword, 's')
+// $ary_keyword = preg_split('/[\s]+/', $keyword, -1, PREG_SPLIT_NO_EMPTY);
+// foreach( $ary_keyword as $val ){
+//     // 検索条件を設定するコードをここに書く
+// }
+
+   //  $keigo= '%'.$_GET['s'].'%';
+   //  $search_sql = 'SELECT * FROM `kami_events` WHERE `event_name` LIKE ? OR `detail` LIKE ?';
+   //  $search_data = array($keigo,$keigo);
+   //  $search_stmt = $dbh->prepare($search_sql);
+   //  $search_stmt->execute($search_data);
+   //  while(true) {
+   //  $kami_search_event = $search_stmt->fetch(PDO::FETCH_ASSOC);
+   //  if ($kami_search_event == false) {
+   //       break;
+   //    }
+   // $kami_search_events[] = $kami_search_event;
+   //   } 
+   // // var_dump($kami_search_events);
+
+
+ 
+  
+
+  //SQL(テーブルから列を抽出する
+  $keigo =@$_GET['s'];
+  $search_sql ="SELECT * FROM `kami_events`";
+  //キーワードが入力されているときはwhere以下を組み立てる
+  if (strlen($keigo)>0){
+    //受け取ったキーワードの全角スペースを半角スペースに変換する
+    $text2 = str_replace("　", " ", $keigo);
+
+    //キーワードを空白で分割する
+    $array = explode(" ",$text2);
+
+    //分割された個々のキーワードをSQLの条件where句に反映する
+    $where = "WHERE ";
+
+   for($i = 0; $i <count($array);$i++){
+      $where .= "(kami_events LIKE '%$array[$i]%')";
+
+      if ($i <count($array) -1){
+        $where .= " AND ";
+      }
+     }
+    }
+
+    $search_stmt = $dbh->prepare($search_sql);
+    $search_stmt->execute($where);
+      while(true) {
+    $kami_search_event = $search_stmt->fetch(PDO::FETCH_ASSOC);
+    if ($kami_search_event == false) {
+         break;
+      }
+    }
+    $kami_search_events[] = $kami_search_event;
+var_dump($kami_search_events);
+
  ?>
+
+
 
  <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -105,7 +168,7 @@
 
          <div class="search-wrap">
             
-            <form role="search" method="get" class="search-form" action="#">
+            <form role="search" method="get" class="search-form" action="eventItiran.php">
                <label>
                   <span class="hide-content">Search for:</span>
                              <select class="search-select" name="list">
@@ -148,7 +211,7 @@
       <center>
       <div class="row current-cat">
          <div class="col-full">
-            <h1>イベント一覧： 検索条件</h1>
+            <h1>イベント一覧：<?php echo $_GET['s']?></h1>
          </div>         
       </div>
        </center>
@@ -161,337 +224,9 @@
 
           <div class="grid-sizer"></div>
 
-         <article class="brick entry format-standard animate-this">
+<?php if (!empty($_GET)) { ?>
+  <?php for ($i=0; $i<count($kami_search_events);$i++){ ?>
 
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     やバババババッ馬場あっばあばあああああばあばばあっばああああああああああああああああああああ
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
-            <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                    <img src="images/thumbs/ferris-wheel.jpg" alt="ferris wheel">                   
-                  </a>
-               </div>
-               <div class="entry-text" style="background-color: #F5A9A9;">
->
-
-                <div class="entry-header">
-                  <div class="entry-meta">
-                    <span class="cat-links">
-                      あと何日                    
-                    </span>     
-                  </div>
-
-                  <h1 class="entry-title"><a href="single-standard.html">グラパ</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     めっちゃ楽しいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいい
-
-                  </div>
-                  </div>
-
-            </article> <!-- end article -->
-
-           <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-building.jpg" alt="building">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     っっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっっh
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
-
-          <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-building.jpg" alt="building">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     いいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいい
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
-
-          <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-building.jpg" alt="building">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
-           <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-building.jpg" alt="building">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
-
-            <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-building.jpg" alt="building">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
-            <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/ferris-wheel.jpg" alt="ferris wheel">                   
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                          あと何日                        
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     めっちゃ楽しいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいい
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
-
-
-
-          <article class="brick entry animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                    <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">              
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                <div class="entry-header">
-
-<div class="entry-meta">
-                        <span class="cat-links">
-                          あと何日                        
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     めっちゃ楽しいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいいい
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
-            <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
-                     </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
-                     
-                  </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     やバババババッ馬場あっばあばあああああばあばばあっばああああああああああああああああああああ
-
-                  </div>
-               </div>
-
-            </article> <!-- end article -->
 
          <article class="brick entry format-standard animate-this">
 
@@ -510,8 +245,8 @@
                                                      
                         </span>        
                      </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
+                
+                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_search_events[$i]["event_name"]; ?></a></h1>
                      
                   </div>
                   <div class="entry-excerpt">
@@ -520,18 +255,20 @@
                      開始時間　何時何分<br>
                      参加予定人数 3人/12人<br>
                      詳細<br>
-                     やバババババッ馬場あっばあばあああああばあばばあっばああああああああああああああああああああ
+                     <?php echo $kami_search_events[$i]["detail"]; ?>
 
                   </div>
                </div>
 
             </article> <!-- end article -->
-
-            <article class="brick entry format-standard animate-this">
+    <?php } ?>
+  <?php } else { ?>
+  <?php for ($i=0; $i<count($kami_events);$i++){ ?>
+         <article class="brick entry format-standard animate-this">
 
                <div class="entry-thumb">
                   <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-building.jpg" alt="building">             
+                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
                   </a>
                </div>
 
@@ -544,8 +281,8 @@
                                                      
                         </span>        
                      </div>
-
-                     <h1 class="entry-title"><a href="single-standard.html">イベント名</a></h1>
+                
+                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
                      
                   </div>
                   <div class="entry-excerpt">
@@ -554,11 +291,14 @@
                      開始時間　何時何分<br>
                      参加予定人数 3人/12人<br>
                      詳細<br>
+                     <?php echo $kami_events[$i]["detail"]; ?>
 
                   </div>
                </div>
 
             </article> <!-- end article -->
+   <?php } ?>
+    <?php } ?>
 
          </div> <!-- end brick-wrapper --> 
 
