@@ -53,7 +53,7 @@
     $where = "WHERE ";
 
    for($i = 0; $i < count($array);$i++){
-      $where .= "(event_name LIKE '%$array[$i]%' OR detail LIKE '%$array[$i]%')";
+      $where .= "(event_name LIKE '%$array[$i]%')";
       if ($i <count($array) -1){
         $where .= " AND ";
       }
@@ -140,6 +140,8 @@
             <ul class="main-navigation sf-menu">
                <li class="has-children"><a href="home.html" title="">ホーム</a></li>   
                <li class="has-children"><a href="eventNew.html" title="">イベント作成</a></li>                          
+               <li class="has-children"><a href="store_review.html" title="">お店を投稿する</a></li>                          
+
                <li class="current">
                   <a href="eventItiran.html" title="">イベント一覧</a>
                   <ul class="sub-menu">
