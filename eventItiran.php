@@ -11,30 +11,6 @@
    $kami_events[] = $kami_event;
      }
 
-
-
-
-// $keyword = mb_convert_kana($keyword, 's')
-// $ary_keyword = preg_split('/[\s]+/', $keyword, -1, PREG_SPLIT_NO_EMPTY);
-// foreach( $ary_keyword as $val ){
-//     // 検索条件を設定するコードをここに書く
-// }
-
-   //  $keigo= '%'.$_GET['s'].'%';
-   //  $search_sql = 'SELECT * FROM `kami_events` WHERE `event_name` LIKE ? OR `detail` LIKE ?';
-   //  $search_data = array($keigo,$keigo);
-   //  $search_stmt = $dbh->prepare($search_sql);
-   //  $search_stmt->execute($search_data);
-   //  while(true) {
-   //  $kami_search_event = $search_stmt->fetch(PDO::FETCH_ASSOC);
-   //  if ($kami_search_event == false) {
-   //       break;
-   //    }
-   // $kami_search_events[] = $kami_search_event;
-   //   } 
-   // // var_dump($kami_search_events);
-
-
  
   
   //SQL(テーブルから列を抽出する
@@ -53,15 +29,14 @@
     $where = "WHERE ";
 
    for($i = 0; $i < count($array);$i++){
-      $where .= "(event_name LIKE '%$array[$i]%')";
+      $where .= "(event_name LIKE '%$array[$i]%' OR detail LIKE '%$array[$i]%')";
       if ($i <count($array) -1){
         $where .= " AND ";
       }
      }
-
      // var_dump($search_sql);exit;
     $search_sql = $search_sql . ' ' . $where;
-    var_dump($search_sql);exit;
+    // var_dump($search_sql);exit;
 
     $search_stmt = $dbh->prepare($search_sql);
     $search_stmt->execute();

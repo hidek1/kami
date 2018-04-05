@@ -1,4 +1,5 @@
 <?php 
+require('dbconnect.php');
 $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
   $data = array($_GET['member_id']);
   $stmt = $dbh->prepare($sql);
@@ -148,7 +149,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 
                             
                    <center>
-                            <h1><?php echo $profile['nick_name']; ?></h1>
+                            <h1><?php echo $profile['nickname']; ?></h1>
             </center>
          
 
