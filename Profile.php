@@ -8,6 +8,36 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
   $profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
+
+  $sql = 'SELECT * FROM `event_joining` LEFT JOIN `kami_events` ON `event_joining`.`event_id`=`kami_events`.`event_id` WHERE `member_id`=?';
+  $data = array($_GET['member_id']);
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute($data);
+
+   while(true) {
+      $event_joining = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($event_joining == false) {
+         break;
+      }
+      $event_joinings[] = $event_joining;
+    }
+
+
+  $sql = 'SELECT * FROM `kami_reviews` LEFT JOIN `kami_shops` ON `kami_reviews`.`shop_id`=`kami_shops`.`shop_id` WHERE `member_id`=?';
+  $data = array($_GET['member_id']);
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute($data);
+  while(true) {
+  $review = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($review == false) {
+         break;
+      }
+      $reviews[] = $review;
+    }
+
+
+
+
  ?>
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -154,7 +184,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
          
 
   <center>
-                           <img src="images/thumbs/seedkun.jpg" alt="building">
+                           <img src="picture_path/<?php echo $profile['picture_path']; ?>" width="200" height="200" alt="building">
     </center>
 
  
@@ -257,76 +287,24 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                     </span>     
                   </div>
 
-                  <h1 class="entry-title"><a href="single-standard.html">卒業パーティー</a></h1>
+                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $event_joining['event_name']; ?></a></h1>
                   
                 </div>
             <div class="entry-excerpt">
-              今週の卒業パーティーは、ITパークのPyramidで開催します！
+              <?php echo $event_joining['detail']; ?>
             </div>
                </div>
 
             </article> <!-- end article -->
           </div>
 
-<div class="col-xs-4 col-md-4 col-lg-4">
 
-<article class="brick entry format-standard animate-this">
 
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                    <img src="images/thumbs/cupcake.jpg" alt="building">             
-                  </a>
-               </div>
 
-               <div class="entry-text">
-                <div class="entry-header">
 
-                  <div class="entry-meta">
-                    <span class="cat-links">
-                    </span>     
-                  </div>
-
-                  <h1 class="entry-title"><a href="single-standard.html">スイーツ食べに行こう！</a></h1>
-                  
-                </div>
-            <div class="entry-excerpt">
-              スイーツ大好きな人たちと、美味しいスイーツを食べに行こう！
-            </div>
-               </div>
-
-            </article> <!-- end article -->
-          </div>
-
-<div class="col-xs-4 col-md-4 col-lg-4">
-
-<article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                    <img src="images/thumbs/buffet.jpg" alt="building">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                <div class="entry-header">
-
-                  <div class="entry-meta">
-                    <span class="cat-links">
-                    </span>     
-                  </div>
-
-                  <h1 class="entry-title"><a href="single-standard.html">ホテルビュッフェ</a></h1>
-                  
-                </div>
-            <div class="entry-excerpt">
-              700ペソで美味しいホテルブッフェが堪能できます！
-            </div>
-               </div>
-
-            </article> <!-- end article -->
           </div>
            </div>
-          </div>
+          
 
 
 
@@ -366,72 +344,18 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                     </span>     
                   </div>
 
-                  <h1 class="entry-title"><a href="single-standard.html">お店の名前</a></h1>
+                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $review['shop_name_abc']; ?>(<?php echo $review['shop_name_abc']; ?>)</a></h1>
                   
                 </div>
             <div class="entry-excerpt">
-              寮から徒歩10分。美味しいフィリピン料理！
+             <?php echo $review['review']; ?>
             </div>
                </div>
 
             </article> <!-- end article -->
 </div>
-<div class="col-xs-4 col-md-4 col-lg-4">
 
-<article class="brick entry format-standard animate-this">
 
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                    <img src="images/thumbs/korean.jpg" alt="building">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                <div class="entry-header">
-
-                  <div class="entry-meta">
-                    <span class="cat-links">
-                    </span>     
-                  </div>
-
-                  <h1 class="entry-title"><a href="single-standard.html">お店の名前</a></h1>
-                  
-                </div>
-            <div class="entry-excerpt">
-              【辛いもの好き必見】激辛韓国料理
-            </div>
-               </div>
-
-            </article> <!-- end article -->
-</div>
-<div class="col-xs-4 col-md-4 col-lg-4">
-
-<article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                    <img src="images/thumbs/ramen.jpg" alt="building">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                <div class="entry-header">
-
-                  <div class="entry-meta">
-                    <span class="cat-links">
-                    </span>     
-                  </div>
-
-                  <h1 class="entry-title"><a href="single-standard.html">お店の名前</a></h1>
-                  
-                </div>
-            <div class="entry-excerpt">
-              ラーメンが恋しくなったらこのお店！
-            </div>
-               </div>
-
-            </article> <!-- end article -->
-</div>
   </div>
    </div>
 
