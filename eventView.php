@@ -1,3 +1,10 @@
+<?php 
+//getで持ってくる？
+//selectで表示
+
+ ?>
+ 
+
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
@@ -21,13 +28,14 @@
    <link rel="stylesheet" href="css/vendor.css">  
    <link rel="stylesheet" href="css/pooh_main.css">
    <link rel="stylesheet" href="css/pooh_bootstrap.css">
-   
         
 
    <!-- script
    ================================================== -->
 	<script src="js/modernizr.js"></script>
 	<script src="js/pace.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="js/slick-1.8.0/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="js/slick-1.8.0/slick/slick-theme.css"/>
 
    <!-- favicons
 	================================================== -->
@@ -37,6 +45,9 @@
 </head>
 
 <body id="top">
+<div>
+
+
 
    <!-- header 
    ================================================== -->
@@ -51,7 +62,7 @@
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
                <li class="has-children"><a href="home.html" title="">ホーム</a></li>   
-               <li class="current"><a href="eventNew.html" title="">イベント作成</a></li>                          
+               <li class="has-children"><a href="eventNew.html" title="">イベント作成</a></li>                          
                <li class="has-children">
                   <a href="eventItiran.html" title="">イベント一覧</a>
                   <ul class="sub-menu">
@@ -110,175 +121,157 @@
       
    </header> <!-- end header -->
 
-
-<!-- end header -->
-
-      <!-- header
+   <!-- content
    ================================================== -->
-
-
-<div class ="container" style="padding-top: 160px; " >
-	<form action="POST">
-	<div class="row" style="padding-top: 20px">
-		<div class="col-lg-4" >
-			<h2 style>イベント名</h2>
+<!-- <div id="content-wrap" class="styles"> -->
+<!-- created time & edit button [right top] -->
+<div class ="container" style="padding-top: 200px;">
+		<div class="row">
+			<div class="col-lg-9" >
+				<div class="row">
+			<div class="col-lg-4" >
+				<h2>DATE '$date' '$time' ~ </h2>
+			</div>
+			<div class="col-lg-8" >
+				<h2>@ '$to_whom' MIN '$min_count' MAX'$max_count'</h2>
+			</div>
 		</div>
-		<div class="col-lg-8">
-			<input type="text" name = "Name" >
 		</div>
+			<div class="col-lg-3" >
+				<p style=" vertical-align: middle;">CREATED AT '$created_at'</p>
+				<form action="GET">
+					<input style="border-radius: 5px;" type="button" value="イベントの編集">
+				</form>
+			
+			</div>
+			</div>
+			</div>
+		
+	<div class ="container">
+		
+			<div class="col-lg-3" >
+				
+			</div>
+		</div>
+</div>
 	</div>
 
-	<div class="row" style="padding-top: 50px">
-		<div class="col-lg-4" >
-			<h2 >開始時間</h2>
-		</div>
-		<div class="col-lg-8" >
-			<input type="date" name="startDate" min="<?php echo $Dmin ?>" max="<?php echo $Dmax ?>" style=" text-align: center;">
-			<input type="time" name="startTime" step= "300" style=" text-align: center;">
-		</div>
-	</div>
-
-	<div class="row" style="padding-top: 60px;" >
-		<div class="col-lg-4">
-			<h2>店名</h2>
-		</div>
-		<div class="col-lg-8">
+<!-- main info about the event [top-block]-->
+	<div class ="container" style="padding-top: 30px;">
+		<div class="row">
+<!-- image of the shop or event [top-block left]-->
+			<div class="col-lg-3" style="text-align:center;">
+				<img src="img/images.jpg" style="  border-radius: 15px;" width="150" height="150">
+			</div>
+			<div class="col-lg-9" >
+				<h1>$event_name</h1>
+			
 			<div class="row">
-					<div class="col-lg-4">
-					<input type="text" name = "Name" >
-					</div>
-				<div align="right" class="col-lg-2">
-					<p>自由記入欄</p>
-    </div>
-    <div class="col-lg-4">
-					<input type="text" name = "Name" >
-				</div>
-    <div class="col-lg-2">
-    </div>
+				<div class="col-lg-6" >
+				<h2>Meeting[meeting_place]</h2>
+			</div>
+			<div class="col-lg-6" >
+				<h2>DeadLine $dead/line</h2>
+			</div>
+</div>
 			</div>
 		</div>
 	</div>
 
-<div class="row" style="padding-top: 50px">
-	<div class="col-lg-4">
-		<h2 >イベント写真</h2>
+
+
+	<div class ="container">
+		<div class="row">
+			<div class="col-lg-2" >
+				<h2>NAME</h2>
+			</div>
+			<div class="col-lg-5" >
+				<h2>$店の名前</h2>
+			</div>
+			<div class="col-lg-5" hidden-md-down>
+			</div>
+		</div>
 	</div>
-	<div class="col-lg-8">
-		<div class="row" style="height: 12rem;">
-			<div class="col-lg-4" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<p><input type="checkbox"><span>お店の写真を使う</span></p>
+
+
+	<div class ="container" style="margin-top: 20px;">
+		<div class="row">
+			<div class="col-lg-2" >
+				<h2>NOTE</h2>
 			</div>
-			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<input type="file">
+			<div class="col-lg-10" >
+				<p class="lead">ランプちょっとこするだけだよ〜！イエス、サー、ご主人様 ご用はなあに？ハイ、ご注文をどうぞ.お気に召すまま！夜ごとレストランで豪華なメニュー！ カモン、ご注文はなんなりどうぞ、あなたのしもべ イエス、サー！極上 最高 サービス よう！ザ・ボス！大将！キング！お望みのものをお手元に、ドゥビドゥバッバー！豪華絢爛、天まで届け〜最高の友達 たとえどんなときでも</p>
 			</div>
-			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<input type="text" list="data1">
+		</div>
+	</div>
+
+
+
+
+<div class ="container" style="padding-top: 30px;" >
+	<div class="row">
+		<div class="col-lg-12" >
+			<h2>INFO</h2>
+			<div class= "slider-for">
+				<div class ="slider-nav">
+					<div><a href="#"><img src="img/images.jpg" ></a></div>
+					<div><a href="#"><img src="img/download-1.jpg"></a></div>
+					<div><a href="#"><img src="img/download-3.jpg"></a></div>
+					<div><a href="#"><img src="img/download-5.jpg"></a></div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
-	
-	<div class="row" style="padding-top: 50px">
-		<div class="col-lg-4" >
-			<h2>招待  </h2>
-		</div>
-		<div class="col-lg-8" >
-			<input type="text">
-		</div>
-	</div>
 
 
-	<div class="row" style="padding-top: 50px">
-		<div class="col-lg-4" >
-			<h2>タグ</h2>
-		</div>
-		<div class="col-lg-8" >
-			<div class="row" style="height: 12rem;">
-			<div class="col-lg-3" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);" >
-				<p><input  type="checkbox"> <span>先生も参加する</span></p>
+
+
+
+
+	<div class ="container" style="padding-top: 30px;" >
+		<div class="row">
+			<div class="col-lg-6" >
+				<h3>Attending</h3>	
+				<div style="background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+				</div>
 			</div>
-				<div class="col-lg-3" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">
-					<p><input type="checkbox"> <span>グラパ</span></p>
-			</div>
-				<div class="col-lg-5" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);" >
-					<p><input style="display: inline;" type="checkbox"> 金額指定する 約<input type="text" style="display: inline; height: 30px;width: 80px; padding: 5px 2px	;"><span>pesos</span></p>
-			</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="row" style="padding-top: 50px">
-		<div class="col-lg-4" >
-			<h2 >詳細</h2>
-		</div>
-		<div class="col-lg-8">
-			<textarea class="full-width" placeholder="詳細" ></textarea>
-		</div>
-	</div>
-
-	<div class="row" style="padding-top: 60px;" >
-		<div class="col-lg-4">
-			<h2>集合時間</h2>
-	</div>
-	<div class="col-lg-8">
-			<h2 style="display: inline;"><input type="time" name="star	tTime" step= "300" style=" text-align: center;">または<input type="number" name="sampleNumber" min="0" max="60" step="5" style=" text-align: center;">分前</h2>
-	</div>
-	</div>
-
-	<div class="row" style="padding-top: 60px;" >
-	
-		<div class="col-lg-4" >
-			<h2>集合場所</h2>
-			</div>
-	<div class="col-lg-8" >
-		<input type="text" name="" >
-			</div>
-		
-	</div>
-
-
-
-
-	<div class="row" style="padding-top: 60px;" >
-			<div class="col-lg-4" >
-				<h2 >参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MAX <input type="number" name="sampleNumber" min="0" max="150" step="5" style="text-align: center;"></h2>
-			</div>
-			<div class="col-lg-4" >
-				<h2 >最低参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MIN<input type="number" name="sampleNumber" min="0" max="150" step="5" style="text-align: center;"></h2>
-			</div>
-			<div class="col-lg-4">
-			<h2>回答期限</h2>
-			<input type="date" name="startDate" min="<?php echo $Dmin ?>" max="<?php echo $Dmax ?>" style=" text-align: center;">
-			<input type="time" name="startTime" step= "300" style=" text-align: center;"></p>
+			
+			<div class="col-lg-6" >
+				<h3>Interested</h3>
+				<div style="background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
 				</div>
 		</div>
-		</div>
 	</div>
+
 	<div class ="container full-width">
 		<div class="row  background-color: #f5f5f5;">
-			
-				<div class="col-lg-6" style="text-align: center; padding:50px; border-radius: 15px; ">
-					<a class="button button-primary full-width" href="index.html" style=" border-radius: 15px; ">キャンセル</a>
-				</div>
+			<form action="POST">
 		
-				<div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px; "> <input class="button button-primary full-width" type="submit" value="作成する" style="border-radius: 15px;" >
+				<div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px;">
+					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id']">参加する</a>
+					<!-- 	<a class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id']">参加を取りやめる</a> -->
 						</div>
 			
-				
-
+				<div class="col-lg-6" style="text-align: center; padding:50px; border-radius: 30px;">
+					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id']">興味がある</a>
+					<!-- <a class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id']">興味がない</a> -->
+				</div>
+			</form>
 		</div>
 </div>
-</form>
-</div>
 
-
-
-
-   <!-- content
-   ================================================== -->  
-
+   </div> <!-- end styles -->
 
 
    
@@ -297,6 +290,7 @@
   <!-- end footer-bottom -->  
    </footer>  
 
+   </footer>  
 
    <div id="preloader"> 
     	<div id="loader"></div>
@@ -307,6 +301,29 @@
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="js/main.js"></script>
+   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script type="text/javascript" src="js/slick-1.8.0/slick/slick.min.js"></script>
+
+
+<script type="text/javascript">
+$('.slider-for').slick({
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows: false,
+  fade: true,
+  asNavFor: '.slider-nav'
+});
+$('.slider-nav').slick({
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  asNavFor: '.slider-for',
+  dots: true,
+  centerMode: true,
+  focusOnSelect: true
+});
+</script>
+
 
 </body>
 
