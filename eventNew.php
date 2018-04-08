@@ -1,3 +1,40 @@
+<?php 
+//データベースへ接続
+$dsn ='mysql:dbname=kami;host=localhost';
+	$user = 'root';
+	$password = '';
+	$dbh = new PDO($dsn, $user, $password);
+	$dbh->query('SET NAMES utf8');
+
+//session_start();
+ $sql =' SELECT * FROM `kami_member`';
+ //$sql =' SELECT * FROM `kami_member` WHERE `email`= ?';
+ // $data = '`yuta.sudo.gis@gmail.com`';
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+    $member = $stmt->fetch(PDO::FETCH_ASSOC);
+ $_SESSION['id'] = $member['member_id'];
+ //echo('<br>'); 
+//echo('<br>');
+echo('<pre>');
+var_dump($_SESSION['id']) ;
+echo('</pre>');
+//echo('<pre>');
+//var_dump($hoge) ;
+//echo('</pre>');
+
+//
+
+//
+$event_make_sql =' INSERT INTO `event` SET `member_id`	= ? , `event_name` = ?, `starttime` = ?, `event_place` = ?, `event_picture` = ?, `invite` = ?, `graduation` = ?, `teachers` = ?, `set_price` = ?, `detail` = ?, `meeting_time` = ?, `meeting_place` = ?, `max` = ?, `min` = ?, `answer_limitation` = ?, `created`=NOW(),`modified`= NOW()';
+$event_make_data = array( $_SESSION['id'], $_POST['event_name'], $_POST['starttime'], $_POST['event_place'], $_POST['event_picture'], $_POST['invite'], $_POST['graduation'], $_POST['teachers'], $_POST['set_price'], $_POST['detail'], $_POST['meeting_time'], $_POST['meeting_place'], $_POST['max'], $_POST['min'], $_POST['answer_limitation']);
+      $event_make_stmt = $dbh->prepare($event_make_sql);
+      $event_make_stmt->execute($event_make_data);
+
+ ?>
+
+
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
@@ -117,14 +154,14 @@
    ================================================== -->
 
 
-<div class ="container" style="padding-top: 160px " >
+<div class ="container" style="padding-top: 160px; " >
 	<form action="POST">
 	<div class="row" style="padding-top: 20px">
 		<div class="col-lg-4" >
 			<h2 style>イベント名</h2>
 		</div>
 		<div class="col-lg-8">
-			<input type="text" name = "Name" >
+			<input type="text" name = "event_name" >
 		</div>
 	</div>
 
@@ -145,13 +182,13 @@
 		<div class="col-lg-8">
 			<div class="row">
 					<div class="col-lg-4">
-					<input type="text" name = "Name" >
+					<input type="text" name = "shop_name" >
 					</div>
 				<div align="right" class="col-lg-2">
 					<p>自由記入欄</p>
     </div>
     <div class="col-lg-4">
-					<input type="text" name = "Name" >
+					<input type="text" name = "note" >
 				</div>
     <div class="col-lg-2">
     </div>
@@ -169,7 +206,7 @@
 			<p><input type="checkbox"><span>お店の写真を使う</span></p>
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<input type="file">
+			<input type="file" name="event_photo">
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
 			<input type="text" list="data1">
@@ -242,7 +279,7 @@
 	<div class="row" style="padding-top: 60px;" >
 			<div class="col-lg-4" >
 				<h2 >参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MAX <input type="number" name="sampleNumber" min="0" max="150" step="5" style="text-align: center;"></h2>
+				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MAX <input type="number" name="" min="0" max="150" step="5" style="text-align: center;"></h2>
 			</div>
 			<div class="col-lg-4" >
 				<h2 >最低参加人数</h2>

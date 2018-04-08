@@ -1,3 +1,9 @@
+<?php 
+//getで編集するイベントを指定
+//update or delete
+ ?>
+
+
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
@@ -7,7 +13,7 @@
    <!--- basic page needs
    ================================================== -->
 	<meta charset="utf-8">
-	<title>イベントの作成</title>
+	<title>イベントの編集</title>
 	<meta name="description" content="">  
 	<meta name="author" content="">
 
@@ -21,7 +27,6 @@
    <link rel="stylesheet" href="css/vendor.css">  
    <link rel="stylesheet" href="css/pooh_main.css">
    <link rel="stylesheet" href="css/pooh_bootstrap.css">
-   
         
 
    <!-- script
@@ -38,6 +43,7 @@
 
 <body id="top">
 
+  
    <!-- header 
    ================================================== -->
 <!-- header 
@@ -51,7 +57,7 @@
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
                <li class="has-children"><a href="home.html" title="">ホーム</a></li>   
-               <li class="current"><a href="eventNew.html" title="">イベント作成</a></li>                          
+               <li class="has-children"><a href="eventNew.html" title="">イベント作成</a></li>                          
                <li class="has-children">
                   <a href="eventItiran.html" title="">イベント一覧</a>
                   <ul class="sub-menu">
@@ -111,13 +117,9 @@
    </header> <!-- end header -->
 
 
-<!-- end header -->
-
-      <!-- header
-   ================================================== -->
 
 
-<div class ="container" style="padding-top: 160px " >
+<div class ="container" style="padding-top: 160px; " >
 	<form action="POST">
 	<div class="row" style="padding-top: 20px">
 		<div class="col-lg-4" >
@@ -294,9 +296,9 @@
 <p class="keigo"><span>© kami 2018</span> 
 <span>by team pelo</a></span></p>
 </center>
+
   <!-- end footer-bottom -->  
    </footer>  
-
 
    <div id="preloader"> 
     	<div id="loader"></div>
