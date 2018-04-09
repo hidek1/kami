@@ -4,63 +4,33 @@ require('dbconnect.php');
 session_start();
 
 
-// 入力チェックしまーーーーす。
-
 if (!empty($_POST)) {
 
-  if ($_POST['store_name_abc'] == '') {
-    $error['store_name_abc'] = 'blank';
-  }
 
-  if ($_POST['store_name'] == '') {
-    $error['store_name'] = 'blank';
-  }
+// 写真のアップロード方法、むずい。。。
 
-// 必要か分からんから一旦置いとく。
+// if (!isset($error)) {
+//   $ext = substr($_FILES['picture_path']['name'],-3);
+//   $ext = strtolower($ext);
 
-//   if ($shop_type == '中華') {
-//   $shop_type = "中華屋";
 // }
 
-// if ($shop_type == '和食') {
-//   $shop_type = "和食屋";
+// if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
+
+// $picture_path = date('YmdHis') . $_FILES['picture_path']['name'];
+
+// move_uploaded_file($_FILES['picture_path']['tmp_name'], 'picture_path/'.$picture_path);
+
+// $_SESSION['kami'] = $_POST;
+// $_SESSION['kami']['picture_path'] = $picture_path;
+
+
 // }
-
-// if ($shop_type == '洋食') {
-//   $shop_type = "洋食屋";
-// }
-
-
-if ($_POST['files'] == '') {
-  $error['files'] = 'blank';
+ 
+ if ($_POST['store_name'] == '') {
+  $error['store_name'] = 'blank';
 }
-
-
-
-// 本当はここで店名の重複チェックをしたいけど、abc とカタカナ　２パターンあるので
-// よく分からん。let me ask someone else....
-
-
-// 画像が送られているかのcheck!!
-//授業で習ったから、復讐のため拡張子の判定を入れました。
-
-if (!isset($error)) {
-  $ext = substr($_FILES['picture_path']['name'],-3);
-  $ext = strtolower($ext);
-
-}
-
-if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-
-$picture_path = date('YmdHis') . $_FILES['picture_path']['name'];
-
-move_uploaded_file($_FILES['picture_path']['tmp_name'], 'picture_path/'.$picture_path);
-
-$_SESSION['kami'] = $_POST;
-$_SESSION['kami']['picture_path'] = $picture_path;
-
-
-}
+    if (!isset($error)) {
 
   $shop_name_abc = htmlspecialchars($_POST['store_name_abc']);
   $shop_name = htmlspecialchars($_POST['store_name']);
@@ -69,12 +39,17 @@ $_SESSION['kami']['picture_path'] = $picture_path;
 
   $sql = 'INSERT INTO `kami_shops` SET `shop_name_abc`=? , `shop_name` =? , `shop_pic`=? , `shop_type`=? , `created`=NOW() , `modified`=NOW()';
 
-$date = array($shop_name_abc,$shop_name,$shop_type);
+$date = array($shop_name_abc,$shop_name,$shop_pic,$shop_type);
 $stmt = $dbh->prepare($sql);
 $stmt->execute($date);
 
-}
+header('Location: store_details.php?name='.$shop_name);
+exit;
 
+}else
+header('Location:store_review.php');
+exit;
+}
 
 
 
@@ -90,7 +65,7 @@ $stmt->execute($date);
    ================================================== -->
    <meta charset="utf-8">
   <title>store_review</title>
-  <meta name="description" content="">  
+  <meta name="description" content="">
   <meta name="author" content="">
 
    <!-- mobile specific metas
@@ -117,9 +92,9 @@ $stmt->execute($date);
 
 <body id="top">
 
-   <header class="short-header">   
+   <header class="short-header">
 
-      <div class="gradient-block"></div>  
+      <div class="gradient-block"></div>
 
       <div class="row header-content">
 
@@ -212,12 +187,15 @@ $stmt->execute($date);
 
             <p class="lead">新しいお店を投稿しよう！！</p> 
 
-            <form name="cForm" id="cForm" method="post" action="">
+            <form name="cForm" id="cForm" method="post" action="" class="form-horizontal" role="form" enctype="multipart/form-data">
                  <fieldset>
+                   <?php if (isset($error) && $error == 'blank') { ?>
+ <p class="error">なんか入れてよ！</p>
+ <?php } ?>
                        <div><h1>店名</h1></div>
                        <div class="form-field">
-                      <input name="cName" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
-                      <input name="cName" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
+                      <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
+                      <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
                        </div>
 
                        <br>
@@ -227,10 +205,13 @@ $stmt->execute($date);
                        <div><h1>ジャンル</h1>
 
                        <select name="category">
-                       <option value="">選択してください</option>
-                       <option value="1">中華</option>
-                       <option value="2">和食</option>
-                       <option value="3">洋食</option>
+                       <option value="未選択">選択してください</option>
+                       <option value="比国">比国 👍</option>
+                       <option value="韓国">韓国🖕</option>
+                       <option value="中華">中華 </option>
+                       <option value="和食">和食</option>
+                       <option value="洋食">洋食</option>
+
 
                        </select>
                        </div>
