@@ -1,9 +1,26 @@
-<?php 
-//getで持ってくる？
-//selectで表示
+<?php
+//今後
+	//写真の表示
+	//興味ユーザーの作成
+	$dsn ='mysql:dbname=kami;host=localhost';
+	$user = 'root';
+	$password = '';
+	$dbh = new PDO($dsn, $user, $password);
+	$dbh->query('SET NAMES utf8');
+	$_SESSION['id'] = 18;
+	$_GET['id'] = 13;
+
+
+	$event_sql='SELECT * FROM `kami_events` WHERE `event_id` = ? ';
+	$event_data= array($_GET['id']);
+	$stmt = $dbh->prepare($event_sql);
+	$stmt->execute($event_data);
+	$event =$stmt -> fetch(PDO::FETCH_ASSOC);
+
+
 
  ?>
- 
+
 
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -126,54 +143,70 @@
 <!-- <div id="content-wrap" class="styles"> -->
 <!-- created time & edit button [right top] -->
 <div class ="container" style="padding-top: 200px;">
-		<div class="row">
-			<div class="col-lg-9" >
-				<div class="row">
-			<div class="col-lg-4" >
-				<h2>DATE '$date' '$time' ~ </h2>
+	<div class="row">
+			<div class="col-xs-0 col-md-0 col-lg-6" >
 			</div>
-			<div class="col-lg-8" >
-				<h2>@ '$to_whom' MIN '$min_count' MAX'$max_count'</h2>
+			<div class="col-xs-12 col-md-12 col-lg-6" >
+				<p style=" text-align:right; vertical-align: middle;">作成日時[
+					<?php 
+					$created = $event['created'];
+					$created = date("m-d H:i", strtotime($created));
+					echo $created ;?>]
+				</p>
+				<p style=" text-align:right; vertical-align: middle;">編集日時[
+					<?php 
+					$modified = $event['modified'];
+					$modified = date("m-d H:i", strtotime($modified));
+					echo $modified ;?>]
+				</p>
 			</div>
-		</div>
-		</div>
-			<div class="col-lg-3" >
-				<p style=" vertical-align: middle;">CREATED AT '$created_at'</p>
-				<form action="GET">
-					<input style="border-radius: 5px;" type="button" value="イベントの編集">
-				</form>
-			
-			</div>
-			</div>
-			</div>
-		
-	<div class ="container">
-		
-			<div class="col-lg-3" >
-				
-			</div>
-		</div>
-</div>
 	</div>
+</div>
+<div class ="container">
+	<div class="row" style="height: 12rem;">
+		<div class="col-xs-3 col-md-3 col-lg-3" >
+			<h2>DATE <br><?php
+				$starttime = $event['starttime'];
+				$starttime = date("m-d H:i", strtotime($starttime));
+				echo $starttime ;?>~</h2>
+		</div>
+		<div class="col-xs-6 col-md-6 col-lg-6" >
+			<h2>
+				<?php if ($event['min'] != '') { ;?>MIN <?php echo $event['min'];} ?>
+				<?php if ($event['max'] != '') { ;?>MIN <?php echo $event['max'];} ?>
+				<br>@<?php echo $event['invite'] ;?>
+			</h2>
+		</div>
+		<div class="col-xs-3 col-md-3 col-lg-3" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
+			<a  href="eventEdit.php?id=<?php echo $event['event_id'];?>" ><button  style="border-radius: 5px;">編集する</button></a>
+		</div>
+	</div>
+</div>
 
 <!-- main info about the event [top-block]-->
-	<div class ="container" style="padding-top: 30px;">
-		<div class="row">
+<div class ="container" style="padding-top: 50px;">
+	<div class="row">
 <!-- image of the shop or event [top-block left]-->
-			<div class="col-lg-3" style="text-align:center;">
-				<img src="img/images.jpg" style="  border-radius: 15px;" width="150" height="150">
-			</div>
-			<div class="col-lg-9" >
-				<h1>$event_name</h1>
-			
+		<div class="col-xs-3 col-md-3 col-lg-3" style="text-align:center;">
+			<img src="img/images.jpg" style="  border-radius: 15px;">
+		</div>
+			<div class="col-xs-9 col-md-9 col-lg-9" >
+				<h1><?php echo $event['event_name'] ;?></h1>
 			<div class="row">
-				<div class="col-lg-6" >
-				<h2>Meeting[meeting_place]</h2>
+				<div class="col-xs-6 col-md-6 col-lg-6" >
+				<h2>MEET AT <br><?php 
+					$meeting_time = $event['meeting_time'];
+					$meeting_time = date("m-d H:i", strtotime($meeting_time));
+					echo $meeting_time ;?> @<?php echo $event['meeting_place'] ;?></h2>
 			</div>
-			<div class="col-lg-6" >
-				<h2>DeadLine $dead/line</h2>
+			<div class="col-xs-6 col-md-6 col-lg-6" >
+				<h2>DeadLine <br>
+					<?php 
+					$limit = $event['answer_limitation'];
+					$limit = date("m-d H:i", strtotime($limit));
+					echo $limit ;?></h2>
 			</div>
-</div>
+		</div>
 			</div>
 		</div>
 	</div>
@@ -181,14 +214,40 @@
 
 
 	<div class ="container">
+	<?php if($event['graduation'] != 0 || $event['teachers'] != 0 || $event['set_price'] != '指定なし'){ ?>
 		<div class="row">
-			<div class="col-lg-2" >
-				<h2>NAME</h2>
+			<div class="col-xs-2 col-md-2 col-lg-2" >
+				<h2 >TAG</h2>
 			</div>
-			<div class="col-lg-5" >
-				<h2>$店の名前</h2>
+			<div class="col-xs-10 col-md-10 col-lg-10">
+				<h2>
+					<p>
+					<?php if ($event['graduation'] == 1) {?>
+					グラパ 
+					<?php if ( $event['teachers'] == 1 || $event['set_price'] != '指定なし') {?>
+					 /
+					<?php } }?>
+					<?php if ($event['teachers'] == 1) {?>
+					先生も参加する
+					<?php if ($event['teachers'] == 1 && $event['set_price'] != '指定なし') {?>
+					/
+					<?php }}?>
+					<?php if ($event['set_price'] != '指定なし') {?>
+					<?php echo $event['set_price'] ?> 
+					<?php } ?>
+					</p>
+				</h2>	
 			</div>
-			<div class="col-lg-5" hidden-md-down>
+		</div>
+		<?php } ?>
+		<div class="row">
+			<div class="col-xs-2 col-md-2 col-lg-2" >
+				<h2>WHERE</h2>
+			</div>
+			<div class="col-xs-5 col-md-5 col-lg-5" >
+				<h2><?php echo $event['event_place'] ;?></h2>
+			</div>
+			<div class="col-xs-5 col-md-5 col-lg-5" hidden-md-down>
 			</div>
 		</div>
 	</div>
@@ -196,11 +255,11 @@
 
 	<div class ="container" style="margin-top: 20px;">
 		<div class="row">
-			<div class="col-lg-2" >
+			<div class="col-xs-2 col-md-2 col-lg-2" >
 				<h2>NOTE</h2>
 			</div>
-			<div class="col-lg-10" >
-				<p class="lead">ランプちょっとこするだけだよ〜！イエス、サー、ご主人様 ご用はなあに？ハイ、ご注文をどうぞ.お気に召すまま！夜ごとレストランで豪華なメニュー！ カモン、ご注文はなんなりどうぞ、あなたのしもべ イエス、サー！極上 最高 サービス よう！ザ・ボス！大将！キング！お望みのものをお手元に、ドゥビドゥバッバー！豪華絢爛、天まで届け〜最高の友達 たとえどんなときでも</p>
+			<div class="col-xs-10 col-md-10 col-lg-10" >
+				<p class="lead"><?php echo $event['detail'] ;?></p>
 			</div>
 		</div>
 	</div>
@@ -210,7 +269,7 @@
 
 <div class ="container" style="padding-top: 30px;" >
 	<div class="row">
-		<div class="col-lg-12" >
+		<div class="col-xs-12 col-md-12 col-lg-12" >
 			<h2>INFO</h2>
 			<div class= "slider-for">
 				<div class ="slider-nav">
@@ -231,7 +290,7 @@
 
 	<div class ="container" style="padding-top: 30px;" >
 		<div class="row">
-			<div class="col-lg-6" >
+			<div class="col-xs-6 col-md-6 col-lg-6" >
 				<h3>Attending</h3>	
 				<div style="background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
 					$user_pic $user_nickname <br>
@@ -242,7 +301,7 @@
 				</div>
 			</div>
 			
-			<div class="col-lg-6" >
+			<div class="col-xs-6 col-md-6 col-lg-6" >
 				<h3>Interested</h3>
 				<div style="background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
 					$user_pic $user_nickname <br>
@@ -251,23 +310,23 @@
 					$user_pic $user_nickname <br>
 					$user_pic $user_nickname <br>
 				</div>
+			</div>
 		</div>
 	</div>
 
 	<div class ="container full-width">
 		<div class="row  background-color: #f5f5f5;">
-			<form action="POST">
 		
-				<div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px;">
-					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id']">参加する</a>
-					<!-- 	<a class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id']">参加を取りやめる</a> -->
+				<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center;padding:50px; border-radius: 15px;">
+					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id'] ?>"> 参加する</a>
+					<!--<a class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id']?>">参加を取りやめる</a>-->
 						</div>
 			
-				<div class="col-lg-6" style="text-align: center; padding:50px; border-radius: 30px;">
-					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id']">興味がある</a>
-					<!-- <a class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id']">興味がない</a> -->
+				<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:50px; border-radius: 30px;">
+					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id']?>">興味がある</a>
+					<!-- <a class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id'] ?>">興味がない</a> -->
 				</div>
-			</form>
+
 		</div>
 </div>
 
