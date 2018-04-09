@@ -42,6 +42,11 @@
  *  02. base style overrides - (_document-setup.scss)
  *
  * ------------------------------------------------------------------- */
+
+.error {
+color: red;
+}
+
 html {
 	font-size: 10px;
 }

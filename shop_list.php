@@ -1,28 +1,28 @@
-<?php
- require('function.php');
-  login_check();
- require('dbconnect.php');
 
- $sql = 'SELECT * FROM `kami_events`';
-    $stmt = $dbh->prepare($sql);
-      $stmt->execute();
-      while(true) {
-      $kami_event = $stmt->fetch(PDO::FETCH_ASSOC);
-      if ($kami_event == false) {
+<?php 
+require('function.php');
+  login_check();
+
+ require('dbconnect.php');
+$sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`shop_id`=`kami_reviews`.`shop_id`';
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute();
+  while(true) {
+  $kami_shop = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($kami_shop == false) {
          break;
       }
-   $kami_events[] = $kami_event;
-     }
+      $kami_shops[] = $kami_shop;
+    //   var_dump($kami_shop);
+    // exit;
+    }
 
-
-  // if ($_GET["list"] == 'event'){
-  //   # code...
 
   //SQL(テーブルから列を抽出する
   $keigo =@$_SESSION['s'];
 
   if (strlen($keigo)>0){
-  $search_sql ="SELECT * FROM `kami_events`";
+  $search_sql ="SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`shop_id`=`kami_reviews`.`shop_id`";
   //キーワードが入力されているときはwhere以下を組み立てる
     //受け取ったキーワードの全角スペースを半角スペースに変換する
     $text2 = str_replace("　", " ", $keigo);
@@ -34,7 +34,7 @@
     $where = "WHERE ";
 
    for($i = 0; $i < count($array);$i++){
-      $where .= "(event_name LIKE '%$array[$i]%' OR detail LIKE '%$array[$i]%')";
+      $where .= "(shop_name_abc LIKE '%$array[$i]%' OR shop_name LIKE '%$array[$i]%' OR shop_type LIKE '%$array[$i]%')";
       if ($i <count($array) -1){
         $where .= " AND ";
       }
@@ -45,28 +45,27 @@
 
     $search_stmt = $dbh->prepare($search_sql);
     $search_stmt->execute();
-    $kami_search_events = array();
+    $kami_search_shops = array();
 
     while(true) {
-      $kami_search_event = $search_stmt->fetch(PDO::FETCH_ASSOC);
-    if ($kami_search_event == false) {
+      $kami_search_shops = $search_stmt->fetch(PDO::FETCH_ASSOC);
+    if ($kami_search_shop == false) {
          break;
       }
-      $kami_search_events[] = $kami_search_event;
+      $kami_search_shops[] = $kami_search_shop;
     }
 
       //  var_dump($kami_search_events);
       // // exit();
   }
- // }
-
-
  
+
  ?>
 
 
 
- <!DOCTYPE html>
+
+<!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
@@ -89,8 +88,8 @@
    <link rel="stylesheet" href="css/vendor.css">  
    
 
-  
-   <link rel="stylesheet" href="css/eventItiran_main.css">
+   <link rel="stylesheet" href="css/home_bootstrap.css">
+   <link rel="stylesheet" href="css/home_main.css">
 
 
    <!-- script
@@ -107,7 +106,7 @@
 
 <body id="top">
 
-   <!-- header 
+  <!-- header 
    ================================================== -->
    <header class="short-header">   
 
@@ -125,13 +124,13 @@
                <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
                <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
 
-               <li class="current">
+               <li class="has-childrens">
                   <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
                <li class="has-children">
                   <a href="shop_list.php" title="">お店</a>
                </li>
-       <li class="has-children">
+       <li class="current">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
                
@@ -180,123 +179,113 @@
    ================================================== -->
    <section id="bricks" class="with-top-sep">
       <center>
+
       <div class="row current-cat">
          <div class="col-full">
-            <h1>イベント一覧<?php 
+            <h1>お店一覧<?php 
            if(!empty($_SESSION['s'])){
              echo "：";
              echo $_SESSION['s']; }?></h1>
-           
          </div>         
       </div>
        </center>
-  
+          <div class="comments-wrap">
 
-    <div class="row masonry">
+            <div id="comments" class="row">
+                <div class="col-full">
+                  <center>
+               <!-- commentlist -->
+               <ol class="commentlist2">
+    <?php if (!empty($_SESSION['s'])) { ?>
+      <?php for ($i=0; $i<count($kami_search_shops);$i++){ ?>
 
-      <!-- brick-wrapper -->
-         <div class="bricks-wrapper">
-
-          <div class="grid-sizer"></div>
-
-<?php if (!empty($_SESSION['s'])) { ?>
-  <?php for ($i=0; $i<count($kami_search_events);$i++){ ?>
-
-
-         <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
+                    <li class="depth-1">
+                   <div class="container">
+         <div class="row">
+                   <div class="col-xs-2 col-md-2 col-lg-2" >
+                   </div>
+                   <div class="col-xs-2 col-md-2 col-lg-2" >
+                     <div class="avatar">
+                        <img width="50" height="50" class="avatar" src="images/shaka3.jpg" alt="">
                      </div>
-                
-                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_search_events[$i]["event_name"]; ?></a></h1>
-                     
                   </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     <?php echo $kami_search_events[$i]["detail"]; ?>
-
+                  <div class="col-xs-6 col-md-6 col-lg-6" >
+                     <div class="comment-content">
+                         <div class="comment-info">
+                            <cite><a href="#"><?php echo $kami_search_shops[$i]["shop_name_abc"]; ?>(<?php echo $kami_search_shops[$i]["shop_name"]; ?>)</a></cite>
+                            
+                         </div>
+                         <div class="comment-text">
+                            <p>ジャンル：<?php echo $kami_search_shops[$i]["shop_type"]; ?><br>
+                            最新のレビュー：<?php echo $kami_search_shops[$i]["shop_name"]; ?>
+                            </p>
+                         </div>
+                      </div>
                   </div>
+  <div class="col-xs-2 col-md-2 col-lg-2" >
+                   </div>
+                 </div>
                </div>
-
-            </article> <!-- end article -->
-    <?php } ?>
+                  </li>
+                 <?php } ?>
   <?php } else { ?>
-  <?php for ($i=0; $i<count($kami_events);$i++){ ?>
-         <article class="brick entry format-standard animate-this">
-
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
-                  </a>
-               </div>
-
-               <div class="entry-text">
-                  <div class="entry-header">
-
-                     <div class="entry-meta">
-                        <span class="cat-links">
-                            あと何日
-                                                     
-                        </span>        
+  <?php for ($i=0; $i<count($kami_shops);$i++){ ?>
+   <li class="depth-1">
+                   <div class="container">
+         <div class="row">
+                   <div class="col-xs-2 col-md-2 col-lg-2" >
+                   </div>
+                   <div class="col-xs-2 col-md-2 col-lg-2" >
+                     <div class="avatar">
+                        <img width="50" height="50" class="avatar" src="images/shaka3.jpg" alt="">
                      </div>
-                
-                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
-                     
                   </div>
-                  <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
-                     詳細<br>
-                     <?php echo $kami_events[$i]["detail"]; ?>
-
+                  <div class="col-xs-6 col-md-6 col-lg-6" >
+                     <div class="comment-content">
+                         <div class="comment-info">
+                            <cite><a href="#"><?php echo $kami_shops[$i]["shop_name_abc"]; ?>(<?php echo $kami_shops[$i]["shop_name"]; ?>)</a></cite>
+                            
+                         </div>
+                         <div class="comment-text">
+                            <p>ジャンル：<?php echo $kami_shops[$i]["shop_type"]; ?><br>
+                            最新のレビュー：<?php echo $kami_shops[$i]["shop_type"]; ?>
+                            </p>
+                         </div>
+                      </div>
                   </div>
+  <div class="col-xs-2 col-md-2 col-lg-2" >
+                   </div>
+                 </div>
                </div>
+                  </li>
 
-            </article> <!-- end article -->
-   <?php } ?>
+          <?php } ?>
     <?php } ?>
+ 
 
-         </div> <!-- end brick-wrapper --> 
-
-    </div> <!-- end row -->
-
-    <div class="row">
-      
-      <nav class="pagination">
-          <span class="page-numbers prev inactive">Prev</span>
-        <span class="page-numbers current">1</span>
-        <a href="#" class="page-numbers">2</a>
-          <a href="#" class="page-numbers">3</a>
-          <a href="#" class="page-numbers">4</a>
-          <a href="#" class="page-numbers">5</a>
-          <a href="#" class="page-numbers">6</a>
-          <a href="#" class="page-numbers">7</a>
-          <a href="#" class="page-numbers">8</a>
-          <a href="#" class="page-numbers">9</a>
-        <a href="#" class="page-numbers next">Next</a>
-        </nav>
-
-    </div>
-
+            
+               </ol> <!-- Commentlist End -->
+               </center>                   
+               <!-- respond -->
+              
+            </div> <!-- end col-full -->
+         </div> <!-- end row comments -->
+        </div> <!-- end comments-wrap -->
+                                 
+                          
+               <nav class="pagination">
+            <span class="page-numbers prev inactive">Prev</span>
+            <span class="page-numbers current">1</span>
+            <a href="#" class="page-numbers">2</a>
+            <a href="#" class="page-numbers">3</a>
+            <a href="#" class="page-numbers">4</a>
+            <a href="#" class="page-numbers">5</a>
+            <a href="#" class="page-numbers">6</a>
+            <a href="#" class="page-numbers">7</a>
+            <a href="#" class="page-numbers">8</a>
+            <a href="#" class="page-numbers">9</a>
+            <a href="#" class="page-numbers next">Next</a>
+         </nav>
    </section> <!-- bricks -->
 
    
@@ -307,10 +296,10 @@
                  
 
 
-             <center>
+             
                   <p class="keigo"><span>© kami 2018</span> 
                   <span>by team pelo</a></span></p>              
-             </center>
+             
 
                 <!-- end footer-bottom -->  
 

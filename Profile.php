@@ -270,6 +270,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 
        <div class="container">
                              <div class="row">
+<?php for ($i=0; $i<count($event_joinings);$i++){ ?>
 <div class="col-xs-4 col-md-4 col-lg-4">
           <article class="brick entry format-standard animate-this">
 
@@ -287,17 +288,17 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                     </span>     
                   </div>
 
-                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $event_joining['event_name']; ?></a></h1>
+                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $event_joinings[$i]['event_name']; ?></a></h1>
                   
                 </div>
             <div class="entry-excerpt">
-              <?php echo $event_joining['detail']; ?>
+              <?php echo $event_joinings[$i]['detail']; ?>
             </div>
                </div>
 
             </article> <!-- end article -->
           </div>
-
+<?php } ?>
 
 
 
@@ -325,6 +326,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
   
 <div class="container">
                              <div class="row">
+  <?php for ($i=0; $i<count($reviews);$i++){ ?>
 
 <div class="col-xs-4 col-md-4 col-lg-4">
 
@@ -344,16 +346,17 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                     </span>     
                   </div>
 
-                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $review['shop_name_abc']; ?>(<?php echo $review['shop_name_abc']; ?>)</a></h1>
+                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $review['shop_name_abc']; ?>(<?php echo $reviews[$i]['shop_name_abc']; ?>)</a></h1>
                   
                 </div>
             <div class="entry-excerpt">
-             <?php echo $review['review']; ?>
+             <?php echo $reviews[$i]['review']; ?>
             </div>
                </div>
 
             </article> <!-- end article -->
 </div>
+    <?php } ?>
 
 
   </div>
