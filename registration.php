@@ -159,9 +159,9 @@ if (!empty($_POST) && isset($_POST)) {
      <div class="form-field">
       <input name="nickname" type="text" id="cName" class="full-width" placeholder="kami" value="">
       <?php if (isset($error['nickname'])) {
-          if ($error['nickname']=='blank') {
-          echo '*ニックネームを入力してください';
-          }
+          if ($error['nickname']=='blank') { ?>
+           <p class="error" style="color: red;">*ニックネームを入力してください</p>
+        <?php  }
           // if ($error['nickname']=='duplicated') {
           // echo'*そのニックネームはすでに使われています';
           // }
@@ -171,14 +171,11 @@ if (!empty($_POST) && isset($_POST)) {
         <h3>メールアドレス</h3>
      <div class="form-field">
        <input name="email" type="email" id="cName" class="full-width" placeholder="" value="">
-       <?php if (isset($error['email'])) {
-          if ($error['email']=='blank') {
-          echo '*メールアドレスを入力してください';
-      }
-if ($error['email']=='duplicated') {
-          echo'*そのメールアドレスはすでに使われています';
-          }
-    }
+<?php if (isset($error['email']) && $error['email'] == 'blank') { ?>
+              <p class="error" style="color: red;">* メールアドレスを入力してください。</p>
+              <?php } elseif(isset($error['email']) && $error['email'] == 'duplicated') { ?>
+              <p class="error" style="color: red;">* 入力されたメールアドレスは登録済みです。</p>
+              <?php } 
 
       ?>
      </div>
@@ -187,9 +184,9 @@ if ($error['email']=='duplicated') {
      <div class="form-field">
        <input name="password" type="password" id="cName" class="full-width" placeholder="" value="">
        <?php if (isset($error['password']) && $error['password'] == 'blank') { ?>
-              <p class="error">* パスワードを入力してください。</p>
+              <p class="error" style="color: red;">* パスワードを入力してください。</p>
               <?php } elseif(isset($error['password']) && $error['password'] == 'length') { ?>
-              <p class="error">* パスワードは4文字以上入力してください。</p>
+              <p class="error" style="color: red;">* パスワードは4文字以上入力してください。</p>
               <?php } ?>
      </div>
 
@@ -206,8 +203,10 @@ if ($error['email']=='duplicated') {
        <input name="room_number" type="text" id="cName" class="full-width" placeholder="200A" value="">
        <?php if (isset($error['room_number'])) {
           if ($error['room_number']=='blank') {
-          echo '*部屋番号を入力してください';
-      } }?>
+          ?>
+         <p class="error" style="color: red;">*部屋番号を入力してください</p>
+      <?php  }
+     } ?>
      </div>
 
    <h3>滞在期間</h3>
@@ -217,9 +216,9 @@ if ($error['email']=='duplicated') {
   to
        <input name="stay_finish" type="date" id="cName" class="half-width" value="">
        <?php if (isset($error['stay_start']) || isset($error['stay_finish'])) {
-       if ($error['stay_start']=='blank' || $error['stay_finish']=='blank') {
-         echo'*滞在期間を入力してください';
-       }
+       if ($error['stay_start']=='blank' || $error['stay_finish']=='blank') { ?>
+         <p class="error" style="color: red;">*滞在期間を入力してください</p>
+      <?php  }
      } ?>
      </div>
 
@@ -229,9 +228,9 @@ if ($error['email']=='duplicated') {
          <div class="add_files"></div>
            <input id="" type="file" name="picture_path" multiple="">
        </span>
-       <?php if (isset($error['picture_path']) && $error['picture_path']=='type') {
-         echo '*拡張子が対応しておりません';
-       } ?>
+       <?php if (isset($error['picture_path']) && $error['picture_path']=='type') { ?>
+         <p class="error" style="color: red;">*拡張子が対応しておりません</p>
+      <?php } ?>
      </div>
 
 <div>
