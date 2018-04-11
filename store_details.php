@@ -53,9 +53,9 @@ var_dump($store_detail);
 
 <body id="top">
 
-    <header class="short-header">   
+    <header class="short-header">
 
-      <div class="gradient-block"></div>  
+      <div class="gradient-block"></div>
 
       <div class="row header-content">
 
@@ -150,8 +150,10 @@ var_dump($store_detail);
 
             <h1 class="entry-title add-bottom">店名：<?php echo $store_detail['shop_name_abc']; ?></h1>
             <p>ジャンル：<?php echo $store_detail['shop_type']; ?></p>
-      <a href="store_review_edit.html" title=""><button type="submit" class="submit button-primary">お店情報を編集する</button></a>
-
+      <a href="store_review_edit.php?id=<?php echo $store_detail['shop_id']; ?>" title=""><button type="submit" class="submit button-primary">お店情報を編集する</button></a>
+      <a href="review.php?id=<?php echo $store_detail['shop_id']; ?>">
+      <button type="submit" class="submit button-primary">レビューを投稿する</button>
+      </a>
 
             <br>
             <br>
@@ -286,45 +288,7 @@ var_dump($store_detail);
 
                          </div>
                       </div>
-                     <!-- <ul class="children">
-                        <li class="depth-2">
-                           <div class="avatar">
-                              <img width="50" height="50" class="avatar" src="images/avatars/user-03.jpg" alt="">
-                           </div> -->
-                           <!-- <div class="comment-content">
-                               <div class="comment-info">
-                                  <cite>Kakashi Hatake</cite>
-                                  <div class="comment-meta">
-                                     <time class="comment-time" datetime="2014-07-12T25:05">Jul 12, 2014 @ 25:05</time>
-                                     <span class="sep">/</span><a class="reply" href="#">Reply</a>
-                                  </div>
-                               </div>
-                               <div class="comment-text">
-                                  <p>Duis sed odio sit amet nibh vulputate
-                                  cursus a sit amet mauris. Morbi accumsan ipsum velit. Duis sed odio sit amet nibh vulputate
-                                  cursus a sit amet mauris</p>
-                               </div>
-                           </div> -->
-                           <!-- <ul class="children">
-                              <li class="depth-3">
-                                 <div class="avatar">
-                                    <img width="50" height="50" class="avatar" src="images/avatars/user-04.jpg" alt="">
-                                 </div>
-                                 <div class="comment-content">
-                                     <div class="comment-info">
-                                        <cite>John Doe</cite>
-                                        <div class="comment-meta">
-                                           <time class="comment-time" datetime="2014-07-12T25:15">July 12, 2014 @ 25:15</time>
-                                           <span class="sep">/</span><a class="reply" href="#">Reply</a>
-                                        </div>
-                                     </div>
-                                     <div class="comment-text">
-                                        <p>Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est
-                                        etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum.</p>
-                                     </div>
-                                 </div>
-                              </li>
-                           </ul> -->
+
                         </li>
                      </ul>
                   </li>
@@ -363,37 +327,11 @@ var_dump($store_detail);
                          </div>
                      </div>
                   </li>
-               </ol> <!-- Commentlist End -->
-               <!-- respond -->
-               <!-- <div class="respond">
-                <h3>Leave a Comment</h3> -->
-                  <!-- <form name="contactForm" id="contactForm" method="post" action="">
-                       <fieldset>
-                     <div class="form-field">
-                              <input name="cName" type="text" id="cName" class="full-width" placeholder="Your Name" value="">
-                     </div>
-                     <div class="form-field">
-                              <input name="cEmail" type="text" id="cEmail" class="full-width" placeholder="Your Email" value="">
-                     </div>
-                     <div class="form-field">
-                              <input name="cWebsite" type="text" id="cWebsite" class="full-width" placeholder="Website"  value="">
-                     </div>
-                     <div class="message form-field">
-                        <textarea name="cMessage" id="cMessage" class="full-width" placeholder="Your Message" ></textarea>
-                     </div>
-                     <button type="submit" class="submit button-primary">Submit</button>
-                       </fieldset> -->
-                      <!-- </form> --> <!-- Form End -->
-               <!-- </div> --> <!-- Respond End -->
+               </ol> 
+               
             </div> <!-- end col-full -->
          </div> <!-- end row comments -->
         </div> <!-- end comments-wrap -->
-
-
-            <!-- <p class="lead"></p>
-
-            <p>Duis ex ad cupidatat tempor Excepteur cillum cupidatat fugiat nostrud cupidatat dolor sunt sint sit nisi est eu exercitation incididunt adipisicing veniam velit id fugiat enim mollit amet anim veniam dolor dolor irure velit.</p>
-            <p>ええ感じの店やったから、また行きたいと思ってんねん！ほんまに、怒るでしかし。</p> -->
 
 
             <br>
