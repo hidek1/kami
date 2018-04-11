@@ -3,68 +3,59 @@
 require('dbconnect.php');
 session_start();
 
+// var_dump($_SESSION);exit;
+$_SESSION['member_id'] = 4 ;
+
+
+echo "<br>";
+echo "<br>";echo "<br>";
+
+echo $_GET['id'];
+
+var_dump($_GET['id']);
+
+
+$sql = 'SELECT * FROM `kami_shops` WHERE `shop_id`=?';
+$data = array($_GET['id']);
+$stmt = $dbh->prepare($sql);
+$stmt->execute($data);
+$store_info = $stmt->fetch(PDO::FETCH_ASSOC);
+
+var_dump($store_info);
+
 
 if (!empty($_POST)) {
 
 
-// 写真のアップロード方法、むずい。。。
-
-// if (!isset($error)) {
-//   $ext = substr($_FILES['picture_path']['name'],-3);
-//   $ext = strtolower($ext);
-
-// }
-
-// if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-
-// $picture_path = date('YmdHis') . $_FILES['picture_path']['name'];
-
-// move_uploaded_file($_FILES['picture_path']['tmp_name'], 'picture_path/'.$picture_path);
-
-// $_SESSION['kami'] = $_POST;
-// $_SESSION['kami']['picture_path'] = $picture_path;
+$store_review = htmlspecialchars($_POST['review']);
+$shop_pic = htmlspecialchars($_POST['files']);
 
 
-// }
- 
- if ($_POST['store_name'] == '') {
-  $error['store_name'] = 'blank';
-}
-    if (!isset($error)) {
-
-  $shop_name_abc = htmlspecialchars($_POST['store_name_abc']);
-  $shop_name = htmlspecialchars($_POST['store_name']);
-  $shop_type = htmlspecialchars($_POST['category']);
-  $shop_pic = htmlspecialchars($_POST['files']);
-
-  $sql = 'INSERT INTO `kami_shops` SET `shop_name_abc`=? , `shop_name` =? , `shop_pic`=? , `shop_type`=? , `created`=NOW() , `modified`=NOW()';
-
-$date = array($shop_name_abc,$shop_name,$shop_pic,$shop_type);
+$sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` = ? , `review_picture` = ? , `created`=NOW() , `modified`=NOW()';
+$data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , $shop_pic);
 $stmt = $dbh->prepare($sql);
-$stmt->execute($date);
+$stmt->execute($data);
 
-header('Location: store_details.php?name='.$shop_name);
-exit();
 
-}else
-header('Location:store_review.php');
-exit;
+
+
 }
-
 
 
  ?>
 
+
+
  <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="ja"> <!--<![endif]-->
 <head>
 
    <!--- basic page needs
    ================================================== -->
    <meta charset="utf-8">
-  <title>store_review</title>
+  <title>レビュー投稿</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -92,9 +83,9 @@ exit;
 
 <body id="top">
 
-   <header class="short-header">
+   <header class="short-header">   
 
-      <div class="gradient-block"></div>
+      <div class="gradient-block"></div>  
 
       <div class="row header-content">
 
@@ -104,9 +95,9 @@ exit;
 
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
-               <li class="has-children"><a href="home.html" title="">ホーム</a></li>   
+               <li class="has-children"><a href="home.html" title="">ホーム</a></li>
                <li class="has-children"><a href="eventNew.html" title="">イベント作成</a></li>
-               <li class="current"><a href="store_review.html" title="">お店を投稿する</a></li>                          
+               <li class="has-children"><a href="store_review.html" title="">お店を投稿する</a></li>
                <li class="has-children">
                   <a href="eventItiran.html" title="">イベント一覧</a>
                   <ul class="sub-menu">
@@ -173,6 +164,9 @@ exit;
       
    </header> <!-- end header -->
 
+  
+
+
    <!-- content
    ================================================== -->
    <section id="content-wrap" class="site-page">
@@ -181,66 +175,64 @@ exit;
 
         <section>
 
+          <!-- <div class="content-media">
+            <div id="map-wrap">
+              <div id="map-container"></div>
+                <div id="map-zoom-in"></div>
+              <div id="map-zoom-out"></div>
+            </div>  
+          </div> -->
+
           <div class="primary-content">
 
-            <h1 class="entry-title add-bottom">お店投稿</h1>  
+            <h1 class="entry-title add-bottom">レビュー投稿</h1>
 
-            <p class="lead">新しいお店を投稿しよう！！</p> 
+            <p class="lead">あなたのオススメをNexseedのみんなにシェアしよう！</p>
 
-            <form name="cForm" id="cForm" method="post" action="" class="form-horizontal" role="form" enctype="multipart/form-data">
+            </div>
+            <br>
+            <form name="cForm" id="cForm" method="post" action="">
                  <fieldset>
-                   <?php if (isset($error) && $error == 'blank') { ?>
- <p class="error">なんか入れてよ！</p>
- <?php } ?>
-                       <div><h1>店名</h1></div>
-                       <div class="form-field">
-                      <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
-                      <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
+                       <div><h1 class="entry-title add-bottom">店名: <?php echo $store_info['shop_name_abc']; ?></h1></div>
+                       <!-- <div class="form-field">
+                       <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
+                       </div> -->
+
+                       <!-- <div class="form-field">
+                       <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
+                       </div> -->
+
+                       <br><br><br>
+
+                       <div><h1>レビュー</h1></div>
+                       <div class="message form-field">
+                          <textarea name="review" id="cMessage" class="full-width" placeholder="（例）セブに来て、こんなに料理の美味しい店は初めてです。特にBird's Nest Soupが最高です。これを食べずして「セブに行ったよ！」なんて言おうものなら末代まで笑われます。" ></textarea>
                        </div>
 
                        <br>
                        <br>
                        <br>
+                       <br>
 
-                       <div><h1>ジャンル</h1>
-
-                       <select name="category">
-                       <option value="未選択">選択してください</option>
-                       <option value="比国">比国 👍</option>
-                       <option value="韓国">韓国🖕</option>
-                       <option value="中華">中華 </option>
-                       <option value="和食">和食</option>
-                       <option value="洋食">洋食</option>
+                       <span class="retty-btn fileinput-button fileinput-button-mypage">
+                       <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
+                       <input id="fileupload_file" type="file" name="files" multiple="">
+                       <input id="fileupload_file" type="file" name="files" multiple="">
+                       <input id="fileupload_file" type="file" name="files" multiple="">
+                       <input id="fileupload_file" type="file" name="files" multiple="">
 
 
-                       </select>
+                      </span>
+
+                       <br>
+                       <br>
+                       <br>
+                       <br>
+                       <br>
+
+                     
+                       <button type="submit" class="submit button-primary full-width-on-mobile"><center>投稿</center></button>
                        </div>
-
-                       <br>
-                       <br>
-                       <br>
-                      <span class="retty-btn fileinput-button fileinput-button-mypage">
-                      <div class="add_files"><h1>写真（外観１枚）</h1></div>
-                       <input id="fileupload_file" type="file" name="files" multiple=""></span>
-
-                      <br>
-                      <br>
-                      <br>
-                      <div><h1>地図</h1></div>
-
-                      <input name="cName" type="text" id="cName" class="full-width" placeholder="URL" value="">
-
-                       <div id="map">
-                <!-- GOOGLE MAP -->
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.547781743547!2d135.5327529620982!3d34.668715407946024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e0a5fec70de9%3A0xce2186a34bce6a21!2z5pel5pys44CB44CSNTM3LTAwMjQg5aSn6Ziq5bqc5aSn6Ziq5biC5p2x5oiQ5Yy65p2x5bCP5qmL77yS5LiB55uu77yV4oiS77yR77yV!5e0!3m2!1sja!2sph!4v1518861148520" width="800" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
-                <!-- // GOOGLE MAP -->
-              </div>
-
-              <br>
-              <br>
-              <br>
-
-                       <button type="submit" class="submit button-primary full-width-on-mobile">投稿する</button>
 
                  </fieldset>
                 </form> <!-- end form -->
@@ -255,12 +247,11 @@ exit;
    
    <!-- footer
    ================================================== -->
-   <footer>
 
-                  <div align="center">
-                    <p class="keigo"><span>© kami 2018</span>
-                    <span>by team pelo</a></span></p>
-                  </div>
+<footer>
+
+                  <p class="keigo"><span>© kami 2018</span>
+                  <span>by team pelo</a></span></p>
 
                 <!-- end footer-bottom -->
    </footer>
@@ -270,7 +261,7 @@ exit;
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="http://maps.google.com/maps/api/js?v=3.13&amp;sensor=false"></script>
-   <script src="js/main.js"></script>  
+   <script src="js/main.js"></script>
 
 </body>
 
