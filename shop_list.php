@@ -4,7 +4,7 @@ require('function.php');
   login_check();
 
  require('dbconnect.php');
-$sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`shop_id`=`kami_reviews`.`shop_id`';
+$sql = 'SELECT * FROM `kami_shops`';
   $stmt = $dbh->prepare($sql);
   $stmt->execute();
   while(true) {
@@ -12,14 +12,23 @@ $sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`sho
     if ($kami_shop == false) {
          break;
       }
-      $kami_shops[] = $kami_shop;
+      
     //   var_dump($kami_shop);
     // exit;
+  $review_sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=?order by `created` desc limit 1';
+  $review_data = array($kami_shop['shop_id']);
+  $review_stmt = $dbh->prepare($review_sql);
+  $review_stmt->execute($review_data);
+  $review = $review_stmt->fetch(PDO::FETCH_ASSOC);
+  $kami_shop['review'] = $review['review'];
+  $kami_shops[] = $kami_shop;
+  //   var_dump($kami_shops);
+  // exit();
     }
 
 
   //SQL(テーブルから列を抽出する
-  $keigo =@$_SESSION['s'];
+  $keigo =@$_GET['shop'];
 
   if (strlen($keigo)>0){
   $search_sql ="SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`shop_id`=`kami_reviews`.`shop_id`";
@@ -48,10 +57,16 @@ $sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`sho
     $kami_search_shops = array();
 
     while(true) {
-      $kami_search_shops = $search_stmt->fetch(PDO::FETCH_ASSOC);
+      $kami_search_shop = $search_stmt->fetch(PDO::FETCH_ASSOC);
     if ($kami_search_shop == false) {
          break;
       }
+  $review_sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=?order by `created` desc limit 1';
+  $review_data = array($kami_search_shop['shop_id']);
+  $review_stmt = $dbh->prepare($review_sql);
+  $review_stmt->execute($review_data);
+  $review_search = $review_stmt->fetch(PDO::FETCH_ASSOC);
+  $kami_search_shop['review'] = $review_search['review'];
       $kami_search_shops[] = $kami_search_shop;
     }
 
@@ -59,7 +74,43 @@ $sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`sho
       // // exit();
   }
  
+ // ページング機能
+  // 空の変数を用意
+  $page = '';
 
+  // パラメータが存在していたらページ番号を代入
+  if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+  } else {
+    $page = 1;
+  }
+
+  // 1以下のイレギュラーな数字が入ってきた時、ページ番号を強制的に1とする
+  // max カンマ区切りで羅列された数字の中から最大の数字を取得する
+  $page = max($page, 1);
+
+  // 1ページ分の表示件数を指定
+  $page_number = 5;
+
+  // データの件数から最大ページを計算する
+  // SQLで計算するデータを取得
+  $page_sql = 'SELECT COUNT(*) AS `page_count` FROM `tweets` WHERE `delete_flag`=0';
+  $page_stmt = $dbh->prepare($page_sql);
+  $page_stmt->execute();
+
+  // 全件取得(論理削除されていないもの)
+  $page_count = $page_stmt->fetch(PDO::FETCH_ASSOC);
+
+  // ceil 小数点切り上げ
+  // 1~5 1ページ 6~10 2ページ...
+  $all_page_number = ceil($page_count['page_count'] / $page_number);
+
+  // パラメータのページ番号が最大ページを超えていれば、強制的に最後のページとする
+  // min カンマ区切りで羅列された数字の中から最小の数字を取得する
+  $page = min($page, $all_page_number);
+
+  // 表示するデータの取得開始場所
+  $start = ($page - 1) * $page_number;
  ?>
 
 
@@ -127,10 +178,10 @@ $sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`sho
                <li class="has-childrens">
                   <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
-               <li class="has-children">
+               <li class="current">
                   <a href="shop_list.php" title="">お店</a>
                </li>
-       <li class="current">
+       <li class="has-childrens">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
                
@@ -183,9 +234,9 @@ $sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`sho
       <div class="row current-cat">
          <div class="col-full">
             <h1>お店一覧<?php 
-           if(!empty($_SESSION['s'])){
+           if(!empty($_GET['shop'])){
              echo "：";
-             echo $_SESSION['s']; }?></h1>
+             echo $_GET['shop']; }?></h1>
          </div>         
       </div>
        </center>
@@ -196,7 +247,7 @@ $sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`sho
                   <center>
                <!-- commentlist -->
                <ol class="commentlist2">
-    <?php if (!empty($_SESSION['s'])) { ?>
+    <?php if (!empty($_GET['shop'])) { ?>
       <?php for ($i=0; $i<count($kami_search_shops);$i++){ ?>
 
                     <li class="depth-1">
@@ -248,7 +299,7 @@ $sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`sho
                          </div>
                          <div class="comment-text">
                             <p>ジャンル：<?php echo $kami_shops[$i]["shop_type"]; ?><br>
-                            最新のレビュー：<?php echo $kami_shops[$i]["shop_type"]; ?>
+                            最新のレビュー：<?php echo $kami_shops[$i]["review"]; ?>
                             </p>
                          </div>
                       </div>
@@ -274,17 +325,25 @@ $sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`sho
                                  
                           
                <nav class="pagination">
+            <?php if($page == 1) { ?>
             <span class="page-numbers prev inactive">Prev</span>
+            <?php } else { ?>
+            <li><a href="eventItiran.php?page=<?php echo $page -1; ?>"><span class="page-numbers prev inactive">Prev</span></a></li>
+            <?php } ?>
             <span class="page-numbers current">1</span>
-            <a href="#" class="page-numbers">2</a>
-            <a href="#" class="page-numbers">3</a>
-            <a href="#" class="page-numbers">4</a>
-            <a href="#" class="page-numbers">5</a>
-            <a href="#" class="page-numbers">6</a>
-            <a href="#" class="page-numbers">7</a>
-            <a href="#" class="page-numbers">8</a>
-            <a href="#" class="page-numbers">9</a>
-            <a href="#" class="page-numbers next">Next</a>
+            <a href="shop_list.php?page=2" class="page-numbers">2</a>
+            <a href="shop_list.php?page=3" class="page-numbers">3</a>
+            <a href="shop_list.php?page=4" class="page-numbers">4</a>
+            <a href="shop_list.php?page=5" class="page-numbers">5</a>
+            <a href="shop_list.php?page=6" class="page-numbers">6</a>
+            <a href="shop_list.php?page=7" class="page-numbers">7</a>
+            <a href="shop_list.php?page=8" class="page-numbers">8</a>
+            <a href="shop_list.php?page=9" class="page-numbers">9</a>
+            <?php if($page == $all_page_number) { ?>
+            Next
+            <?php } else {  ?>
+            <a href="eventItiran.php?page=<?php echo $page +1; ?>" class="page-numbers next">Next</a>
+            <?php } ?>
          </nav>
    </section> <!-- bricks -->
 

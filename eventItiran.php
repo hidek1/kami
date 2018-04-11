@@ -1,8 +1,10 @@
 <?php
  require('function.php');
   login_check();
- require('dbconnect.php');
 
+ require('dbconnect.php');
+ // var_dump($_GET);
+ // exit();
  $sql = 'SELECT * FROM `kami_events`';
     $stmt = $dbh->prepare($sql);
       $stmt->execute();
@@ -11,15 +13,21 @@
       if ($kami_event == false) {
          break;
       }
-   $kami_events[] = $kami_event;
+    $join_sql = 'SELECT COUNT(*) AS `join_count` FROM `kami_event_joinings` WHERE `event_id`=?';
+    $join_data = array($kami_event['event_id']);
+    $join_stmt = $dbh->prepare($join_sql);
+    $join_stmt->execute($join_data);
+
+    $join_count = $join_stmt->fetch(PDO::FETCH_ASSOC);
+
+    // 一行分のデータに新しいキーを用意し、$join_countを代入
+    $kami_event['join_count'] = $join_count['join_count'];
+
+     $kami_events[] = $kami_event;
      }
 
-
-  // if ($_GET["list"] == 'event'){
-  //   # code...
-
   //SQL(テーブルから列を抽出する
-  $keigo =@$_SESSION['s'];
+  $keigo =@$_GET['event'];
 
   if (strlen($keigo)>0){
   $search_sql ="SELECT * FROM `kami_events`";
@@ -52,6 +60,13 @@
     if ($kami_search_event == false) {
          break;
       }
+      $join_sql = 'SELECT COUNT(*) AS `join_search_count` FROM `kami_event_joinings` WHERE `event_id`=?';
+    $join_data = array($kami_search_event['event_id']);
+    $join_stmt = $dbh->prepare($join_sql);
+    $join_stmt->execute($join_data);
+
+    $join_search_count = $join_stmt->fetch(PDO::FETCH_ASSOC);
+      $kami_search_event['join_search_count'] = $join_search_count['join_search_count'];
       $kami_search_events[] = $kami_search_event;
     }
 
@@ -183,9 +198,9 @@
       <div class="row current-cat">
          <div class="col-full">
             <h1>イベント一覧<?php 
-           if(!empty($_SESSION['s'])){
+           if(!empty($_GET['event'])){
              echo "：";
-             echo $_SESSION['s']; }?></h1>
+             echo $_GET['event']; }?></h1>
            
          </div>         
       </div>
@@ -199,10 +214,9 @@
 
           <div class="grid-sizer"></div>
 
-<?php if (!empty($_SESSION['s'])) { ?>
+<?php if (!empty($_GET['event'])) { ?>
   <?php for ($i=0; $i<count($kami_search_events);$i++){ ?>
-
-
+   <?php if ($kami_search_events[$i]["graduation"]==0) { ?>
          <article class="brick entry format-standard animate-this">
 
                <div class="entry-thumb">
@@ -216,7 +230,7 @@
 
                      <div class="entry-meta">
                         <span class="cat-links">
-                            あと何日
+                          回答期限：<?php echo date('n月j日H時i分' , strtotime($kami_search_events[$i]["answer_limitation"])); ?>
                                                      
                         </span>        
                      </div>
@@ -225,10 +239,10 @@
                      
                   </div>
                   <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
+                     開催場所: <a href="store_details.php?name=<?php echo $kami_search_events[$i]["event_place"]; ?>"><?php echo $kami_search_events[$i]["event_place"]; ?></a><br>
+                     開催日: <?php echo date('n月j日' , strtotime($kami_search_events[$i]["starttime"])); ?><br>
+                     開始時間:　<?php echo date('H時i分' , strtotime($kami_search_events[$i]["starttime"])); ?><br>
+                     参加予定人数 <?php echo $kami_search_events[$i]["join_search_count"]; ?>人/<?php echo $kami_search_events[$i]["max"]; ?>人<br>
                      詳細<br>
                      <?php echo $kami_search_events[$i]["detail"]; ?>
 
@@ -236,9 +250,45 @@
                </div>
 
             </article> <!-- end article -->
+        <?php }else{ ?>
+        <article class="brick entry format-standard animate-this">
+
+               <div class="entry-thumb">
+                  <a href="single-standard.html" class="thumb-link">
+                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
+                  </a>
+               </div>
+
+               <div class="entry-text" style="background-color: #F5A9A9;">
+                  <div class="entry-header">
+
+                     <div class="entry-meta">
+                        <span class="cat-links">
+                        回答期限：<?php echo date('n月j日H時i分' , strtotime($kami_search_events[$i]["answer_limitation"])); ?>
+                                                     
+                        </span>        
+                     </div>
+                
+                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_search_events[$i]["event_name"]; ?></a></h1>
+                     
+                  </div>
+                  <div class="entry-excerpt">
+                     開催場所: <a href="store_details.php?name=<?php echo $kami_search_events[$i]["event_place"]; ?>"><?php echo $kami_search_events[$i]["event_place"]; ?></a><br>
+                     開催日: <?php echo date('n月j日' , strtotime($kami_search_events[$i]["starttime"])); ?><br>
+                     開始時間:　<?php echo date('H時i分' , strtotime($kami_search_events[$i]["starttime"])); ?><br>
+                     参加予定人数 <?php echo $kami_search_events[$i]["join_search_count"]; ?>人/<?php echo $kami_search_events[$i]["max"]; ?>人<br>
+                     詳細<br>
+                     <?php echo $kami_search_events[$i]["detail"]; ?>
+
+                  </div>
+               </div>
+
+            </article> <!-- end article -->
+            <?php } ?>
     <?php } ?>
   <?php } else { ?>
   <?php for ($i=0; $i<count($kami_events);$i++){ ?>
+     <?php if ($kami_events[$i]["graduation"]==0) { ?>
          <article class="brick entry format-standard animate-this">
 
                <div class="entry-thumb">
@@ -252,7 +302,7 @@
 
                      <div class="entry-meta">
                         <span class="cat-links">
-                            あと何日
+                          回答期限：<?php echo date('n月j日H時i分' , strtotime($kami_events[$i]["answer_limitation"])); ?>
                                                      
                         </span>        
                      </div>
@@ -261,10 +311,10 @@
                      
                   </div>
                   <div class="entry-excerpt">
-                     開催場所: <a href="#">店名</a><br>
-                     開催日: ○月○日<br>
-                     開始時間　何時何分<br>
-                     参加予定人数 3人/12人<br>
+                     開催場所: <a href="store_details.php?name=<?php echo $kami_events[$i]["event_place"]; ?>"><?php echo $kami_events[$i]["event_place"]; ?></a><br>
+                     開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
+                     開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
+                     参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
                      詳細<br>
                      <?php echo $kami_events[$i]["detail"]; ?>
 
@@ -272,6 +322,42 @@
                </div>
 
             </article> <!-- end article -->
+                    <?php }else{ ?>
+                    <article class="brick entry format-standard animate-this">
+
+               <div class="entry-thumb">
+                  <a href="single-standard.html" class="thumb-link">
+                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
+                  </a>
+               </div>
+
+               <div class="entry-text" style="background-color: #F5A9A9;">
+                  <div class="entry-header">
+
+                     <div class="entry-meta">
+                        <span class="cat-links">
+                         回答期限：<?php echo date('n月j日H時i分' , strtotime($kami_events[$i]["answer_limitation"])); ?>
+                                                     
+                        </span>        
+                     </div>
+                
+                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
+                     
+                  </div>
+                  <div class="entry-excerpt">
+                     開催場所: <a href='store_details.php?name=<?php  echo $kami_events[$i]["event_place"]; ?>'><?php echo $kami_events[$i]["event_place"]; ?></a><br>
+                     開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
+                     開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
+                     参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
+                     詳細<br>
+                     <?php echo $kami_events[$i]["detail"]; ?>
+
+                  </div>
+               </div>
+
+            </article> <!-- end article -->
+            <?php } ?>
+
    <?php } ?>
     <?php } ?>
 

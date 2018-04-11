@@ -1,21 +1,30 @@
 <?php 
+// function.phpを読み込み
+  require('function.php');
+
+  // ログイン
+  login_check();
 require('dbconnect.php');
+ // ログインユーザー情報取得
+
+
 $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
-  $data = array($_GET['member_id']);
+  $data = array($_SESSION['id']);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);
   // データ一件取得 (レコードを取得)
   $profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-
-  $sql = 'SELECT * FROM `event_joining` LEFT JOIN `kami_events` ON `event_joining`.`event_id`=`kami_events`.`event_id` WHERE `member_id`=?';
-  $data = array($_GET['member_id']);
+  $sql = 'SELECT * FROM `kami_event_joinings` LEFT JOIN `kami_events` ON `kami_event_joinings`.`event_id`=`kami_events`.`event_id` WHERE `member_id`=?';
+  $data = array($profile['member_id']);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);
 
    while(true) {
       $event_joining = $stmt->fetch(PDO::FETCH_ASSOC);
+// var_dump($event_joining);
+//       exit();
     if ($event_joining == false) {
          break;
       }
@@ -24,7 +33,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 
 
   $sql = 'SELECT * FROM `kami_reviews` LEFT JOIN `kami_shops` ON `kami_reviews`.`shop_id`=`kami_shops`.`shop_id` WHERE `member_id`=?';
-  $data = array($_GET['member_id']);
+  $data = array($profile['member_id']);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);
   while(true) {
@@ -270,6 +279,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 
        <div class="container">
                              <div class="row">
+<?php if (isset($event_joinings)) {?>
 <?php for ($i=0; $i<count($event_joinings);$i++){ ?>
 <div class="col-xs-4 col-md-4 col-lg-4">
           <article class="brick entry format-standard animate-this">
@@ -299,6 +309,8 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
             </article> <!-- end article -->
           </div>
 <?php } ?>
+<?php } ?>
+
 
 
 
@@ -326,6 +338,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
   
 <div class="container">
                              <div class="row">
+<?php if (isset($reviews)) {?>
   <?php for ($i=0; $i<count($reviews);$i++){ ?>
 
 <div class="col-xs-4 col-md-4 col-lg-4">
@@ -346,7 +359,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                     </span>     
                   </div>
 
-                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $review['shop_name_abc']; ?>(<?php echo $reviews[$i]['shop_name_abc']; ?>)</a></h1>
+                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $reviews[$i]['shop_name_abc']; ?>(<?php echo $reviews[$i]['shop_name']; ?>)</a></h1>
                   
                 </div>
             <div class="entry-excerpt">
@@ -357,6 +370,8 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
             </article> <!-- end article -->
 </div>
     <?php } ?>
+    <?php } ?>
+
 
 
   </div>

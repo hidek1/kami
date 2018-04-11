@@ -9,8 +9,8 @@
 	$dbh = new PDO($dsn, $user, $password);
 	$dbh->query('SET NAMES utf8');
 
-// session_start();
-$_SESSION['id'] = 18;
+session_start();
+// $_SESSION['id'] = 18;
 
 
 //実装
@@ -65,11 +65,12 @@ if (!empty($_POST)) {
 	$cal = $_POST['etime'] . $cal;
 	$meet_time = date( 'H:i', strtotime ( $cal ));
 	}
-	$event_make_sql =' INSERT INTO `kami_events` SET `member_id`	= ? , `event_name` = ?, `starttime` = ?, `event_place` = ?, `event_picture` = ?, `invite` = ?, `graduation` = ?, `teachers` = ?, `set_price` = ?, `detail` = ?, `meeting_time` = ?, `meeting_place` = ?, `max` = ?, `min` = ?, `answer_limitation` = ?, `created`=NOW(),`modified`= NOW()';
+	$event_make_sql =' INSERT INTO `kami_events` SET `creater_id`	= ? , `event_name` = ?, `starttime` = ?, `event_place` = ?, `event_picture` = ?, `invite` = ?, `graduation` = ?, `teachers` = ?, `set_price` = ?, `detail` = ?, `meeting_time` = ?, `meeting_place` = ?, `max` = ?, `min` = ?, `answer_limitation` = ?, `created`=NOW(),`modified`= NOW()';
 	$event_make_data = array( $_SESSION['id'], $_POST['event_name'], $starttime, $_POST['event_place'], $_POST['event_picture'], $_POST['invite'], $_POST['graduation'], $_POST['teachers'], $_POST['set_price'], $_POST['detail'], $meet_time, $_POST['meeting_place'], $_POST['max'], $_POST['min'], $answer_limitation);
 	$event_make_stmt = $dbh->prepare($event_make_sql);
 	$event_make_stmt->execute($event_make_data);
-}}
+}
+ }
  ?>
 
 
@@ -78,6 +79,19 @@ if (!empty($_POST)) {
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="ja"> <!--<![endif]-->
 <head>
+  <script>
+    window.onload = function startSuggest() {
+  new Suggest.Local(
+        "text",    // 入力のエレメントID
+        "suggest", // 補完候補を表示するエリアのID
+        list,      // 補完候補の検索対象となる配列
+        {dispMax: 10, interval: 1000}); // オプション
+}
+
+window.addEventListener ?
+  window.addEventListener('load', startSuggest, false) :
+  window.attachEvent('onload', startSuggest);
+  </script>
    <!--- basic page needs
    ================================================== -->
 	<meta charset="utf-8">
@@ -229,10 +243,17 @@ if (!empty($_POST)) {
 			<div class="row">
 					<div class="col-lg-4">
 
-					<input type="text" name = "shop_name" >
-					<?php if(isset($error) && $error['shop_name'] == 'blank'){ ?>
-					<p style="color:red; font-size: 15px;">*開催場所を入力してください</p>
-					<?php } ?>
+				<table>
+    <tr>
+      <td>入力:</td>
+      <td>
+        <!-- 入力フォーム -->
+        <input id="text" type="text" name="pattern" value="" autocomplete="off" size="10" style="display: block">
+        <!-- 補完候補を表示するエリア -->
+        <div id="suggest" style="display:none;"></div>
+      </td>
+    </tr>
+  </table>
 					</div>
 				<div align="right" class="col-lg-2">
 					<p>自由記入欄</p>
@@ -415,6 +436,8 @@ if (!empty($_POST)) {
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="js/main.js"></script>
+   <script src="js/suggest.js"></script>
+
 
 </body>
 
