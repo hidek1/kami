@@ -17,6 +17,36 @@
 	$stmt->execute($event_data);
 	$event =$stmt -> fetch(PDO::FETCH_ASSOC);
 
+//イベントの参加者の取得
+// データがない時のエラーを防ぐ
+	$attends = array();
+	$interests= array();
+
+	$attend_sql = 'SELECT * FROM `kami_event_joinings` LEFT JOIN `kami_members` ON `kami_event_joinings`.`member_id`=`kami_members`.`member_id` WHERE `event_id`=?';
+	$attend_data = array($_GET['id']);
+	$attend_stmt = $dbh->prepare($attend_sql);
+	$attend_stmt->execute($attend_data);
+// ある件数分ループ
+	while(true) {
+		$attend = $attend_stmt->fetch(PDO::FETCH_ASSOC);
+		if ($attend == false) { break; }
+		if ($attend['status'] == 0) {
+		$interests[] = $attend;
+		}
+		if ($attend['status'] == 1) {
+		$attends[] = $attend;
+		}
+	}$expot_attends = ceil(count($attends) / 5);
+//echo('<br>'); 
+//echo('<br>');
+echo('<pre>');
+var_dump($expot_attends) ;
+echo('</pre>');
+//echo('<pre>');
+//var_dump($hoge) ;
+//echo('</pre>');
+
+
 
 
  ?>
@@ -163,7 +193,7 @@
 	</div>
 </div>
 <div class ="container">
-	<div class="row" style="height: 12rem;">
+	<div class="row">
 		<div class="col-xs-3 col-md-3 col-lg-3" >
 			<h2>DATE <br><?php
 				$starttime = $event['starttime'];
@@ -177,8 +207,8 @@
 				<br>@<?php echo $event['invite'] ;?>
 			</h2>
 		</div>
-		<div class="col-xs-3 col-md-3 col-lg-3" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<a  href="eventEdit.php?id=<?php echo $event['event_id'];?>" ><button  style="border-radius: 5px;">編集する</button></a>
+		<div class="col-xs-3 col-md-3 col-lg-3" style=" height: 96px;">
+			<a style=" vertical-align:middle; text-align:right; margin: auto; width: 98px; height: 54px;" href="eventEdit.php?id=<?php echo $event['event_id'];?>" ><button style=" text-align:center; display: block; margin: auto; margin-right: 0px; ;border-radius: 10px;">編集する</button></a>
 		</div>
 	</div>
 </div>
@@ -188,28 +218,28 @@
 	<div class="row">
 <!-- image of the shop or event [top-block left]-->
 		<div class="col-xs-3 col-md-3 col-lg-3" style="text-align:center;">
-			<img src="img/images.jpg" style="  border-radius: 15px;">
+			<img src="img/images.jpg" width="200" height="200" style="  border-radius: 15px; ">
 		</div>
-			<div class="col-xs-9 col-md-9 col-lg-9" >
-				<h1><?php echo $event['event_name'] ;?></h1>
-			<div class="row">
-				<div class="col-xs-6 col-md-6 col-lg-6" >
-				<h2>MEET AT <br><?php 
-					$meeting_time = $event['meeting_time'];
-					$meeting_time = date("m-d H:i", strtotime($meeting_time));
-					echo $meeting_time ;?> @<?php echo $event['meeting_place'] ;?></h2>
-			</div>
-			<div class="col-xs-6 col-md-6 col-lg-6" >
-				<h2>DeadLine <br>
-					<?php 
-					$limit = $event['answer_limitation'];
-					$limit = date("m-d H:i", strtotime($limit));
-					echo $limit ;?></h2>
-			</div>
+		<div class="col-xs-9 col-md-9 col-lg-9" >
+		<h1><?php echo $event['event_name'] ;?></h1>
+	<div class="row">
+		<div class="col-xs-6 col-md-6 col-lg-6" >
+			<h2>MEET AT <br><?php 
+			$meeting_time = $event['meeting_time'];
+			$meeting_time = date(" H:i", strtotime($meeting_time));
+			echo $meeting_time ;?> @<?php echo $event['meeting_place'] ;?></h2>
 		</div>
-			</div>
+		<div class="col-xs-6 col-md-6 col-lg-6" >
+			<h2>DeadLine <br>
+				<?php 
+				$limit = $event['answer_limitation'];
+				$limit = date("m-d H:i", strtotime($limit));
+				echo $limit ;?></h2>
 		</div>
 	</div>
+		</div>
+	</div>
+</div>
 
 
 
@@ -240,12 +270,12 @@
 			</div>
 		</div>
 		<?php } ?>
-		<div class="row">
+		<div class="row" style="padding-top: 15px;" >
 			<div class="col-xs-2 col-md-2 col-lg-2" >
-				<h2>WHERE</h2>
+				<h2 style="margin-top: 0;">WHERE</h2>
 			</div>
 			<div class="col-xs-5 col-md-5 col-lg-5" >
-				<h2><?php echo $event['event_place'] ;?></h2>
+				<h2 style="margin-top: 0;"><?php echo $event['event_place'] ;?></h2>
 			</div>
 			<div class="col-xs-5 col-md-5 col-lg-5" hidden-md-down>
 			</div>
@@ -253,10 +283,10 @@
 	</div>
 
 
-	<div class ="container" style="margin-top: 20px;">
+	<div class ="container" style="padding-top: 15px;">
 		<div class="row">
 			<div class="col-xs-2 col-md-2 col-lg-2" >
-				<h2>NOTE</h2>
+				<h2 style="margin-top: 0;">NOTE</h2>
 			</div>
 			<div class="col-xs-10 col-md-10 col-lg-10" >
 				<p class="lead"><?php echo $event['detail'] ;?></p>
@@ -268,42 +298,81 @@
 
 
 <div class ="container" style="padding-top: 30px;" >
-	<div class="row">
-		<div class="col-xs-12 col-md-12 col-lg-12" >
-			<h2>INFO</h2>
-			<div class= "slider-for">
-				<div class ="slider-nav">
-					<div><a href="#"><img src="img/images.jpg" ></a></div>
-					<div><a href="#"><img src="img/download-1.jpg"></a></div>
-					<div><a href="#"><img src="img/download-3.jpg"></a></div>
-					<div><a href="#"><img src="img/download-5.jpg"></a></div>
-				</div>
+	<div class="row" style="padding-bottom: 30px;">
+		<div class="col-xs-2 col-md-2 col-lg-2" >
+			<h2 style="margin-top: 0;">INFO</h2>
+		</div>
+		<div class="col-xs-10 col-md-12col-lg-10">
+		<div class="slider-for">
+			<div>
+				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
+					<img src="img/images.jpg" width="300px" height="300px">
+				</a>
 			</div>
+			<div>
+				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
+					<img src="img/download-1.jpg" width="300px" height="300px">
+				</a>
+			</div>
+			<div>
+				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
+					<img src="img/download-1.jpg" width="300px" height="300px">
+				</a>
+			</div>
+			<div>
+				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
+					<img src="img/download-3.jpg" width="300px" height="300px">
+				</a>
+			</div>
+			<div>
+				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
+					<img src="img/download-3.jpg" width="300px" height="300px">
+				</a>
+			</div>
+			<div>
+				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
+					<img src="img/download-5.jpg" width="300px" height="300px">
+				</a>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="slider-nav col-xs-12 col-md-12 col-lg-12">
+			<div><img src="img/images.jpg" width="200" height="200"></div>
+			<div><img src="img/download-1.jpg" width="200" height="200"></div>
+			<div><img src="img/download-1.jpg" width="200" height="200"></div>
+			<div><img src="img/download-3.jpg" width="200" height="200"></div>
+			<div><img src="img/download-3.jpg" width="200" height="200"></div>
+			<div><img src="img/download-5.jpg" width="200" height="200"></div>
 		</div>
 	</div>
 </div>
 
-
-
-
-
-
 	<div class ="container" style="padding-top: 30px;" >
 		<div class="row">
 			<div class="col-xs-6 col-md-6 col-lg-6" >
-				<h3>Attending</h3>	
-				<div style="background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
+				<h3>Attending</h3>
+					<div id="area" style="overflow:auto;  background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
+							<?php foreach ($attends as $attend ) { ?>
+					<p style="margin:0px; padding:0px;">&thinsp; <?php echo $attend['nickname']; ?></p>
+					<?php } ?>
 				</div>
 			</div>
-			
 			<div class="col-xs-6 col-md-6 col-lg-6" >
 				<h3>Interested</h3>
-				<div style="background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
+				<div id="area" style="overflow:auto;  background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
+					$user_pic $user_nickname <br>
 					$user_pic $user_nickname <br>
 					$user_pic $user_nickname <br>
 					$user_pic $user_nickname <br>
@@ -314,15 +383,15 @@
 		</div>
 	</div>
 
-	<div class ="container full-width">
+	<div class ="container full-width" style="padding-top: 30px;">
 		<div class="row  background-color: #f5f5f5;">
 		
-				<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center;padding:50px; border-radius: 15px;">
+				<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center;padding:15px; border-radius: 15px;">
 					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id'] ?>"> 参加する</a>
 					<!--<a class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id']?>">参加を取りやめる</a>-->
 						</div>
 			
-				<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:50px; border-radius: 30px;">
+				<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:15px; border-radius: 30px;">
 					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id']?>">興味がある</a>
 					<!-- <a class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id'] ?>">興味がない</a> -->
 				</div>
@@ -361,11 +430,11 @@
    <script src="js/plugins.js"></script>
    <script src="js/main.js"></script>
    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-		<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-		<script type="text/javascript" src="js/slick-1.8.0/slick/slick.min.js"></script>
+	<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript" src="js/slick-1.8.0/slick/slick.min.js"></script>
 
 
-<script type="text/javascript">
+<script>
 $('.slider-for').slick({
   slidesToShow: 1,
   slidesToScroll: 1,
@@ -381,7 +450,14 @@ $('.slider-nav').slick({
   centerMode: true,
   focusOnSelect: true
 });
+
+//参加者表示のJS
+// 現在の縦スクロール位置
+var scrollPosition = document.getElementById("area").scrollTop;
+// スクロール要素の高さ
+var scrollHeight = document.getElementById("area").scrollHeight;
 </script>
+
 
 
 </body>
