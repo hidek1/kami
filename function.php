@@ -8,8 +8,8 @@
   function login_check() {
     // require('dbconnect.php');
 
-    // 1時間ログインしていない場合、再度ログイン
-    if (isset($_SESSION['id']) && $_SESSION['time'] + 3600 > time()) {
+    // 1週間ログインしていない場合、再度ログイン
+    if (isset($_SESSION['id']) && $_SESSION['time'] + 3600*24*7 > time()) {
       // ログインしている
       // ログイン時間の更新
       $_SESSION['time'] = time();
