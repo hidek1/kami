@@ -53,49 +53,32 @@ var_dump($store_detail);
 
 <body id="top">
 
-    <header class="short-header">
+    <!-- header 
+   ================================================== -->
+   <header class="short-header">   
 
-      <div class="gradient-block"></div>
+      <div class="gradient-block"></div>  
 
       <div class="row header-content">
 
          <div class="logo">
-            <a href="home.html">Author</a>
+            <a href="index.html">Author</a>
          </div>
 
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
-               <li class="has-children"><a href="home.html" title="">ホーム</a></li>
-               <li class="has-children"><a href="eventNew.html" title="">イベント作成</a></li>
-               <li class="has-children"><a href="store_review.html" title="">お店を投稿する</a></li>
+               <li class="has-children"><a href="home.php" title="">ホーム</a></li>   
+               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
+               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
+
                <li class="has-children">
-                  <a href="eventItiran.html" title="">イベント一覧</a>
-                  <ul class="sub-menu">
-                     <li><a href="category.html">Wordpress</a></li>
-                     <li><a href="category.html">HTML</a></li>
-                     <li><a href="category.html">Photography</a></li>
-                     <li><a href="category.html">UI</a></li>
-                     <li><a href="category.html">Mockups</a></li>
-                     <li><a href="category.html">Branding</a></li>
-                  </ul>
+                  <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
                <li class="has-children">
-                  <a href="omiseItiran.html" title="">お店</a>
-                  <ul class="sub-menu">
-                     <li><a href="single-video.html">Video Post</a></li>
-                     <li><a href="single-audio.html">Audio Post</a></li>
-                     <li><a href="single-gallery.html">Gallery Post</a></li>
-                     <li><a href="single-standard.html">Standard Post</a></li>
-                  </ul>
+                  <a href="shop_list.php" title="">お店</a>
                </li>
        <li class="has-children">
-                  <a href="Profile.html" title="">マイページ</a>
-                  <ul class="sub-menu">
-                     <li><a href="single-video.html">Video Post</a></li>
-                     <li><a href="single-audio.html">Audio Post</a></li>
-                     <li><a href="single-gallery.html">Gallery Post</a></li>
-                     <li><a href="single-standard.html">Standard Post</a></li>
-                  </ul>
+                  <a href="Profile.php" title="">マイページ</a>
                </li>
                
             </ul>
@@ -103,15 +86,14 @@ var_dump($store_detail);
 
          <div class="search-wrap">
             
-            <form role="search" method="get" class="search-form" action="#">
+            <form role="search" method="get" class="search-form" action="search.php">
                <label>
                   <span class="hide-content">Search for:</span>
                              <select class="search-select" name="list">
-        <option value="item1" selected>イベントを探す</option>
-        <option value="item2">店を探す</option>
+        <option value="event" selected>イベントを探す</option>
+        <option value="omise">店を探す</option>
        
       </select>
-     
                   <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
 
                </label>
