@@ -4,7 +4,71 @@ require('function.php');
   login_check();
 
  require('dbconnect.php');
-$sql = 'SELECT * FROM `kami_shops`';
+
+ // ページング機能
+  // 空の変数を用意
+  $page = '';
+
+  // パラメータが存在していたらページ番号を代入
+  if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+  } else {
+    $page = 1;
+  }
+  // 1以下のイレギュラーな数字が入ってきた時、ページ番号を強制的に1とする
+  // max カンマ区切りで羅列された数字の中から最大の数字を取得する
+  $page = max($page, 1);
+
+  // 1ページ分の表示件数を指定
+  $view_cnt = 8;            // 1ページの表示件数
+
+  // データの件数から最大ページを計算する
+  // SQLで計算するデータを取得
+  $page_sql = 'SELECT COUNT(*) AS `page_count` FROM `kami_shops`';
+  $page_stmt = $dbh->prepare($page_sql);
+  $page_stmt->execute();
+
+  // 全件取得(論理削除されていないもの)
+  $page_count = $page_stmt->fetch(PDO::FETCH_ASSOC);
+
+  // ceil 小数点切り上げ
+  // 1~5 1ページ 6~10 2ページ...
+  $all_view_cnt = ceil($page_count['page_count'] / $view_cnt);
+
+  // パラメータのページ番号が最大ページを超えていれば、強制的に最後のページとする
+  // min カンマ区切りで羅列された数字の中から最小の数字を取得する
+  $page = min($page, $all_view_cnt);
+
+  // 表示するデータの取得開始場所
+  $st = ($page - 1) * $view_cnt;
+
+  $page_num = 10;            // 表示ページ数
+$page_end = $page_num - 1; // 末ベージ数計算用
+$page_pos = 5;             // 該当ページ表示位置
+
+
+
+$start = 0; // 開始ページ
+$end = 0;   // 末ページ
+
+// 開始ページの計算
+if ($all_view_cnt <= $page_num) {
+    $start = 1;  
+} else {
+    $start = (($page - $page_pos) > 1)? $page - $page_pos : 1;
+    // 終了ページが最大超になる場合
+    if ($start + $page_end > $all_view_cnt) {
+        $start = $all_view_cnt - $page_end; 
+    }
+}
+
+// 末ページの計算
+$end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
+
+
+
+
+$sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$view_cnt."";
   $stmt = $dbh->prepare($sql);
   $stmt->execute();
   while(true) {
@@ -15,7 +79,7 @@ $sql = 'SELECT * FROM `kami_shops`';
       
     //   var_dump($kami_shop);
     // exit;
-  $review_sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=?order by `created` desc limit 1';
+  $review_sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=? ORDER BY `created` DESC LIMIT 1';
   $review_data = array($kami_shop['shop_id']);
   $review_stmt = $dbh->prepare($review_sql);
   $review_stmt->execute($review_data);
@@ -31,7 +95,7 @@ $sql = 'SELECT * FROM `kami_shops`';
   $keigo =@$_GET['shop'];
 
   if (strlen($keigo)>0){
-  $search_sql ="SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops`.`shop_id`=`kami_reviews`.`shop_id`";
+  $search_sql ="SELECT * FROM `kami_shops`";
   //キーワードが入力されているときはwhere以下を組み立てる
     //受け取ったキーワードの全角スペースを半角スペースに変換する
     $text2 = str_replace("　", " ", $keigo);
@@ -74,43 +138,7 @@ $sql = 'SELECT * FROM `kami_shops`';
       // // exit();
   }
  
- // ページング機能
-  // 空の変数を用意
-  $page = '';
-
-  // パラメータが存在していたらページ番号を代入
-  if (isset($_GET['page'])) {
-    $page = $_GET['page'];
-  } else {
-    $page = 1;
-  }
-
-  // 1以下のイレギュラーな数字が入ってきた時、ページ番号を強制的に1とする
-  // max カンマ区切りで羅列された数字の中から最大の数字を取得する
-  $page = max($page, 1);
-
-  // 1ページ分の表示件数を指定
-  $page_number = 5;
-
-  // データの件数から最大ページを計算する
-  // SQLで計算するデータを取得
-  $page_sql = 'SELECT COUNT(*) AS `page_count` FROM `tweets` WHERE `delete_flag`=0';
-  $page_stmt = $dbh->prepare($page_sql);
-  $page_stmt->execute();
-
-  // 全件取得(論理削除されていないもの)
-  $page_count = $page_stmt->fetch(PDO::FETCH_ASSOC);
-
-  // ceil 小数点切り上げ
-  // 1~5 1ページ 6~10 2ページ...
-  $all_page_number = ceil($page_count['page_count'] / $page_number);
-
-  // パラメータのページ番号が最大ページを超えていれば、強制的に最後のページとする
-  // min カンマ区切りで羅列された数字の中から最小の数字を取得する
-  $page = min($page, $all_page_number);
-
-  // 表示するデータの取得開始場所
-  $start = ($page - 1) * $page_number;
+ 
  ?>
 
 
@@ -322,27 +350,22 @@ $sql = 'SELECT * FROM `kami_shops`';
             </div> <!-- end col-full -->
          </div> <!-- end row comments -->
         </div> <!-- end comments-wrap -->
-                                 
-                          
+
+
+        
                <nav class="pagination">
             <?php if($page == 1) { ?>
             <span class="page-numbers prev inactive">Prev</span>
             <?php } else { ?>
-            <li><a href="eventItiran.php?page=<?php echo $page -1; ?>"><span class="page-numbers prev inactive">Prev</span></a></li>
+            <a href="shop_list.php?page=<?php echo $page -1; ?>"><span class="page-numbers prev">Prev</span></a>
             <?php } ?>
-            <span class="page-numbers current">1</span>
-            <a href="shop_list.php?page=2" class="page-numbers">2</a>
-            <a href="shop_list.php?page=3" class="page-numbers">3</a>
-            <a href="shop_list.php?page=4" class="page-numbers">4</a>
-            <a href="shop_list.php?page=5" class="page-numbers">5</a>
-            <a href="shop_list.php?page=6" class="page-numbers">6</a>
-            <a href="shop_list.php?page=7" class="page-numbers">7</a>
-            <a href="shop_list.php?page=8" class="page-numbers">8</a>
-            <a href="shop_list.php?page=9" class="page-numbers">9</a>
-            <?php if($page == $all_page_number) { ?>
-            Next
+            <?php for($start; $start <= $end; $start++): ?>
+            <li <?= ($start == $page)? 'class="current"' : '' ?>><a href="shop_list.php?page=<?= ($start) ?>" class="page-numbers"><?= $start ?></a></li>
+            <?php endfor; ?>
+            <?php if($page == $all_view_cnt) { ?>
+            <span class="page-numbers inactive">Next</span>
             <?php } else {  ?>
-            <a href="eventItiran.php?page=<?php echo $page +1; ?>" class="page-numbers next">Next</a>
+            <a href="shop_list.php?page=<?php echo $page +1; ?>" class="page-numbers next">Next</a>
             <?php } ?>
          </nav>
    </section> <!-- bricks -->
