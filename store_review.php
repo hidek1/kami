@@ -7,41 +7,35 @@ session_start();
 if (!empty($_POST)) {
 
 
-// 写真のアップロード方法、むずい。。。
-
-// if (!isset($error)) {
-//   $ext = substr($_FILES['picture_path']['name'],-3);
-//   $ext = strtolower($ext);
-
-// }
-
-// if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-
-// $picture_path = date('YmdHis') . $_FILES['picture_path']['name'];
-
-// move_uploaded_file($_FILES['picture_path']['tmp_name'], 'picture_path/'.$picture_path);
-
-// $_SESSION['kami'] = $_POST;
-// $_SESSION['kami']['picture_path'] = $picture_path;
-
-
-// }
- 
  if ($_POST['store_name'] == '') {
   $error['store_name'] = 'blank';
 }
     if (!isset($error)) {
 
+$ext = substr($_FILES['picture']['name'],-3);
+  $ext = strtolower($ext);
+
+
+if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
+$shop_pic = date('YmdHis') . $_FILES['picture']['name'];
+move_uploaded_file($_FILES['picture']['tmp_name'], 'picture_path/'.$shop_pic);
+
+// echo '<pre>';
+// var_dump($_FILES);
+// echo '</pre>';
+// exit;
+
   $shop_name_abc = htmlspecialchars($_POST['store_name_abc']);
   $shop_name = htmlspecialchars($_POST['store_name']);
   $shop_type = htmlspecialchars($_POST['category']);
-  $shop_pic = htmlspecialchars($_POST['files']);
 
-  $sql = 'INSERT INTO `kami_shops` SET `shop_name_abc`=? , `shop_name` =? , `shop_pic`=? , `shop_type`=? , `created`=NOW() , `modified`=NOW()';
+
+  $sql = 'INSERT INTO `kami_shops` SET `shop_name_abc`=? , `shop_name` =? , `shop_pic` = ? , `shop_type`=? , `created`=NOW() , `modified`=NOW()';
 
 $date = array($shop_name_abc,$shop_name,$shop_pic,$shop_type);
 $stmt = $dbh->prepare($sql);
 $stmt->execute($date);
+
 
 header('Location: store_details.php?name='.$shop_name);
 exit();
@@ -50,7 +44,7 @@ exit();
 header('Location:store_review.php');
 exit;
 }
-
+}
 
 
  ?>
@@ -204,7 +198,7 @@ exit;
                        <br>
                       <span class="retty-btn fileinput-button fileinput-button-mypage">
                       <div class="add_files"><h1>写真（外観１枚）</h1></div>
-                       <input id="fileupload_file" type="file" name="files" multiple=""></span>
+                       <input id="fileupload_file" type="file" name="picture" multiple=""></span>
 
                       <br>
                       <br>
