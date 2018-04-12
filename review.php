@@ -21,7 +21,7 @@ $stmt = $dbh->prepare($sql);
 $stmt->execute($data);
 $store_info = $stmt->fetch(PDO::FETCH_ASSOC);
 
-var_dump($store_info);
+// var_dump($store_info);
 
 
 if (!empty($_POST)) {
@@ -36,11 +36,19 @@ $data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , 
 $stmt = $dbh->prepare($sql);
 $stmt->execute($data);
 
-
-
-
+header('Location:home.php');
+exit();
 }
 
+else{
+
+  header('Location:review.php');
+  exit();
+}
+
+// store_details.php?name= . $shop_name
+
+}
 
  ?>
 

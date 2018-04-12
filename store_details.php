@@ -1,8 +1,8 @@
 <?php 
 require('dbconnect.php');
 session_start();
-echo '<br>'; echo '<br>';echo '<br>';
-echo $_GET['name'];
+// echo '<br>'; echo '<br>';echo '<br>';
+// echo $_GET['name'];
 
 $sql = 'SELECT * FROM `kami_shops` WHERE `shop_name`=? ORDER BY `shop_id` DESC LIMIT 1';
 $data = array($_GET['name']);
@@ -11,7 +11,7 @@ $stmt->execute($data);
 $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-var_dump($store_detail);
+// var_dump($store_detail);
 
  ?>
 
@@ -55,9 +55,9 @@ var_dump($store_detail);
 
     <!-- header 
    ================================================== -->
-   <header class="short-header">   
+   <header class="short-header">
 
-      <div class="gradient-block"></div>  
+      <div class="gradient-block"></div>
 
       <div class="row header-content">
 
@@ -67,9 +67,9 @@ var_dump($store_detail);
 
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
-               <li class="has-children"><a href="home.php" title="">ホーム</a></li>   
-               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
-               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
+               <li class="has-children"><a href="home.php" title="">ホーム</a></li>
+               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>
+               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>
 
                <li class="has-children">
                   <a href="eventItiran.php" title="">イベント一覧</a>
@@ -80,40 +80,31 @@ var_dump($store_detail);
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
-               
-            </ul>
-         </nav> <!-- end main-nav-wrap -->
-
-         <div class="search-wrap">
-            
-            <form role="search" method="get" class="search-form" action="search.php">
-               <label>
-                  <span class="hide-content">Search for:</span>
-                             <select class="search-select" name="list">
-        <option value="event" selected>イベントを探す</option>
-        <option value="omise">店を探す</option>
-       
-      </select>
-                  <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
-
+                </ul>
+                 </nav> <!-- end main-nav-wrap -->
+      <div class="search-wrap">
+       <form role="search" method="get" class="search-form" action="search.php">
+        <label>
+         <span class="hide-content">Search for:</span>
+          <select class="search-select" name="list">
+           <option value="event" selected>イベントを探す</option>
+            <option value="omise">店を探す</option>
+             </select>
+              <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
                </label>
-               <input type="submit" class="search-submit" value="Search">
+                <input type="submit" class="search-submit" value="Search">
+                 </form>
+                  <a href="#" id="close-search" class="close-btn">Close</a>
+                   </div> <!-- end search wrap -->
 
-            </form>
-
-
-            <a href="#" id="close-search" class="close-btn">Close</a>
-
-         </div> <!-- end search wrap -->  
-
-         <div class="triggers">
+                    <div class="triggers">
             <a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
             <a class="menu-toggle" href="#"><span>Menu</span></a>
-         </div> <!-- end triggers -->  
-         
-      </div>   
+         </div> <!-- end triggers -->
 
-      
+      </div>
+
+
    </header> <!-- end header -->
 
    <!-- content
@@ -122,16 +113,21 @@ var_dump($store_detail);
    <section id="content-wrap" class="site-page">
     <div class="row">
       <div class="col-twelve">
-      
+
         <section>
            <br>
            <br>
 
-          
+
           <div class="primary-content">
 
             <h1 class="entry-title add-bottom">店名：<?php echo $store_detail['shop_name_abc']; ?></h1>
             <p>ジャンル：<?php echo $store_detail['shop_type']; ?></p>
+
+            <div>
+            <img src="picture_path/<?php echo $store_detail['shop_pic']; ?>" width="400" height="300" >
+            </div>
+
       <a href="store_review_edit.php?id=<?php echo $store_detail['shop_id']; ?>" title=""><button type="submit" class="submit button-primary">お店情報を編集する</button></a>
       <a href="review.php?id=<?php echo $store_detail['shop_id']; ?>">
       <button type="submit" class="submit button-primary">レビューを投稿する</button>

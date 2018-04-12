@@ -2274,8 +2274,9 @@ main.css 1555~1611
 
 #content-wrap .primary-content img {
 /*	max-width: 910px;*/
-/*	margin: 3rem 0 3rem -6rem;*/
+/*margin: -1rem 0 3rem 55rem;*/
 }
+
 
 #content-wrap .primary-content img.pull-right {
 	margin: 0.9rem 0 0 2.4rem;
