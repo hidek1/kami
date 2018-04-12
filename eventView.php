@@ -7,10 +7,10 @@
 	$password = '';
 	$dbh = new PDO($dsn, $user, $password);
 	$dbh->query('SET NAMES utf8');
-	$_SESSION['id'] = 18;
+	$_SESSION['id'] = 10;
 	$_GET['id'] = 13;
 
-
+//詳細を見るイベントの表示
 	$event_sql='SELECT * FROM `kami_events` WHERE `event_id` = ? ';
 	$event_data= array($_GET['id']);
 	$stmt = $dbh->prepare($event_sql);
@@ -18,35 +18,90 @@
 	$event =$stmt -> fetch(PDO::FETCH_ASSOC);
 
 //イベントの参加者の取得
-// データがない時のエラーを防ぐ
+	//データがない時のエラーを防ぐ
 	$attends = array();
-	$interests= array();
-
+	$interests = array();
+	$my_attend = array();
 	$attend_sql = 'SELECT * FROM `kami_event_joinings` LEFT JOIN `kami_members` ON `kami_event_joinings`.`member_id`=`kami_members`.`member_id` WHERE `event_id`=?';
 	$attend_data = array($_GET['id']);
 	$attend_stmt = $dbh->prepare($attend_sql);
 	$attend_stmt->execute($attend_data);
-// ある件数分ループ
+	// ある件数分ループ
 	while(true) {
 		$attend = $attend_stmt->fetch(PDO::FETCH_ASSOC);
 		if ($attend == false) { break; }
+
 		if ($attend['status'] == 0) {
-		$interests[] = $attend;
+			$interests[] = $attend;
+			$all_interests = count($interests);
+			if ($attend['member_id'] == $_SESSION['id']){
+			$my_position = $attend;
+			$all_interests = count($interests) ;
+			}
 		}
+
 		if ($attend['status'] == 1) {
-		$attends[] = $attend;
+			$attends[] = $attend;
+			$all_attends = count($attends);
+			if ($attend['member_id'] == $_SESSION['id']){
+				$my_position = $attend;
+				$all_attends = count($attends) ;
+			}
 		}
-	}$expot_attends = ceil(count($attends) / 5);
-//echo('<br>'); 
+	}
+
+
+	//echo('<br>'); 
 //echo('<br>');
 echo('<pre>');
-var_dump($expot_attends) ;
+var_dump($my_position) ;
+echo ($all_interests);
 echo('</pre>');
-//echo('<pre>');
-//var_dump($hoge) ;
-//echo('</pre>');
 
 
+
+	if (!empty($_POST)) {
+		if ($_POST['status'] == 1) {
+			$update_1_sql = 'UPDATE `kami_event_joinings` SET `status` = 1  WHERE `event_id`=? AND `member_id`=?, `modified` = NOW()' ;
+			$update_1_data = array($_GET['id'],$_SESSION['id']);
+			$stmt = $dbh->prepare($update_1_sql);
+			$stmt->execute($update_1_data); 
+			header('Location: eventView.php?id=' . $_GET['id'] );
+			exit();
+		}
+		if ($_POST['status'] == 4) {
+			$update_1_sql = 'INSERT INTO `kami_event_joinings` SET `member_id`=? , `event_id`=? ,`status` = 1 , `created` = NOW() , `modified` = NOW()';
+			$update_1_data = array($_SESSION['id'],$_GET['id'],);
+			$stmt = $dbh->prepare($update_1_sql);
+			$stmt->execute($update_1_data); 
+			header('Location: eventView.php?id=' . $_GET['id'] );
+			exit();
+		}
+		if ($_POST['status'] == 2 ) {
+			$update_0_sql = 'UPDATE `kami_event_joinings` SET `status` = 0  WHERE `event_id`=? AND `member_id`=? , `modified` = NOW()';
+			$update_0_data = array($_GET['id'],$_SESSION['id']);
+			$stmt = $dbh->prepare($update_0_sql);
+			$stmt->execute($update_0_data); 
+			header('Location: eventView.php?id=' . $_GET['id'] );
+			exit();
+		}
+		if ($_POST['status'] == 5) {
+			$update_1_sql = 'INSERT INTO `kami_event_joinings` SET `member_id`=? , `event_id`=? ,`status` = 0 , `created` = NOW() , `modified` = NOW()';
+			$update_1_data = array($_SESSION['id'],$_GET['id'],);
+			$stmt = $dbh->prepare($update_1_sql);
+			$stmt->execute($update_1_data); 
+			header('Location: eventView.php?id=' . $_GET['id'] );
+			exit();
+		}
+		if ($_POST['status'] == 3 ){
+			$sql ='DELETE FROM `kami_event_joinings`  WHERE `event_id`=? AND `member_id`=? , `modified` = NOW()';
+			$data = array($_GET['id'],$_SESSION['id']);
+			$stmt = $dbh->prepare($sql);
+			$stmt->execute($data);
+			header('Location: index.php?page='. $_GET['id'] );
+			exit();
+		}
+	}
 
 
  ?>
@@ -342,54 +397,67 @@ echo('</pre>');
 	</div>
 </div>
 
-	<div class ="container" style="padding-top: 30px;" >
-		<div class="row">
-			<div class="col-xs-6 col-md-6 col-lg-6" >
-				<h3>Attending</h3>
-					<div id="area" style="overflow:auto;  background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
-							<?php foreach ($attends as $attend ) { ?>
-					<p style="margin:0px; padding:0px;">&thinsp; <?php echo $attend['nickname']; ?></p>
+<div class ="container" style="padding-top: 20px;" >
+	<div class="row">
+		<div class="col-xs-6 col-md-6 col-lg-6" >
+			<h3>Attending(<?php echo count($attends);?>)</h3>
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12">
+					<div style="background-color: #f5f5f5; border-radius: 15px; padding: 10px;">
+					<?php $no = 0; ?>
+					<?php for($i = 0 ; $i < count($attends); $i++ ) { $no++;?>
+					<p style="margin:0px; padding:0px 5px; display: inline-block;" ><span style="color: #2E9AFE;">#</span><?php echo $no ; ?>.&thinsp;<?php echo $attends[$i]['nickname'];?></p>
 					<?php } ?>
+					</div>
 				</div>
 			</div>
-			<div class="col-xs-6 col-md-6 col-lg-6" >
-				<h3>Interested</h3>
-				<div id="area" style="overflow:auto;  background-color: #f5f5f5; border-radius: 20px; padding: 10px;">
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
-					$user_pic $user_nickname <br>
+		</div>
+		<div class="col-xs-6 col-md-6 col-lg-6" >
+			<h3>Interested(<?php echo count($interests);?>)</h3>
+			<div class="row">
+				<div class="col-xs-12 col-md-12 col-lg-12" >
+					<div style="background-color: #f5f5f5; border-radius: 15px; padding: 10px;">
+					<?php $no = 0; ?>
+					<?php for($i = 0 ; $i < count($interests); $i++ ) { $no++;?>
+					<p style="margin:0px; padding:0px 5px; display: inline-block;" ><span style="color: #2E9AFE;">#</span><?php echo $no ; ?>.&thinsp;<?php echo $interests[$i]['nickname'];?></p>
+					<?php } ?>
+				</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class ="container full-width" style="padding-top: 30px;">
-		<div class="row  background-color: #f5f5f5;">
-		
-				<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center;padding:15px; border-radius: 15px;">
-					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id'] ?>"> 参加する</a>
-					<!--<a class="button button-primary full-width" href="eventView.html=?action=attend&id=<?php echo $SESSION['id']?>">参加を取りやめる</a>-->
-						</div>
-			
-				<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:15px; border-radius: 30px;">
-					<a style="border-radius: 5px;" class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id']?>">興味がある</a>
-					<!-- <a class="button button-primary full-width" href="eventView.html=?action=interested&id=<?php echo $SESSION['id'] ?>">興味がない</a> -->
-				</div>
+<div class ="container full-width" style="padding-top: 20px;" >
+	<form method="POST">
+	<div class="row  background-color: #f5f5f5;">
+		<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:15px;">
+		<?php if ($my_position['status'] == ''): ?>
+		<button style="border-radius: 15px;" acton="eventView.php?id=<?php echo $_GET['id']; ?>" type='submit' name='status' value='1' class="button button-primary full-width" >参加する</button>
+		<?php endif; ?>
+
+		<?php if ($my_position['status'] == '0'): ?>
+		<button style="border-radius: 15px;" acton="eventView.php?id=<?php echo $_GET['id']; ?>" type='submit' name='status' value='4' class="button button-primary full-width" >参加する</button>
+		<?php endif; ?>
+
+		<?php if ($my_position['status'] == '1'): ?>
+		<button style="border-radius: 15px; background-color: #f5f5f5; color: black;" acton="eventView.php?id=<?php echo $_GET['id']; ?>" type='submit' name='status' value='5' class="button button-primary full-width">参加を取りやめる</button>
+		<?php endif; ?>
+		</div>
+		<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:15px; border-radius: 30px;">
+		<?php if ($my_position['status'] == ''): ?>
+		<button style="border-radius: 15px;" acton="eventView.php?id=<?php echo $_GET['id']; ?>" type='submit' name='status' value='2' class="button button-primary full-width" >興味がある</button>
+		<?php endif; ?>
+		<?php if ($my_position['status'] == '1'): ?>
+		<button style="border-radius: 15px;" acton="eventView.php?id=<?php echo $_GET['id']; ?>" type='submit' name='status' value='5' class="button button-primary full-width" >興味がある</button>
+		<?php endif; ?>
+		<?php if ($my_position['status'] == '0'): ?>
+		<button style="border-radius: 15px; background-color: #f5f5f5; color: black;" acton="eventView.php?id=<?php echo $_GET['id']; ?>" type='submit' name='status' value='5' class="button button-primary full-width">興味がない</button>
+		<?php endif; ?>
 
 		</div>
+	</div>
+	</form>
 </div>
 
    </div> <!-- end styles -->
@@ -446,9 +514,9 @@ $('.slider-nav').slick({
 
 //参加者表示のJS
 // 現在の縦スクロール位置
-var scrollPosition = document.getElementById("area").scrollTop;
+var scrollPosition = document.getElementById("at_area").scrollTop;
 // スクロール要素の高さ
-var scrollHeight = document.getElementById("area").scrollHeight;
+var scrollHeight = document.getElementById("at_area").scrollHeight;
 </script>
 
 
