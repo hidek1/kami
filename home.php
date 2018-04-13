@@ -167,6 +167,9 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
+               <li class="has-children">
+                  <a href="logout.php" title="">ログアウト</a>
+               </li>
                
             </ul>
          </nav> <!-- end main-nav-wrap -->
@@ -400,7 +403,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                      <div class="comment-content">
 
                         <div class="comment-info">
-                           <cite><a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a></cite>
+                           <cite><a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a></cite>
 
                            <div class="comment-meta">
                               <time class="comment-time" datetime="2014-07-12T25:15">July 12, 2014 @ 25:15</time>

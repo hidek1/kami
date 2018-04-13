@@ -37,6 +37,13 @@
  *  02. base style overrides - (_document-setup.scss)
  *
  * ------------------------------------------------------------------- */
+.input-file .preview {
+  background-image: url(../picture_path/01.jpg);
+}
+.input-file input[type="file"] {
+  opacity: 0;
+}
+
 .search-select {
     margin: 0 auto;
     width: 150px;

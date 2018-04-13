@@ -1,17 +1,7 @@
 <?php 
-//今後
-	//写真のアップデート
-	//お店の検索の実装
-//データベースへ接続
-	$dsn ='mysql:dbname=kami;host=localhost';
-	$user = 'root';
-	$password = '';
-	$dbh = new PDO($dsn, $user, $password);
-	$dbh->query('SET NAMES utf8');
-
-session_start();
-// $_SESSION['id'] = 18;
-
+require('function.php');
+login_check();
+require('dbconnect.php');
 
 //実装
 //店検索
@@ -79,19 +69,6 @@ if (!empty($_POST)) {
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="ja"> <!--<![endif]-->
 <head>
-  <script>
-    window.onload = function startSuggest() {
-  new Suggest.Local(
-        "text",    // 入力のエレメントID
-        "suggest", // 補完候補を表示するエリアのID
-        list,      // 補完候補の検索対象となる配列
-        {dispMax: 10, interval: 1000}); // オプション
-}
-
-window.addEventListener ?
-  window.addEventListener('load', startSuggest, false) :
-  window.attachEvent('onload', startSuggest);
-  </script>
    <!--- basic page needs
    ================================================== -->
 	<meta charset="utf-8">
@@ -109,7 +86,8 @@ window.addEventListener ?
    <link rel="stylesheet" href="css/vendor.css">  
    <link rel="stylesheet" href="css/pooh_main.css">
    <link rel="stylesheet" href="css/pooh_bootstrap.css">
-   
+   <link rel="stylesheet" href="css/jquery-ui.css">
+
         
 
    <!-- script
@@ -155,7 +133,9 @@ window.addEventListener ?
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
-               
+               <li class="has-children">
+                  <a href="logout.php" title="">ログアウト</a>
+               </li>
             </ul>
          </nav> <!-- end main-nav-wrap -->
 
@@ -237,23 +217,14 @@ window.addEventListener ?
 			<div class="row">
 					<div class="col-lg-4">
 
-				<table>
-    <tr>
-      <td>入力:</td>
-      <td>
         <!-- 入力フォーム -->
-        <input id="text" type="text" name="pattern" value="" autocomplete="off" size="10" style="display: block">
-        <!-- 補完候補を表示するエリア -->
-        <div id="suggest" style="display:none;"></div>
-      </td>
-    </tr>
-  </table>
+    <input type="text" id="ac2" name="shop_name">
 					</div>
 				<div align="right" class="col-lg-2">
-					<p>自由記入欄</p>
+					<!-- <p>自由記入欄</p> -->
     </div>
     <div class="col-lg-4">
-					<input type="text" name = "event_place" >
+					<!-- <input type="text" name = "event_place" > -->
 				</div>
     <div class="col-lg-2">
     </div>
@@ -268,7 +239,7 @@ window.addEventListener ?
 	<div class="col-lg-8">
 		<div class="row" style="height: 12rem;">
 			<div class="col-lg-4" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<p style=" margin-bottom: 0px;><input type="checkbox"><span>お店の写真を使う</span></p>
+			<p style=" margin-bottom: 0px;"><input type="checkbox"><span>お店の写真を使う</span></p>
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
 			<input type="file" name="event_picture">
@@ -430,9 +401,30 @@ window.addEventListener ?
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="js/main.js"></script>
-   <script src="js/suggest.js"></script>
+   <script type="text/javascript" src="js/jquery-ui.js">
+    </script>
+    <script>$(document).ready( function() {
+$("#ac2").autocomplete({
+  source: function(req, resp){
+    $.ajax({
+        url: "autocomplete-datasource.php",
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        data: {
+          param1: req.term
+        },
+        success: function(o){
+          resp(o);
+        },
+        error: function(xhr, ts, err){
+          resp(['']);
+        }
+      });
 
-
+  }
+});
+});</script>
 </body>
 
 </html>

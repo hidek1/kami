@@ -58,7 +58,8 @@ if (!empty($_POST) && isset($_POST)) {
   if (!isset($error)) {
      $_SESSION['join']=$_POST;
      $_SESSION['join']['picture_path'];
-    if (isset($_FILES["picture_path"]["error"])) {
+    if (!empty($_FILES["picture_path"]["error"])) {
+     $_SESSION['join']['picture_path']="01.jpg";
      header('Location: check.php');
     exit();
   }else{
@@ -75,6 +76,7 @@ if (!empty($_POST) && isset($_POST)) {
   // var_dump($_SESSION);
   $_SESSION['join']['picture_path']=$picture_path;
 // var_dump($_SESSION);
+// exit();
     header('Location: check.php');
     exit();
     } else {

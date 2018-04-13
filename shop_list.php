@@ -79,7 +79,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
       
     //   var_dump($kami_shop);
     // exit;
-  $review_sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=? ORDER BY `created` DESC LIMIT 1';
+  $review_sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=? ORDER BY `review_created` DESC LIMIT 1';
   $review_data = array($kami_shop['shop_id']);
   $review_stmt = $dbh->prepare($review_sql);
   $review_stmt->execute($review_data);
@@ -212,7 +212,9 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
        <li class="has-childrens">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
-               
+               <li class="has-children">
+                  <a href="logout.php" title="">ログアウト</a>
+               </li>
             </ul>
          </nav> <!-- end main-nav-wrap -->
 
@@ -285,13 +287,13 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
                    </div>
                    <div class="col-xs-2 col-md-2 col-lg-2" >
                      <div class="avatar">
-                        <img width="50" height="50" class="avatar" src="images/shaka3.jpg" alt="">
+                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_search_shops['shop_pic']; ?>" alt="">
                      </div>
                   </div>
                   <div class="col-xs-6 col-md-6 col-lg-6" >
                      <div class="comment-content">
                          <div class="comment-info">
-                            <cite><a href="#"><?php echo $kami_search_shops[$i]["shop_name_abc"]; ?>(<?php echo $kami_search_shops[$i]["shop_name"]; ?>)</a></cite>
+                            <cite><a href="store_details.php?name=<?php echo $kami_search_shops[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_search_shops[$i]["shop_name_abc"]; ?>"><?php echo $kami_search_shops[$i]["shop_name_abc"]; ?>(<?php echo $kami_search_shops[$i]["shop_name"]; ?>)</a></cite>
                             
                          </div>
                          <div class="comment-text">
@@ -316,13 +318,13 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
                    </div>
                    <div class="col-xs-2 col-md-2 col-lg-2" >
                      <div class="avatar">
-                        <img width="50" height="50" class="avatar" src="images/shaka3.jpg" alt="">
+                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_shops['shop_pic']; ?>" alt="">
                      </div>
                   </div>
                   <div class="col-xs-6 col-md-6 col-lg-6" >
                      <div class="comment-content">
                          <div class="comment-info">
-                            <cite><a href="#"><?php echo $kami_shops[$i]["shop_name_abc"]; ?>(<?php echo $kami_shops[$i]["shop_name"]; ?>)</a></cite>
+                            <cite><a href="store_details.php?name=<?php echo $kami_shops[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_shops[$i]["shop_name_abc"]; ?>"><?php echo $kami_shops[$i]["shop_name_abc"]; ?>(<?php echo $kami_shops[$i]["shop_name"]; ?>)</a></cite>
                             
                          </div>
                          <div class="comment-text">
