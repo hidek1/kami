@@ -4,14 +4,24 @@ session_start();
 // echo '<br>'; echo '<br>';echo '<br>';
 // echo $_GET['name'];
 
-$sql = 'SELECT * FROM `kami_shops` WHERE `shop_name`=? ORDER BY `shop_id` DESC LIMIT 1';
-$data = array($_GET['name']);
+// ORDER BY `shop_id` DESC LIMIT 1
+
+$sql = 'SELECT * FROM `kami_shops` LEFT JOIN `kami_reviews` ON `kami_shops` . `shop_id` = `kami_reviews` . `shop_id` WHERE `shop_name`=? or `shop_name_abc`=?';
+$data = array($_GET['name'],$_GET['name_abc']);
 $stmt = $dbh->prepare($sql);
 $stmt->execute($data);
 $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
 // var_dump($store_detail);
+
+
+// echo "<br>";echo "<br>";echo "<br>";
+// var_dump($_GET['id']);
+
+
+
+// }
 
  ?>
 
@@ -115,23 +125,19 @@ $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
       <div class="col-twelve">
 
         <section>
-           <br>
-           <br>
+         <br>
+          <br>
+           <div class="primary-content">
+            <h1 class="entry-title add-bottom">店名:<?php echo $store_detail['shop_name_abc']; ?>(<?php echo $store_detail['shop_name']; ?>)</h1>
+             <p>ジャンル：<?php echo $store_detail['shop_type']; ?></p>
+              <div>
+               <img src="shop_pic/<?php echo $store_detail['shop_pic']; ?>" width="400" height="300" >
+                </div>
 
-
-          <div class="primary-content">
-
-            <h1 class="entry-title add-bottom">店名：<?php echo $store_detail['shop_name_abc']; ?></h1>
-            <p>ジャンル：<?php echo $store_detail['shop_type']; ?></p>
-
-            <div>
-            <img src="picture_path/<?php echo $store_detail['shop_pic']; ?>" width="400" height="300" >
-            </div>
-
-      <a href="store_review_edit.php?id=<?php echo $store_detail['shop_id']; ?>" title=""><button type="submit" class="submit button-primary">お店情報を編集する</button></a>
-      <a href="review.php?id=<?php echo $store_detail['shop_id']; ?>">
-      <button type="submit" class="submit button-primary">レビューを投稿する</button>
-      </a>
+          <a href="store_review_edit.php?name=<?php echo $store_detail['shop_name']; ?>" title=""><button type="submit" class="submit button-primary">お店情報を編集する</button></a>
+           <a href="review.php?name=<?php echo $store_detail['shop_name']; ?>">
+            <button type="submit" class="submit button-primary">レビューを投稿する</button>
+             </a>
 
             <br>
             <br>
@@ -140,19 +146,9 @@ $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
 <!-- <a href="#link1" class="bz"><span class="icon-home-2"></span>店トップ</a> -->
 <a href="#link2" class="bz"><span class="icon-report-1"></span>写真</a>
 <a href="#link3" class="bz"><span class="icon-photo-1"></span>レビュー</a>
-<!-- <a href="https://retty.me/area/PRE27/ARE89/SUB8901/100001269802/menu/">
-<span class="icon-menu-1"></span>メニュー・プラン</a> -->
 
-<!-- <div class="dropdown" style="display:inline-block;"> -->
 <a href="#link4" class="bz">
 <span class="icon-map-1"></span>地図・アクセス</a>
-<!-- </div> -->
-<!-- <div class="dropdown__child">
-<ul class="dropdown__maps">
-<li><a href="https://retty.me/area/PRE27/ARE89/SUB8901/100001269802/map/">炭焼Bar 心 梅田店の地図</a></li>
-<li><a href="https://retty.me/area/PRE27/ARE89/SUB8901/100001269802/peripheral-map/">近くのお店</a></li>
-</ul>
-</div> -->
 </div>
 
 
@@ -172,7 +168,7 @@ $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
 
 <div class="slider">
 <div>
-<img src="images/thumbs/salad.jpg" alt="" style="padding: 0px 50px;">
+<img src="review_picture/<?php echo $store_detail['review_picture'] ?>" alt="" style="padding: 0px 50px;">
 </div>
 <div>
 <img src="images/thumbs/salad.jpg" alt="" style="padding: 0px 50px;">
@@ -189,31 +185,31 @@ $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
 
             <div class="comments-wrap">
-            <div id="comments" class="row">
-                <div class="col-full">
-               <!-- <h3>5 Comments</h3> -->
-               <!-- commentlist -->
+             <div id="comments" class="row">
+              <div class="col-full">
                <ol class="commentlist">
-                  <li class="depth-1">
-                     <div class="avatar">
-                        <img width="50" height="50" class="avatar" src="images/avatars/user-01.jpg" alt="">
-                     </div>
-                     <div class="comment-content">
-                         <div class="comment-info">
-                            <cite>Itachi Uchiha</cite>
-                            <div class="comment-meta">
-                               <time class="comment-time" datetime="2014-07-12T23:05">Jul 12, 2014 @ 23:05</time>
-                               <span class="sep">/</span><a class="reply" href="#">Reply</a>
-                            </div>
-                         </div>
-                         <div class="comment-text">
-                            <p>Adhuc quaerendum est ne, vis ut harum tantas noluisse, id suas iisque mei. Nec te inani ponderum vulputate,
-                            facilisi expetenda has et.</p>
+                <li class="depth-1">
+                 <div class="avatar">
+                  <img width="50" height="50" class="avatar" src="images/avatars/user-01.jpg" alt="">
+                   </div>
+                    <div class="comment-content">
+                     <div class="comment-info">
+
+                      <!-- レビュー投稿 -->
+
+                      <cite>Itachi Uchiha</cite>
+                       <div class="comment-meta">
+                        <time class="comment-time" datetime="2014-07-12T23:05">Jul 12, 2014 @ 23:05</time>
+                         <span class="sep">/</span><a class="reply" href="#">Reply</a>
+                          </div>
+                           </div>
+                            <div class="comment-text">
+                             <p><?php echo $store_detail['review']; ?></p>
 
 <table cellpadding="0" cellspacing="30"><tbody>
 <tr>
 <td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt="">
+<img src="review_picture/<?php echo $store_detail['review_picture'] ?>" width="150" height="150" alt="">
 </td>
 <td>
 <img src="images/thumbs/salad.jpg" width="150" height="150" alt="">

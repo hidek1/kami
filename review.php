@@ -4,51 +4,73 @@ require('dbconnect.php');
 session_start();
 
 // var_dump($_SESSION);exit;
-$_SESSION['member_id'] = 4 ;
+$_SESSION['member_id'] = 4;
 
 
-echo "<br>";
-echo "<br>";echo "<br>";
+// echo "<br>";
+// echo "<br>";echo "<br>";
 
-echo $_GET['id'];
+// echo $_GET['id'];
 
-var_dump($_GET['id']);
+// var_dump($_GET['id']);
 
 
-$sql = 'SELECT * FROM `kami_shops` WHERE `shop_id`=?';
-$data = array($_GET['id']);
+$sql = 'SELECT * FROM `kami_shops` WHERE `shop_name`=?';
+$data = array($_GET['name']);
 $stmt = $dbh->prepare($sql);
 $stmt->execute($data);
 $store_info = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // var_dump($store_info);
+// exit();
 
-
+// ポスト送信された時
 if (!empty($_POST)) {
 
-
-$store_review = htmlspecialchars($_POST['review']);
-$shop_pic = htmlspecialchars($_POST['files']);
-
-
-$sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` = ? , `review_picture` = ? , `created`=NOW() , `modified`=NOW()';
-$data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , $shop_pic);
-$stmt = $dbh->prepare($sql);
-$stmt->execute($data);
-
-header('Location:home.php');
-exit();
+if ($_POST['review']=='') {
+  $error['review'] = 'blank';
 }
 
-else{
+if (!isset($error)) {
 
-  header('Location:review.php');
+  $ext = substr($_FILES['picture1']['name'], -3);
+  $ext = strtolower($ext);
+
+  if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
+$review_pic = date('YmdHis') . $_FILES['picture1']['name'];
+move_uploaded_file($_FILES['picture1']['tmp_name'], 'review_picture/'.$review_pic);
+
+// echo "<br>";echo "<br>";echo "<br>";
+
+// echo '<pre>';
+// var_dump($_FILES);
+// echo '</pre>';
+// exit;
+
+
+  $store_review = htmlspecialchars($_POST['review']);
+  // $review_pic = htmlspecialchars($_POST['picture1']);
+
+  $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` = ? , `review_picture` = ? , `created`=NOW() , `modified`=NOW()';
+  $data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , $review_pic);
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute($data);
+
+  header('Location: store_details.php?name=' . $store_info['shop_name']);
   exit();
 }
+ }
+  }
+
+
+// else {
+//   header();
+//   exit;
+// }
 
 // store_details.php?name= . $shop_name
 
-}
+
 
  ?>
 
@@ -91,11 +113,11 @@ else{
 
 <body id="top">
 
-   <!-- header 
+   <!-- header
    ================================================== -->
-   <header class="short-header">   
+   <header class="short-header">
 
-      <div class="gradient-block"></div>  
+      <div class="gradient-block"></div>
 
       <div class="row header-content">
 
@@ -105,9 +127,9 @@ else{
 
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
-               <li class="has-children"><a href="home.php" title="">ホーム</a></li>   
-               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
-               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
+               <li class="has-children"><a href="home.php" title="">ホーム</a></li>
+               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>
+               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>
 
                <li class="has-children">
                   <a href="eventItiran.php" title="">イベント一覧</a>
@@ -118,20 +140,17 @@ else{
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
-               
             </ul>
          </nav> <!-- end main-nav-wrap -->
 
          <div class="search-wrap">
-            
             <form role="search" method="get" class="search-form" action="search.php">
                <label>
                   <span class="hide-content">Search for:</span>
-                             <select class="search-select" name="list">
-        <option value="event" selected>イベントを探す</option>
-        <option value="omise">店を探す</option>
-       
-      </select>
+                   <select class="search-select" name="list">
+                    <option value="event" selected>イベントを探す</option>
+                     <option value="omise">店を探す</option>
+                      </select>
                   <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
 
                </label>
@@ -142,21 +161,17 @@ else{
 
             <a href="#" id="close-search" class="close-btn">Close</a>
 
-         </div> <!-- end search wrap -->  
+         </div> <!-- end search wrap -->
 
          <div class="triggers">
             <a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
             <a class="menu-toggle" href="#"><span>Menu</span></a>
-         </div> <!-- end triggers -->  
-         
-      </div>   
+         </div> <!-- end triggers -->
 
-      
+      </div>
+
+
    </header> <!-- end header -->
-
-
-  
-
 
    <!-- content
    ================================================== -->
@@ -182,17 +197,9 @@ else{
 
             </div>
             <br>
-            <form name="cForm" id="cForm" method="post" action="">
+            <form name="cForm" id="cForm" method="post" action="" enctype="multipart/form-data">
                  <fieldset>
                        <div><h1 class="entry-title add-bottom">店名: <?php echo $store_info['shop_name_abc']; ?></h1></div>
-                       <!-- <div class="form-field">
-                       <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
-                       </div> -->
-
-                       <!-- <div class="form-field">
-                       <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
-                       </div> -->
-
                        <br><br><br>
 
                        <div><h1>レビュー</h1></div>
@@ -207,10 +214,10 @@ else{
 
                        <span class="retty-btn fileinput-button fileinput-button-mypage">
                        <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
-                       <input id="fileupload_file" type="file" name="files" multiple="">
-                       <input id="fileupload_file" type="file" name="files" multiple="">
-                       <input id="fileupload_file" type="file" name="files" multiple="">
-                       <input id="fileupload_file" type="file" name="files" multiple="">
+                       <input id="fileupload_file" type="file" name="picture1" multiple="">
+                       <input id="fileupload_file" type="file" name="picture2" multiple="">
+                       <input id="fileupload_file" type="file" name="picture3" multiple="">
+                       <input id="fileupload_file" type="file" name="picture4" multiple="">
 
 
                       </span>

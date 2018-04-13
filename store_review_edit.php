@@ -4,6 +4,13 @@ require('dbconnect.php');
 session_start();
 
 
+$sql = 'SELECT * FROM `kami_shops` WHERE `shop_name`=?';
+$data = array($_GET['name']);
+$stmt = $dbh->prepare($sql);
+$stmt->execute($data);
+$store_infoo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
 if (!empty($_POST)) {
 
 
@@ -19,8 +26,8 @@ if (!isset($error)) {
   $shop_pic = htmlspecialchars($_POST['files']);
 
 
-$sql = 'UPDATE `kami_shops` SET `shop_name_abc`=?,`shop_name`=?,`shop_pic`=?,`shop_type`=?,`modified`=NOW() WHERE `shop_id`=?';
-$data = array($shop_name_abc , $shop_name , $shop_pic , $shop_type ,  $_GET['id']);
+$sql = 'UPDATE `kami_shops` SET `shop_name_abc`=?,`shop_name`=?,`shop_pic`=?,`shop_type`=?,`modified`=NOW() WHERE `shop_name`=?';
+$data = array($shop_name_abc , $shop_name , $shop_pic , $shop_type , $_GET['name']);
 $stmt = $dbh->prepare($sql);
 $stmt->execute($data);
 
@@ -149,14 +156,14 @@ exit();
 
           <div class="primary-content">
 
-            <h1 class="entry-title add-bottom">お店投稿</h1>  
+            <h1 class="entry-title add-bottom">お店編集</h1>
 
-            <p class="lead">新しいお店を投稿しよう！！</p> 
+            <p class="lead">お店情報を編集しよう。</p>
 
 
             <form name="cForm" id="cForm" method="post" action="">
                  <fieldset>
-                       <div><h1>店名</h1></div>
+                       <div><h1>店名:<?php echo $store_infoo['shop_name_abc'] ; ?></h1></div>
                        <div class="form-field">
                       <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
                       <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
@@ -194,25 +201,17 @@ exit();
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.547781743547!2d135.5327529620982!3d34.668715407946024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e0a5fec70de9%3A0xce2186a34bce6a21!2z5pel5pys44CB44CSNTM3LTAwMjQg5aSn6Ziq5bqc5aSn6Ziq5biC5p2x5oiQ5Yy65p2x5bCP5qmL77yS5LiB55uu77yV4oiS77yR77yV!5e0!3m2!1sja!2sph!4v1518861148520" width="800" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
                 <!-- // GOOGLE MAP -->
               </div>
-
-              <br>
-              <br>
-              <br>
-
-                       <button type="submit" class="submit button-primary full-width-on-mobile">編集完了</button>
-
-                 </fieldset>
-                </form> <!-- end form -->
-
-        </section>
-      
-
-      </div> <!-- end col-twelve -->
-    </div> <!-- end row -->   
-   </section> <!-- end content -->
-
-   
-   <!-- footer
+               <br>
+                <br>
+                 <br>
+                  <button type="submit" class="submit button-primary full-width-on-mobile">編集完了</button>
+                   </fieldset>
+                    </form> <!-- end form -->
+                   </section>
+                  </div> <!-- end col-twelve -->
+                 </div> <!-- end row -->
+                </section> <!-- end content -->
+<!-- footer
    ================================================== -->
    <footer>
 
