@@ -113,7 +113,9 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
        <li class="current">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
-               
+               <li class="has-children">
+                  <a href="logout.php" title="">ログアウト</a>
+               </li>
             </ul>
          </nav> <!-- end main-nav-wrap -->
 
@@ -227,7 +229,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                       
 
                            <center>
-                     <a href="ProfileEdit.html" title=""><button type="submit" class="submit button-primary">Profile Edit</button></a>
+                     <a href="ProfileEdit.php" title=""><button type="button" class="submit button-primary">Profile Edit</button></a>
                      </center>
 
                          </fieldset>

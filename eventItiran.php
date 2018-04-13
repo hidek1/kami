@@ -210,6 +210,9 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
+               <li class="has-children">
+                  <a href="logout.php" title="">ログアウト</a>
+               </li>
                
             </ul>
          </nav> <!-- end main-nav-wrap -->
@@ -282,7 +285,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
                <div class="entry-thumb">
                   <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
+                     <img src="event_picture/<?php echo $kami_search_events['event_picture']; ?>" alt="building" alt="Pattern">             
                   </a>
                </div>
 
@@ -316,7 +319,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
                <div class="entry-thumb">
                   <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
+                     <img src="event_picture/<?php echo $kami_search_events['event_picture']; ?>" alt="building" alt="Pattern">             
                   </a>
                </div>
 
@@ -354,7 +357,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
                <div class="entry-thumb">
                   <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
+                     <img src="event_picture/<?php echo $kami_events['event_picture']; ?>" alt="building" alt="Pattern">             
                   </a>
                </div>
 
@@ -388,7 +391,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
                <div class="entry-thumb">
                   <a href="single-standard.html" class="thumb-link">
-                     <img src="images/thumbs/diagonal-pattern.jpg" alt="Pattern">             
+                     <img src="event_picture/<?php echo $kami_events['event_picture']; ?>" alt="building" alt="Pattern">             
                   </a>
                </div>
 
