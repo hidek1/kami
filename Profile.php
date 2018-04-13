@@ -108,7 +108,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                   <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
                <li class="has-children">
-                  <a href="shop_list.php" title="">お店</a>
+                  <a href="shop_list.php" title="">お店一覧</a>
                </li>
        <li class="current">
                   <a href="Profile.php" title="">マイページ</a>

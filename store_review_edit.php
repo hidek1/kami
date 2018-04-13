@@ -109,7 +109,9 @@ exit();
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
-               
+                <li class="has-children">
+                  <a href="logout.php" title="">ログアウト</a>
+               </li>
             </ul>
          </nav> <!-- end main-nav-wrap -->
 

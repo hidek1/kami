@@ -207,7 +207,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
                   <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
                <li class="current">
-                  <a href="shop_list.php" title="">お店</a>
+                  <a href="shop_list.php" title="">お店一覧</a>
                </li>
        <li class="has-childrens">
                   <a href="Profile.php" title="">マイページ</a>
