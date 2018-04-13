@@ -18,7 +18,7 @@ $ext = substr($_FILES['picture']['name'],-3);
 
 if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
 $shop_pic = date('YmdHis') . $_FILES['picture']['name'];
-move_uploaded_file($_FILES['picture']['tmp_name'], 'picture_path/'.$shop_pic);
+move_uploaded_file($_FILES['picture']['tmp_name'], 'shop_pic/'.$shop_pic);
 
 // echo '<pre>';
 // var_dump($_FILES);
@@ -100,10 +100,9 @@ exit;
 
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
-               <li class="has-children"><a href="home.php" title="">ホーム</a></li>   
-               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
-               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
-
+               <li class="has-children"><a href="home.php" title="">ホーム</a></li>
+               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>
+               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>
                <li class="has-children">
                   <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
@@ -113,19 +112,19 @@ exit;
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
                </li>
-               
+
             </ul>
          </nav> <!-- end main-nav-wrap -->
 
          <div class="search-wrap">
-            
+
             <form role="search" method="get" class="search-form" action="search.php">
                <label>
                   <span class="hide-content">Search for:</span>
                              <select class="search-select" name="list">
         <option value="event" selected>イベントを探す</option>
         <option value="omise">店を探す</option>
-       
+
       </select>
                   <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
 
@@ -137,16 +136,16 @@ exit;
 
             <a href="#" id="close-search" class="close-btn">Close</a>
 
-         </div> <!-- end search wrap -->  
+         </div> <!-- end search wrap -->
 
          <div class="triggers">
             <a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
             <a class="menu-toggle" href="#"><span>Menu</span></a>
-         </div> <!-- end triggers -->  
-         
-      </div>   
+         </div> <!-- end triggers -->
 
-      
+      </div>
+
+
    </header> <!-- end header -->
 
 
@@ -167,8 +166,9 @@ exit;
             <form name="cForm" id="cForm" method="post" action="" class="form-horizontal" role="form" enctype="multipart/form-data">
                  <fieldset>
                    <?php if (isset($error) && $error == 'blank') { ?>
- <p class="error">なんか入れてよ！</p>
- <?php } ?>
+                    <p class="error">なんか入れてよ！</p>
+                     <?php } ?>
+
                        <div><h1>店名</h1></div>
                        <div class="form-field">
                       <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
@@ -188,21 +188,22 @@ exit;
                        <option value="中華">中華 </option>
                        <option value="和食">和食</option>
                        <option value="洋食">洋食</option>
-
-
                        </select>
                        </div>
+                        <br>
+                         <br>
+                          <br>
 
-                       <br>
-                       <br>
-                       <br>
+                      <!-- 写真 -->
                       <span class="retty-btn fileinput-button fileinput-button-mypage">
                       <div class="add_files"><h1>写真（外観１枚）</h1></div>
                        <input id="fileupload_file" type="file" name="picture" multiple=""></span>
 
                       <br>
-                      <br>
-                      <br>
+                       <br>
+                        <br>
+                        
+                      <!-- 地図 -->
                       <div><h1>地図</h1></div>
 
                       <input name="cName" type="text" id="cName" class="full-width" placeholder="URL" value="">
