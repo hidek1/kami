@@ -2,13 +2,8 @@
 //今後
 	//写真の表示
 	//興味ユーザーの作成
-	$dsn ='mysql:dbname=kami;host=localhost';
-	$user = 'root';
-	$password = '';
-	$dbh = new PDO($dsn, $user, $password);
-	$dbh->query('SET NAMES utf8');
-	$_SESSION['id'] = 10;
-	$_GET['id'] = 13;
+	require('dbconnect.php');
+	session_start();
 
 //詳細を見るイベントの表示
 	$event_sql='SELECT * FROM `kami_events` WHERE `event_id` = ? ';
@@ -247,7 +242,9 @@
 			</h2>
 		</div>
 		<div class="col-xs-3 col-md-3 col-lg-3" style=" height: 96px;">
+			<?php if ($event['member_id'] == $_SESSION['id']): ?>
 			<a style=" vertical-align:middle; text-align:right; margin: auto; width: 98px; height: 54px;" href="eventEdit.php?id=<?php echo $event['event_id'];?>" ><button style=" text-align:center; display: block; margin: auto; margin-right: 0px; ;border-radius: 10px;">編集する</button></a>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>
