@@ -135,10 +135,13 @@ move_uploaded_file($_FILES['picture1']['tmp_name'], 'review_picture/'.$review_pi
                   <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
                <li class="has-children">
-                  <a href="shop_list.php" title="">お店</a>
+                  <a href="shop_list.php" title="">お店一覧</a>
                </li>
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
+               </li>
+                <li class="has-children">
+                  <a href="logout.php" title="">ログアウト</a>
                </li>
             </ul>
          </nav> <!-- end main-nav-wrap -->
