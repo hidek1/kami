@@ -15,6 +15,18 @@
 	$stmt->execute($event_data);
 	$event =$stmt -> fetch(PDO::FETCH_ASSOC);
 
+// //レビュー関係の取得
+// 	$review_sql='SELECT * FROM `kami_shops` `kami_reviews` WHERE `shop_name` = ? ';
+// 	//↑混乱中名前を使ってどう取ってくるか考え中
+// 	$review_data= array($event['event_place']);
+// 	$stmt = $dbh->prepare($review_sql);
+// 	$stmt->execute($review_data);
+// 	if(ture){
+// 	$review =$stmt -> fetch(PDO::FETCH_ASSOC);
+// 	}else{
+// 		!isset($review_sql);
+// 		!isset($review_data);
+// 	}
 //イベントの参加者+自分の参加/状況取得
 
 	$attends = array();
