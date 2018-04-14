@@ -297,7 +297,7 @@ window.addEventListener ?
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
 				<p style=" margin-bottom: 0px;"><input type="checkbox" name="">自分で指定する</p>
-			<input id="fileupload_file" type="file" name="event_picture_user">
+			<?php echo"<input id='fileupload_file' type='file' name='event_picture_user' value='$pre_event_picture'>" ?>
 			<?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'type'){ ?>
 			<p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかの拡張子を選んでください。</p>
 			<?php } ?>

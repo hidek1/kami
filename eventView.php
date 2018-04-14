@@ -15,8 +15,8 @@
 	$stmt->execute($event_data);
 	$event =$stmt -> fetch(PDO::FETCH_ASSOC);
 
-//イベントの参加者の取得
-	//データがない時のエラーを防ぐ
+//イベントの参加者+自分の参加/状況取得
+
 	$attends = array();
 	$interests = array();
 	$my_attend = array();
@@ -24,7 +24,7 @@
 	$attend_data = array($_GET['id']);
 	$attend_stmt = $dbh->prepare($attend_sql);
 	$attend_stmt->execute($attend_data);
-	// ある件数分ループ
+// ある件数分ループ
 	while(true) {
 		$attend = $attend_stmt->fetch(PDO::FETCH_ASSOC);
 		if ($attend == false) { break; }
@@ -51,8 +51,10 @@
 
 
 
-//kami_event_joiningsに自分がいない時
+
 	if (!empty($_POST)) {
+
+//[$POST時]kami_event_joiningsに自分がいない時
 		if ($_POST['status'] == 1) {
 			$update_1_sql = 'INSERT INTO `kami_event_joinings` SET `member_id`=? , `event_id`=? ,`status` = 1 , `created` = NOW() , `modified` = NOW()';
 			$update_1_data = array($_SESSION['id'],$_GET['id'],);
@@ -61,7 +63,7 @@
 			header('Location: eventView.php?id=' . $_GET['id'] );
 			exit();
 		}
-//kami_event_joiningsに自分がいるがステータスが0の時
+//[$POST時]kami_event_joiningsに自分がいるがステータスが0の時
 	if ($_POST['status'] == 4) {
 		$update_1_sql = 'UPDATE `kami_event_joinings` SET `status` = 1 , `modified` = NOW() WHERE `event_id`=? AND `member_id`=? ' ;
 		$update_1_data = array($_GET['id'],$_SESSION['id']);
@@ -70,7 +72,8 @@
 		header('Location: eventView.php?id=' . $_GET['id'] );
 		exit();
 		}
-//kami_event_joiningsに自分がいない時
+
+//[$POST時]kami_event_joiningsに自分がいない時
 	if ($_POST['status'] == 2) {
 		$update_1_sql = 'INSERT INTO `kami_event_joinings` SET `member_id`=? , `event_id`=? ,`status` = 0 , `created` = NOW() , `modified` = NOW()';
 		$update_1_data = array($_SESSION['id'],$_GET['id'],);
@@ -79,7 +82,8 @@
 		header('Location: eventView.php?id=' . $_GET['id'] );
 		exit();
 		}
-//kami_event_joiningsに自分がいるがステータスが1の時
+
+//[$POST時]kami_event_joiningsに自分がいるがステータスが1の時
 	if ($_POST['status'] == 5 ) {
 		$update_0_sql = 'UPDATE `kami_event_joinings` SET `status` = 0 , `modified` = NOW() WHERE `event_id`=? AND `member_id`=? ';
 		$update_0_data = array($_GET['id'],$_SESSION['id']);
@@ -88,7 +92,8 @@
 		header('Location: eventView.php?id=' . $_GET['id'] );
 		exit();
 		}
-//kami_event_joiningsに自分がいる(ステータスが1or2の時)が、削除したい時
+
+//[$POST時]kami_event_joiningsに自分がいる(ステータスが1or2の時)が、削除したい時
 	if ($_POST['status'] == 3 ){
 		$sql ='DELETE FROM `kami_event_joinings`  WHERE `event_id`=? AND `member_id`=? ';
 		$data = array($_GET['id'],$_SESSION['id']);
@@ -219,26 +224,6 @@
 <!-- created time & edit button [right top] -->
 <div class ="container" style="padding-top: 200px;">
 	<div class="row">
-			<div class="col-xs-0 col-md-0 col-lg-6" >
-			</div>
-			<div class="col-xs-12 col-md-12 col-lg-6" >
-				<p style=" text-align:right; vertical-align: middle;">作成日時[
-					<?php 
-					$created = $event['created'];
-					$created = date("m-d H:i", strtotime($created));
-					echo $created ;?>]
-				</p>
-				<p style=" text-align:right; vertical-align: middle;">編集日時[
-					<?php 
-					$modified = $event['modified'];
-					$modified = date("m-d H:i", strtotime($modified));
-					echo $modified ;?>]
-				</p>
-			</div>
-	</div>
-</div>
-<div class ="container">
-	<div class="row">
 		<div class="col-xs-3 col-md-3 col-lg-3" >
 			<h2>DATE <br><?php
 				$starttime = $event['starttime'];
@@ -253,6 +238,18 @@
 			</h2>
 		</div>
 		<div class="col-xs-3 col-md-3 col-lg-3" style=" height: 96px;">
+			<p style=" text-align:right; vertical-align: middle;">作成日時[
+			<?php
+			$created = $event['created'];
+			$created = date("m-d H:i", strtotime($created));
+			echo $created ;?>]
+			</p>
+			<p style=" text-align:right; vertical-align: middle;">編集日時[
+				<?php 
+				$modified = $event['modified'];
+				$modified = date("m-d H:i", strtotime($modified));
+				echo $modified ;?>]
+			</p>
 			<?php if ($event['creater_id'] == $_SESSION['id']): ?>
 			<a style=" vertical-align:middle; text-align:right; margin: auto; width: 98px; height: 54px;" href="eventEdit.php?id=<?php echo $event['event_id'];?>" ><button style=" text-align:center; display: block; margin: auto; margin-right: 0px; ;border-radius: 10px;">編集する</button></a>
 			<?php endif; ?>
