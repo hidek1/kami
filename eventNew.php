@@ -3,11 +3,17 @@ require('function.php');
 login_check();
 require('dbconnect.php');
 
+//実装
+//店検索
+//写真アップロード
 
 
 
+//var_dump($hoge) ;
+//echo('</pre>');
 
-if(!empty($_POST)){
+//
+if (!empty($_POST)) {
 	if($_POST['event_name'] == '' ){
 	$error['event_name'] = 'blank';
 	}
@@ -22,7 +28,8 @@ if(!empty($_POST)){
 	}
 	if($_POST['meeting_time'] == "" && $_POST['meeting_time_cal'] == ''){
 	$error['meeting_time'] = 'blank';
-	}elseif($_POST['meeting_time'] != "" && $_POST['meeting_time_cal'] != ''){
+	}
+	if($_POST['meeting_time'] != "" && $_POST['meeting_time_cal'] != ''){
 	$error['meeting_time'] = 'doubled';
 	}
 	if($_POST['meeting_place'] == '' ){
@@ -35,78 +42,25 @@ if(!empty($_POST)){
 	$error['atime'] = 'blank';
 	}
 
-//写真関係
-//写真の判定をすべてチェックでやるのか。。。悩みどころ
-	if(!empty($_FILES['event_picture_user'])){
-		$picture = substr($_FILES['event_picture_user']['name'], -3);
-  	$picture = strtolower($picture);
- 		if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
-		$event_picture = date('YmdHis') . $_FILES['event_picture_user']['name'];
-		move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$event_picture);}
-		// if ($picture != 'jpg' || $picture != 'png' || $picture != 'gif') {
-		// $error['event_picture_user'] = 'type';}
-	}
-
-	// if ($_POST['event_picture_temp'] != '') {
-	// 	if(isset($_FILES['event_picture_user'])){
-	// 		!isset($_FILES['event_picture_user']);}
-	// 	$event_picture = $_POST['event_picture_temp'];
-	// }
-
-
-
-
-	if (!isset($_POST['graduation'])){
-		$_POST['graduation']=0;
-	}
-	if (!isset($_POST['teachers'])) {
-		$_POST['teachers'] = 0;
-	}
-//イベント詳細へのジャンプ用
-	$jump_sql='SELECT `event_id` FROM `kami_events`ORDER BY `created` DESC LIMIT 1';
-	$stmt = $dbh->prepare($jump_sql);
-	$stmt->execute();
-	$jump =$stmt -> fetch(PDO::FETCH_ASSOC);
-
-	$_GET['id'] =  intval($jump['event_id']) + 1;
-
-
-
 	if (!isset($error)) {
+	$starttime = $_POST['edate'] ." ". $_POST['etime'];
+	$answer_limitation = $_POST['adate'] ." ". $_POST['atime'];
 
-
-//集合時間の指定
-	//直接時間指定された場合
 	if($_POST['meeting_time'] != "" && $_POST['meeting_time_cal'] == ''){
 	$meet_time = $_POST['meeting_time'];
-	!isset ($_POST['meeting_time_cal']);
 	}
 //何分前が押された場合の計算
 	if($_POST['meeting_time'] == "" && $_POST['meeting_time_cal'] != ''){
 	$cal = "-" . $_POST['meeting_time_cal'] . "minute";
 	$cal = $_POST['etime'] . $cal;
 	$meet_time = date( 'H:i', strtotime ( $cal ));
-	!isset($_POST['meeting_time']);
 	}
-	$starttime = $_POST['edate'] ." ". $_POST['etime'];
-	$answer_limitation = $_POST['adate'] ." ". $_POST['atime'];
-
-//イベント作成SQL
 	$event_make_sql =' INSERT INTO `kami_events` SET `creater_id`	= ? , `event_name` = ?, `starttime` = ?, `event_place` = ?, `event_picture` = ?, `invite` = ?, `graduation` = ?, `teachers` = ?, `set_price` = ?, `detail` = ?, `meeting_time` = ?, `meeting_place` = ?, `max` = ?, `min` = ?, `answer_limitation` = ?, `created`=NOW(),`modified`= NOW()';
-	$event_make_data = array( $_SESSION['id'], $_POST['event_name'], $starttime, $_POST['shop_name'], $event_picture, $_POST['invite'], $_POST['graduation'], $_POST['teachers'], $_POST['set_price'], $_POST['detail'], $meet_time, $_POST['meeting_place'], $_POST['max'], $_POST['min'], $answer_limitation);
+	$event_make_data = array( $_SESSION['id'], $_POST['event_name'], $starttime, $_POST['event_place'], $_POST['event_picture'], $_POST['invite'], $_POST['graduation'], $_POST['teachers'], $_POST['set_price'], $_POST['detail'], $meet_time, $_POST['meeting_place'], $_POST['max'], $_POST['min'], $answer_limitation);
 	$event_make_stmt = $dbh->prepare($event_make_sql);
 	$event_make_stmt->execute($event_make_data);
-
-//イベント作成後、作成者を参加に指定
-	$update_1_sql = 'INSERT INTO `kami_event_joinings` SET `member_id`=? , `event_id`=? ,`status` = 1 , `created` = NOW() , `modified` = NOW()';
-			$update_1_data = array($_SESSION['id'],$_GET['id'],);
-			$stmt = $dbh->prepare($update_1_sql);
-			$stmt->execute($update_1_data); 
-
-	header('Location: eventView.php?id='.$_GET['id']);
-			exit();
-	}
 }
+ }
  ?>
 
 
@@ -226,14 +180,14 @@ if(!empty($_POST)){
 
 
 <div class ="container" style="padding-top: 150px; " >
-	<form method="POST" enctype="multipart/form-data">
+	<form method="POST">
 	<div class="row" style="padding-top: 20px">
 		<div class="col-xs-4 col-md-4 col-lg-4" >
 			<h2 style>イベント名</h2>
 		</div>
 		<div class="col-xs-8 col-md-8 col-lg-8">
-			<input type="text" name="event_name" >
-			<?php if(isset($error['event_name']) && $error['event_name'] == 'blank'){ ?>
+			<input type="text" name = "event_name" >
+			<?php if(isset($error) && $error['event_name'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*イベント名を入力してください</p>
 			<?php } ?>
 		</div>
@@ -245,11 +199,11 @@ if(!empty($_POST)){
 		</div>
 		<div class="col-lg-8" >
 			<input type="date" name="edate" min="" max="" style=" text-align: center;">
-			<?php if(isset($error['edate']) && $error['edate'] == 'blank'){ ?>
+			<?php if(isset($error) && $error['edate'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*開催日を入力してください</p>
 			<?php } ?>
 			<input type="time" name="etime" step= "300" style=" text-align: center;">
-			<?php if(isset($error['etime']) && $error['etime'] == 'blank'){ ?>
+			<?php if(isset($error) && $error['etime'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*開催時間を入力してください</p>
 			<?php } ?>
 		</div>
@@ -261,18 +215,19 @@ if(!empty($_POST)){
 		</div>
 		<div class="col-lg-8">
 			<div class="row">
-				<div class="col-lg-4">
-				<!-- 入力フォーム -->
-				<input type="text" id="ac2" name="shop_name">
-				</div>
+					<div class="col-lg-4">
+
+        <!-- 入力フォーム -->
+    <input type="text" id="ac2" name="shop_name">
+					</div>
 				<div align="right" class="col-lg-2">
-				<!-- <p>自由記入欄</p> -->
-   			</div>
-   			<div class="col-lg-4">
-				<!-- <input type="text" name = "event_place" > -->
+					<!-- <p>自由記入欄</p> -->
+    </div>
+    <div class="col-lg-4">
+					<!-- <input type="text" name = "event_place" > -->
 				</div>
-				<div class="col-lg-2">
-   			</div>
+    <div class="col-lg-2">
+    </div>
 			</div>
 		</div>
 	</div>
@@ -284,23 +239,13 @@ if(!empty($_POST)){
 	<div class="col-lg-8">
 		<div class="row" style="height: 12rem;">
 			<div class="col-lg-4" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<?php echo("<p style=' margin-bottom: 0px;'><input type='checkbox' name='event_picture_shop' value=''>") ?>お店の写真を使う</p>
+			<p style=" margin-bottom: 0px;"><input type="checkbox"><span>お店の写真を使う</span></p>
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-				<p style=" margin-bottom: 0px;"><input type="checkbox" name="">自分で指定する</p>
-			<input id="fileupload_file" type="file" name="event_picture_user">
-			<?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'type'){ ?>
-			<p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかの拡張子を選んでください。</p>
-			<?php } ?>
-
+			<input type="file" name="event_picture">
 			</div>
-			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); "><input type="checkbox" name="" value="2">
-				<select name="event_picture_temp" style="display: inline; padding: 50px;">
-						<option value=''>テンプレートから選ぶ</option>
-						<option value="temp/graduation_party.png">卒業式</option>
-						<option value="temp/happy_birthday.png">誕生日</option>
-						<option value="temp/nomikai.png">飲み会</option>
-					</select></p>
+			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
+			<input type="text" list="data1">
 			</div>
 		</div>
 	</div>
@@ -359,10 +304,10 @@ if(!empty($_POST)){
 	</div>
 	<div class="col-lg-8">
 			<h2 style="display: inline;"><input type="time" name="meeting_time" step= "300" style=" text-align: center;">または<input type="number" name="meeting_time_cal" min="0" max="60" step="5" style=" text-align: center;">分前</h2>
-			<?php if(isset($error['meeting_time']) && $error['meeting_time'] == 'blank'){ ?>
+			<?php if(isset($error) && $error['meeting_time'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*集合時間を入力してください</p>
 			<?php } ?>
-			<?php if(isset($error['meeting_time']) && $error['meeting_time'] == 'doubled'){ ?>
+			<?php if(isset($error) && $error['meeting_time'] == 'doubled'){ ?>
 			<p style="color:red; font-size: 15px;">*入力はどちらかにしてください</p>
 			<?php } ?>
 	</div>
@@ -375,7 +320,7 @@ if(!empty($_POST)){
 			</div>
 	<div class="col-lg-8" >
 		<input type="text" name="meeting_place" >
-		<?php if(isset($error['meeting_place']) && $error['meeting_place'] == 'blank'){ ?>
+		<?php if(isset($error) && $error['meeting_place'] == 'blank'){ ?>
 		<p style="color:red; font-size: 15px;">*集合場所を入力してください</p>
 		<?php } ?>
 
@@ -389,20 +334,20 @@ if(!empty($_POST)){
 	<div class="row" style="padding-top: 60px;" >
 			<div class="col-lg-4" >
 				<h2 >参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MAX <input type="number" name="max" min="0" max="150" step="5" style="text-align: center;" value="0"></h2>
+				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MAX <input type="number" name="max" min="0" max="150" step="5" style="text-align: center;"></h2>
 			</div>
 			<div class="col-lg-4" >
 				<h2 >最低参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MIN<input type="number" name="min" min="0" max="150" step="1" style="text-align: center;" value="0"></h2>
+				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MIN<input type="number" name="min" min="0" max="150" step="5" style="text-align: center;"></h2>
 			</div>
 			<div class="col-lg-4">
 			<h2>回答期限</h2>
 			<input type="date" name="adate" min="<?php echo $Dmin ?>" max="<?php echo $Dmx ?>" style=" text-align: center;">
-			<?php if(isset($error['adate']) && $error['adate'] == 'blank'){ ?>
+			<?php if(isset($error) && $error['adate'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*回答期限日を入力してください</p>
 			<?php } ?>
 			<input type="time" name="atime" step= "300" style=" text-align: center;">
-			<?php if(isset($error['atime']) && $error['atime'] == 'blank'){ ?>
+			<?php if(isset($error) && $error['atime'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*回答期限時間を入力してください</p>
 			<?php } ?>
 				</div>
