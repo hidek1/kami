@@ -34,22 +34,63 @@
  $pre_set_price = $event['set_price'];
  $pre_detail = $event['detail'];
  $pre_meeting_place = $event['meeting_place'];
-  if (!isset($event['max'])) {$pre_max = 0;
+ if (!isset($event['max'])) {$pre_max = 0;
  }
  if (isset($event['max'])) {
- 	$pre_max = $event['max'];
+ $pre_max = $event['max'];
  }
 
  if (!isset($event['min'])) {$pre_min = 0;
  }
  if (isset($event['min'])) {
- 	$pre_min = $event['min'];
+ $pre_min = $event['min'];
  }
 
 
 
  
-//開始時間の連結
+
+echo('<pre>');
+var_dump($event) ;
+echo('</pre>');
+
+if (!empty($_POST)) {
+	if ($pre_eventname == '' ){
+	$error['event_name'] = 'blank';
+	}
+	if ($_POST['pattern'] == '') {
+	$error['event_place'] = 'blank';
+	}
+
+
+
+
+//写真関係
+//写真の判定をすべてチェックでやるのか。。。悩みどころ
+	if(isset($_FILES['event_picture_user'])){
+		$picture = substr($_FILES['event_picture_user']['name'], -3);
+  	$picture = strtolower($picture);
+ 		if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
+		$event_picture = date('YmdHis') . $_FILES['event_picture_user']['name'];
+		move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$event_picture);}
+		if ($picture != 'jpg' || $picture != 'png' || $picture != 'gif') {
+		$error['event_picture_user'] = 'type';
+		
+		$com_event_picture = $event_picture;
+		}
+	}
+
+
+	// if ($_POST['event_picture_temp'] != '') {
+	// 	if(isset($_FILES['event_picture_user'])){
+	// 		!isset($_FILES['event_picture_user']);}
+	// 	$event_picture = $_POST['event_picture_temp'];
+	// }
+
+
+
+	if (!isset($error)) {
+	//開始時間の連結
 	$com_starttime = $_POST['edate'] ." ". $_POST['etime'];
 
 //回答期限の連結
@@ -71,22 +112,9 @@
 	$meet_time = date( 'H:i', strtotime ( $cal ));
 	$com_meet_time = $meet_time;
 	}
-echo('<pre>');
-var_dump($event) ;
-echo('</pre>');
-
-if (!empty($_POST)) {
-	if ($pre_eventname == '' ){
-	$error['event_name'] = 'blank';
-	}
-	if ($_POST['pattern'] == '') {
-	$error['event_place'] = 'blank';
-	}
-	if (!isset($error)) {
 
  $com_eventname = $_POST['event_name'];
  $com_event_place = $_POST['pattern'];
- $com_event_picture = $_POST['event_picture'];
  $com_invite = $_POST['invite'];
  $com_graduation = $_POST['graduation'];
  $com_teachers = $_POST['teachers'];
@@ -100,6 +128,8 @@ if (!empty($_POST)) {
 	$event_edit_data = array( $com_eventname, $com_starttime, $com_event_place, $com_event_picture, $com_invite, $com_graduation, $com_teachers, $com_set_price, $com_detail, $com_meet_time, $com_meeting_place, $com_max, $com_min, $com_answer_limitation,$_GET['id']);
 	$event_edit_stmt = $dbh->prepare($event_edit_sql);
 	$event_edit_stmt->execute($event_edit_data);
+
+
 
 }
  }
@@ -237,7 +267,7 @@ window.addEventListener ?
 
 
 <div class ="container" style="padding-top: 150px; " >
-	<form method="POST">
+	<form method="POST" enctype="multipart/form-data">
 	<div class="row" style="padding-top: 20px">
 		<div class="col-xs-4 col-md-4 col-lg-4" >
 			<h2 style>イベント名</h2>
@@ -290,13 +320,23 @@ window.addEventListener ?
 	<div class="col-lg-8">
 		<div class="row" style="height: 12rem;">
 			<div class="col-lg-4" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<p style=" margin-bottom: 0px;"><?php echo ("<input type='checkbox' value='$pre_event_picture'>"); ?><span>お店の写真を使う</span></p>
+			<p style=" margin-bottom: 0px;"><input type="checkbox" name="">お店の写真を使う</p>
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-				<?php echo("<input type='file' name='event_picture'  value = '$pre_event_picture'>"); ?>
+				<p style=" margin-bottom: 0px;"><input type="checkbox" name="">自分で指定する</p>
+			<?php echo"<input id='fileupload_file' type='file' name='event_picture_user' value='$pre_event_picture'>" ?>
+			<?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'type'){ ?>
+			<p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかの拡張子を選んでください。</p>
+			<?php } ?>
+
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<input type="text" list="data1">
+				<select name="event_picture_temp" style="display: inline; padding: 50px;">
+						<option value=''>いろんな写真</option>
+						<option value="temp/graduation_party.png">卒業式</option>
+						<option value="temp/happy_birthday.png">誕生日</option>
+						<option value="temp/nomikai.png">飲み会</option>
+					</select></p>
 			</div>
 		</div>
 	</div>
@@ -386,7 +426,7 @@ window.addEventListener ?
 			</div>
 			<div class="col-lg-4" >
 				<h2 >最低参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MIN<?php echo("<input type='number' name='min' min='0' max='150' step='5' style='text-align: center;' value = '$pre_min'>"); ?></h2>
+				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MIN<?php echo("<input type='number' name='min' min='0' max='150' step='1' style='text-align: center;' value = '$pre_min'>"); ?></h2>
 			</div>
 			<div class="col-lg-4">
 			<h2>回答期限</h2><?php echo("<input type='date' name='adate'  max='$smd' style=' text-align: center;' value = '$lmd'>"); ?>
