@@ -20,10 +20,19 @@ if ($_POST['store_name'] == '') {
 
 if (!isset($error)) {
 
+
+$ext = substr($_FILES['picture_edit']['name'],-3);
+  $ext = strtolower($ext);
+
+
+if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
+$shop_pic = date('YmdHis') . $_FILES['picture_edit']['name'];
+move_uploaded_file($_FILES['picture_edit']['tmp_name'], 'shop_pic/'.$shop_pic);
+
+
  $shop_name_abc = htmlspecialchars($_POST['store_name_abc']);
   $shop_name = htmlspecialchars($_POST['store_name']);
   $shop_type = htmlspecialchars($_POST['category']);
-  $shop_pic = htmlspecialchars($_POST['files']);
 
 
 $sql = 'UPDATE `kami_shops` SET `shop_name_abc`=?,`shop_name`=?,`shop_pic`=?,`shop_type`=?,`modified`=NOW() WHERE `shop_name`=?';
@@ -40,7 +49,7 @@ header('Location:store_review.php');
 exit();
 }
 }
-
+}
 
  ?>
 
@@ -104,7 +113,7 @@ exit();
                   <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
                <li class="has-children">
-                  <a href="shop_list.php" title="">お店</a>
+                  <a href="shop_list.php" title="">お店一覧</a>
                </li>
        <li class="has-children">
                   <a href="Profile.php" title="">マイページ</a>
@@ -163,7 +172,7 @@ exit();
             <p class="lead">お店情報を編集しよう。</p>
 
 
-            <form name="cForm" id="cForm" method="post" action="">
+            <form name="cForm" id="cForm" method="post" action="" enctype="multipart/form-data">
                  <fieldset>
                        <div><h1>店名:<?php echo $store_infoo['shop_name_abc'] ; ?></h1></div>
                        <div class="form-field">
@@ -192,7 +201,7 @@ exit();
                        <br>
                       <span class="retty-btn fileinput-button fileinput-button-mypage">
                       <div class="add_files"><h1>写真（外観１枚）</h1></div>
-                       <input id="fileupload_file" type="file" name="files[]" multiple=""></span>
+                       <input id="fileupload_file" type="file" name="picture_edit" multiple=""></span>
 
                       <br>
                       <br>
