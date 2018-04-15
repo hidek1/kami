@@ -6,6 +6,9 @@
   login_check();
 require('dbconnect.php');
  // ログインユーザー情報取得
+if ($_SESSION["id"]==$_GET['id']) {
+  header('Location: Profile.php');
+}
 
 
 $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';

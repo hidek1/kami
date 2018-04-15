@@ -53,7 +53,11 @@ move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pi
   $store_review = htmlspecialchars($_POST['review']);
   // $review_pic = htmlspecialchars($_POST['picture1']);
 
+<<<<<<< HEAD
+  $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` = ? , `review_picture` = ? , `review_created`=NOW() , `modified`=NOW()';
+=======
   $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` =? , `review_picture` =? , `review_created`=NOW() , `modified`=NOW()';
+>>>>>>> da81beacc7ddbfb0f1e31640e74fb6654086be5b
   $data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , $review_pic);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);

@@ -210,36 +210,38 @@ exit();
   <div class="container">
                        <div class="row">
       <div class="col-xs-3 col-md-3 col-lg-3">
-</div>
-                        <div class="col-xs-6 col-md-6 col-lg-6" style="background-color: white;margin:15px;">
-                         
+         </div>
+           <div class="col-xs-6 col-md-6 col-lg-6" style="background-color: white;margin:15px;">
+                <center>
 
-                          <div class="input_file">
-    <div class="preview">
-        <input accept="image/*" id="imgFile" name="files" type="file">
-    </div>
-    <p class="btn_upload">
-        画像ファイルを選択してアップロード
-    </p>
-</div>
-
+              <div class="input_file" style="width: 80%;
+                              height: 400px;">
+                     <div class="preview" style="width: 100%;
+                              height: 380px; background-size: cover;">
+                     <input accept="image/*" id="imgFile" name="files" type="file">
+                    </div>
+                    <p class="btn_upload">
+                       画像ファイルを選択してアップロード
+                    </p>
+                </div>
+               </center>
                         
-                       </div>
-    <div class="col-xs-3 col-md-3 col-lg-3">
-</div>
+              </div>
+         <div class="col-xs-3 col-md-3 col-lg-3">
+           </div>
                        </div>
                      </div>
 
                      <div class="container">
                        <div class="row">
                          <div class="col-xs-3 col-md-3 col-lg-3">
-</div>
+                         </div>
                          <div class="col-xs-6 col-md-6 col-lg-6" style="background-color: white;margin:15px;">
                           <h3>ニックネーム</h3>
                                 <input name="nickname" type="text" id="cName" class="full-width" placeholder="" value="<?php echo $profile_edit["nickname"]; ?>">
                      </div>
                       <div class="col-xs-3 col-md-3 col-lg-3">
-</div>
+                      </div>
                    </div>
                   </div>
 

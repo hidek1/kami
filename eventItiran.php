@@ -284,8 +284,8 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
          <article class="brick entry format-standard animate-this">
 
                <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="event_picture/<?php echo $kami_search_events['event_picture']; ?>" alt="building" alt="Pattern">             
+                  <a href="eventView.php?id=<?php echo $kami_search_events[$i]["event_id"]; ?>" class="thumb-link">
+                     <img src="event_picture/<?php echo $kami_search_events[$i]['event_picture']; ?>" alt="building" alt="Pattern">             
                   </a>
                </div>
 
@@ -299,7 +299,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                         </span>        
                      </div>
                 
-                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_search_events[$i]["event_name"]; ?></a></h1>
+                     <h1 class="entry-title"><a href="eventView.php?id=<?php echo $kami_search_events[$i]["event_id"]; ?>"><?php echo $kami_search_events[$i]["event_name"]; ?></a></h1>
                      
                   </div>
                   <div class="entry-excerpt">
@@ -318,8 +318,8 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
         <article class="brick entry format-standard animate-this">
 
                <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="event_picture/<?php echo $kami_search_events['event_picture']; ?>" alt="building" alt="Pattern">             
+                  <a href="eventView.php?id=<?php echo $kami_search_events[$i]["event_id"]; ?>" class="thumb-link">
+                     <img src="event_picture/<?php echo $kami_search_events[$i]['event_picture']; ?>" alt="building" alt="Pattern">             
                   </a>
                </div>
 
@@ -333,7 +333,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                         </span>        
                      </div>
                 
-                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_search_events[$i]["event_name"]; ?></a></h1>
+                     <h1 class="entry-title"><a href="eventView.php?id=<?php echo $kami_search_events[$i]["event_id"]; ?>"><?php echo $kami_search_events[$i]["event_name"]; ?></a></h1>
                      
                   </div>
                   <div class="entry-excerpt">
@@ -356,8 +356,8 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
          <article class="brick entry format-standard animate-this">
 
                <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="event_picture/<?php echo $kami_events['event_picture']; ?>" alt="building" alt="Pattern">             
+                  <a href="eventView.php?id=<?php echo $kami_events[$i]["event_id"]; ?>" class="thumb-link">
+                     <img src="event_picture/<?php echo $kami_events[$i]['event_picture']; ?>" alt="building" alt="Pattern">             
                   </a>
                </div>
 
@@ -371,7 +371,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                         </span>        
                      </div>
                 
-                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
+                     <h1 class="entry-title"><a href="eventView.php?id=<?php echo $kami_events[$i]["event_id"]; ?>"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
                      
                   </div>
                   <div class="entry-excerpt">
@@ -390,8 +390,8 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                     <article class="brick entry format-standard animate-this">
 
                <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                     <img src="event_picture/<?php echo $kami_events['event_picture']; ?>" alt="building" alt="Pattern">             
+                  <a href="eventView.php?id=<?php echo $kami_events[$i]["event_id"]; ?>" class="thumb-link">
+                     <img src="event_picture/<?php echo $kami_events[$i]['event_picture']; ?>" alt="building" alt="Pattern">             
                   </a>
                </div>
 
@@ -405,7 +405,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                         </span>        
                      </div>
                 
-                     <h1 class="entry-title"><a href="single-standard.html"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
+                     <h1 class="entry-title"><a href="eventView.php?id=<?php echo $kami_events[$i]["event_id"]; ?>"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
                      
                   </div>
                   <div class="entry-excerpt">
