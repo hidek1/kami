@@ -61,6 +61,34 @@ if (!empty($_POST)) {
 	if ($_POST['pattern'] == '') {
 	$error['event_place'] = 'blank';
 	}
+
+
+
+
+//写真関係
+//写真の判定をすべてチェックでやるのか。。。悩みどころ
+	if(isset($_FILES['event_picture_user'])){
+		$picture = substr($_FILES['event_picture_user']['name'], -3);
+  	$picture = strtolower($picture);
+ 		if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
+		$event_picture = date('YmdHis') . $_FILES['event_picture_user']['name'];
+		move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$event_picture);}
+		if ($picture != 'jpg' || $picture != 'png' || $picture != 'gif') {
+		$error['event_picture_user'] = 'type';
+		
+		$com_event_picture = $event_picture;
+		}
+	}
+
+
+	if ($_POST['event_picture_temp'] != '') {
+		if(isset($_FILES['event_picture_user'])){
+			!isset($_FILES['event_picture_user']);}
+		$event_picture = $_POST['event_picture_temp'];
+	}
+
+
+
 	if (!isset($error)) {
 	//開始時間の連結
 	$com_starttime = $_POST['edate'] ." ". $_POST['etime'];
@@ -87,7 +115,6 @@ if (!empty($_POST)) {
 
  $com_eventname = $_POST['event_name'];
  $com_event_place = $_POST['pattern'];
- $com_event_picture = $_POST['event_picture'];
  $com_invite = $_POST['invite'];
  $com_graduation = $_POST['graduation'];
  $com_teachers = $_POST['teachers'];

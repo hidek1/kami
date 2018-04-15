@@ -36,12 +36,25 @@ if(!empty($_POST)){
 	}
 
 //写真関係
-	$picture = substr($_FILES['event_picture_user']['name'], -3);
-  $picture = strtolower($picture);
-  if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
-	$event_picture = date('YmdHis') . $_FILES['event_picture_user']['name'];
-	move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$event_picture);
-	}else{$error['event_picture_user'] = 'type';}
+//写真の判定をすべてチェックでやるのか。。。悩みどころ
+	if(!empty($_FILES['event_picture_user'])){
+		$picture = substr($_FILES['event_picture_user']['name'], -3);
+  	$picture = strtolower($picture);
+ 		if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
+		$event_picture = date('YmdHis') . $_FILES['event_picture_user']['name'];
+		move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$event_picture);}
+		// if ($picture != 'jpg' || $picture != 'png' || $picture != 'gif') {
+		// $error['event_picture_user'] = 'type';}
+	}
+
+	if ($_POST['event_picture_temp'] != '') {
+		if(isset($_FILES['event_picture_user'])){
+			!isset($_FILES['event_picture_user']);}
+		$event_picture = $_POST['event_picture_temp'];
+	}
+	var_dump($event_picture);exit;
+
+
 
 
 	if (!isset($_POST['graduation'])){
@@ -84,6 +97,7 @@ if(!empty($_POST)){
 	$event_make_data = array( $_SESSION['id'], $_POST['event_name'], $starttime, $_POST['shop_name'], $event_picture, $_POST['invite'], $_POST['graduation'], $_POST['teachers'], $_POST['set_price'], $_POST['detail'], $meet_time, $_POST['meeting_place'], $_POST['max'], $_POST['min'], $answer_limitation);
 	$event_make_stmt = $dbh->prepare($event_make_sql);
 	$event_make_stmt->execute($event_make_data);
+
 //イベント作成後、作成者を参加に指定
 	$update_1_sql = 'INSERT INTO `kami_event_joinings` SET `member_id`=? , `event_id`=? ,`status` = 1 , `created` = NOW() , `modified` = NOW()';
 			$update_1_data = array($_SESSION['id'],$_GET['id'],);
@@ -271,7 +285,7 @@ if(!empty($_POST)){
 	<div class="col-lg-8">
 		<div class="row" style="height: 12rem;">
 			<div class="col-lg-4" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<p style=" margin-bottom: 0px;"><input type="checkbox" name="">お店の写真を使う</p>
+			<?php echo("<p style=' margin-bottom: 0px;'><input type='checkbox' name='event_picture_shop' value=''>") ?>お店の写真を使う</p>
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
 				<p style=" margin-bottom: 0px;"><input type="checkbox" name="">自分で指定する</p>
@@ -281,9 +295,9 @@ if(!empty($_POST)){
 			<?php } ?>
 
 			</div>
-			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
+			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); "><input type="checkbox" name="" value="2">
 				<select name="event_picture_temp" style="display: inline; padding: 50px;">
-						<option value=''>いろんな写真</option>
+						<option value=''>テンプレートから選ぶ</option>
 						<option value="temp/graduation_party.png">卒業式</option>
 						<option value="temp/happy_birthday.png">誕生日</option>
 						<option value="temp/nomikai.png">飲み会</option>
