@@ -58,7 +58,7 @@ if (!empty($_POST)) {
 	if ($pre_eventname == '' ){
 	$error['event_name'] = 'blank';
 	}
-	if ($_POST['pattern'] == '') {
+	if ($_POST['shop_name'] == '') {
 	$error['event_place'] = 'blank';
 	}
 
@@ -114,7 +114,7 @@ if (!empty($_POST)) {
 	}
 
  $com_eventname = $_POST['event_name'];
- $com_event_place = $_POST['pattern'];
+ $com_event_place = $_POST['shop_name'];
  $com_invite = $_POST['invite'];
  $com_graduation = $_POST['graduation'];
  $com_teachers = $_POST['teachers'];
@@ -292,26 +292,26 @@ window.addEventListener ?
 	</div>
 
 	<div class="row" style="padding-top: 60px;" >
-		<div class="col-lg-4">
-			<h2>店名</h2>
-		</div>
-		<div class="col-lg-8">
-				<table>
-  			  <tr>
-  			    <td>入力:</td>
-  			    <td>
-  			      <!-- 入力フォーム -->
-  			      <?php echo("<input  value = '$pre_event_place' id='text' type='text' 			name='pattern'  autocomplete='off' size='10' style='display: block'>"); ?>
-  			      <!-- 補完候補を表示するエリア -->
-  			      <div id="suggest" style="display:none;"></div>
-  			    </td>
-  			  </tr>
-  		</table>
-  		<?php if(isset($error) && $error['event_place'] == 'blank'){ ?>
-			<p style="color:red; font-size: 15px;">*入力してください</p>
-			<?php } ?>
-		</div>
-	</div>
+    <div class="col-lg-4">
+      <h2>店名</h2>
+    </div>
+    <div class="col-lg-8">
+      <div class="row">
+        <div class="col-lg-4">
+        <!-- 入力フォーム -->
+        <input type="text" id="ac2" name="shop_name">
+        </div>
+        <div align="right" class="col-lg-2">
+        <!-- <p>自由記入欄</p> -->
+        </div>
+        <div class="col-lg-4">
+        <!-- <input type="text" name = "event_place" > -->
+        </div>
+        <div class="col-lg-2">
+        </div>
+      </div>
+    </div>
+  </div>
 
 <div class="row" style="padding-top: 50px ">
 	<div class="col-lg-4" style="height: 12rem;">
@@ -481,7 +481,30 @@ window.addEventListener ?
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="js/main.js"></script>
-   <script src="js/suggest.js"></script>
+   <script type="text/javascript" src="js/jquery-ui.js">
+    </script>
+    <script>$(document).ready( function() {
+$("#ac2").autocomplete({
+  source: function(req, resp){
+    $.ajax({
+        url: "autocomplete-datasource.php",
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        data: {
+          param1: req.term
+        },
+        success: function(o){
+          resp(o);
+        },
+        error: function(xhr, ts, err){
+          resp(['']);
+        }
+      });
+
+  }
+});
+});</script>
 
 
 </body>

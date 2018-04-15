@@ -267,11 +267,12 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 <div class="col-xs-4 col-md-4 col-lg-4">
           <article class="brick entry format-standard animate-this">
 
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                    <img src="images/thumbs/moet.jpg" alt="building">             
+              <div class="entry-thumb">
+                  <a href="eventView.php?id=<?php echo $event_joinings[$i]["event_id"]; ?>" class="thumb-link">
+                    <img src="event_picture/<?php echo $event_joinings[$i]["event_picture"]; ?>" alt="building">             
                   </a>
                </div>
+
 
                <div class="entry-text">
                 <div class="entry-header">
@@ -281,7 +282,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                     </span>     
                   </div>
 
-                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $event_joinings[$i]['event_name']; ?></a></h1>
+                    <h1 class="entry-title"><a href="eventView.php?id=<?php echo $event_joinings[$i]["event_id"]; ?>"><?php echo $event_joinings[$i]['event_name']; ?></a></h1>
                   
                 </div>
             <div class="entry-excerpt">
@@ -328,9 +329,9 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 
           <article class="brick entry format-standard animate-this">
 
-               <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
-                    <img src="images/thumbs/dinner.jpg" alt="building">             
+              <div class="entry-thumb">
+                  <a href="store_details.php?name=<?php echo $reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $reviews[$i]["shop_name_abc"]; ?>" class="thumb-link">
+                    <img src="review_picture/<?php echo $reviews[$i]['review_picture']; ?>" alt="building">             
                   </a>
                </div>
 
@@ -342,7 +343,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                     </span>     
                   </div>
 
-                  <h1 class="entry-title"><a href="single-standard.html"><?php echo $reviews[$i]['shop_name_abc']; ?>(<?php echo $reviews[$i]['shop_name']; ?>)</a></h1>
+               <h1 class="entry-title"><a href="store_details.php?name=<?php echo $reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $reviews[$i]["shop_name_abc"]; ?>"><?php echo $reviews[$i]['shop_name_abc']; ?>(<?php echo $reviews[$i]['shop_name']; ?>)</a></h1>
                   
                 </div>
             <div class="entry-excerpt">
