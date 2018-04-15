@@ -47,12 +47,11 @@ if(!empty($_POST)){
 		// $error['event_picture_user'] = 'type';}
 	}
 
-	if ($_POST['event_picture_temp'] != '') {
-		if(isset($_FILES['event_picture_user'])){
-			!isset($_FILES['event_picture_user']);}
-		$event_picture = $_POST['event_picture_temp'];
-	}
-	var_dump($event_picture);exit;
+	// if ($_POST['event_picture_temp'] != '') {
+	// 	if(isset($_FILES['event_picture_user'])){
+	// 		!isset($_FILES['event_picture_user']);}
+	// 	$event_picture = $_POST['event_picture_temp'];
+	// }
 
 
 

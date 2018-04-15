@@ -81,11 +81,11 @@ if (!empty($_POST)) {
 	}
 
 
-	if ($_POST['event_picture_temp'] != '') {
-		if(isset($_FILES['event_picture_user'])){
-			!isset($_FILES['event_picture_user']);}
-		$event_picture = $_POST['event_picture_temp'];
-	}
+	// if ($_POST['event_picture_temp'] != '') {
+	// 	if(isset($_FILES['event_picture_user'])){
+	// 		!isset($_FILES['event_picture_user']);}
+	// 	$event_picture = $_POST['event_picture_temp'];
+	// }
 
 
 
