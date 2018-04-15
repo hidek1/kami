@@ -86,6 +86,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
      $kami_events[] = $kami_event;
      }
+     // var_dump($kami_events);
 
      $sql = "SELECT * FROM (`kami_reviews` LEFT JOIN `kami_members` ON `kami_reviews`.`member_id`=`kami_members`.`member_id`) LEFT JOIN `kami_shops` ON `kami_reviews`.`shop_id`=`kami_shops`.`shop_id` ORDER BY `review_created` DESC LIMIT 5";
       $stmt = $dbh->prepare($sql);
@@ -97,7 +98,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
       }
      $kami_reviews[] = $kami_review;
      }
-     
+     // var_dump($kami_reviews);
  ?>
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
@@ -305,7 +306,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
                <div class="entry-thumb">
                   <a href="single-standard.html" class="thumb-link">
-                     <img src="event_picture/<?php echo $kami_events['event_picture']; ?>" alt="building">             
+                     <img src="event_picture/<?php echo $kami_events[$i]['event_picture'] ?>" alt="building">             
                   </a>
                </div>
 
@@ -319,11 +320,11 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                         </span>        
                      </div>
 
-                     <h1 class="entry-title"><a href="eventView.html"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
+                     <h1 class="entry-title"><a href="eventView.php?id=<?php echo $kami_events[$i]["event_id"]; ?>"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
                      
                   </div>
                   <div class="entry-excerpt">
-                     開催場所: <a href="store_details.php?name=<?php echo $kami_events[$i]["event_place"]; ?>"><?php echo $kami_events[$i]["event_place"]; ?></a><br>
+                     開催場所: <a href="store_details.php?name=<?php echo $kami_events[$i]["event_place"]; ?>&name_abc=<?php echo $kami_events[$i]["event_place"]; ?>"><?php echo $kami_events[$i]["event_place"]; ?></a><br>
                      開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
@@ -342,11 +343,11 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
             <!-- <div class ="container"> -->
          <!--       <div class="row">
          <div class="col-xs-10 col-md-10 col-lg-10"> -->
-            <article class="brick entry format-standard animate-this">
+            <article class="brick entry format-standard animate-this" style="background-color: #F5A9A9;">
 
                <div class="entry-thumb">
                   <a href="single-standard.html" class="thumb-link">
-                     <img src="event_picture/<?php echo $kami_events['event_picture']; ?>" alt="building">             
+                     <img src="event_picture/<?php echo $kami_events[$i]["event_picture"]; ?>" alt="building">             
                   </a>
                </div>
 
@@ -360,11 +361,11 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                         </span>        
                      </div>
 
-                     <h1 class="entry-title"><a href="eventView.html"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
+                     <h1 class="entry-title"><a href="eventView.php?id=<?php echo $kami_events[$i]["event_id"]; ?>"><?php echo $kami_events[$i]["event_name"]; ?></a></h1>
                      
                   </div>
                   <div class="entry-excerpt">
-                     開催場所: <a href="store_details.php?name=<?php echo $kami_events[$i]["event_place"]; ?>"><?php echo $kami_events[$i]["event_place"]; ?></a><br>
+                     開催場所: <a href="store_details.php?name=<?php echo $kami_events[$i]["event_place"]; ?>&name_abc=<?php echo $kami_events[$i]["event_place"]; ?>"><?php echo $kami_events[$i]["event_place"]; ?></a><br>
                      開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
@@ -395,15 +396,16 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
   <?php for ($i=0; $i<count($kami_reviews);$i++){ ?>
 
                   <li class="depth-1">
-
+                     <a href="ProfileOther.php?id=<?php echo $kami_reviews[$i]["member_id"]; ?>">
                      <div class="avatar">
-                        <img src="picture_path/<?php echo $reviews['picture_path']; ?>" alt="building">
+                       
+                        <img src="picture_path/<?php echo $kami_reviews[$i]["picture_path"]; ?>" alt="building">
                      </div>
-
+                    </a>
                      <div class="comment-content">
 
                         <div class="comment-info">
-                           <cite><a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a></cite>
+                           <cite><a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a></cite>
 
                            <div class="comment-meta">
                               <time class="comment-time" datetime="2014-07-12T25:15">July 12, 2014 @ 25:15</time>
