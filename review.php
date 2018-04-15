@@ -33,16 +33,14 @@ if ($_POST['review']=='') {
 
 if (!isset($error)) {
 
-// 写真４枚挿入したい。
-// for ($i=0; $i < 4; $i++) {
-
-  $ext = substr($_FILES['picture']['name'], -3);
+  $ext = substr($_FILES['picture1']['name'], -3);
   $ext = strtolower($ext);
 
   if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-$review_pic = date('YmdHis') . $_FILES['picture']['name'];
-move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pic);
+$review_pic = date('YmdHis') . $_FILES['picture1']['name'];
+move_uploaded_file($_FILES['picture1']['tmp_name'], 'review_picture/'.$review_pic);
 
+// echo "<br>";echo "<br>";echo "<br>";
 
 // echo '<pre>';
 // var_dump($_FILES);
@@ -53,7 +51,7 @@ move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pi
   $store_review = htmlspecialchars($_POST['review']);
   // $review_pic = htmlspecialchars($_POST['picture1']);
 
-  $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` =? , `review_picture` =? , `review_created`=NOW() , `modified`=NOW()';
+  $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` = ? , `review_picture` = ? , `created`=NOW() , `modified`=NOW()';
   $data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , $review_pic);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);
@@ -61,7 +59,6 @@ move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pi
   header('Location: store_details.php?name=' . $store_info['shop_name']);
   exit();
 }
-// }
  }
   }
 
@@ -70,6 +67,9 @@ move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pi
 //   header();
 //   exit;
 // }
+
+// store_details.php?name= . $shop_name
+
 
 
  ?>
@@ -217,7 +217,7 @@ move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pi
 
                        <span class="retty-btn fileinput-button fileinput-button-mypage">
                        <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
-                       <input id="fileupload_file" type="file" name="picture" multiple="">
+                       <input id="fileupload_file" type="file" name="picture1" multiple="">
                        <input id="fileupload_file" type="file" name="picture2" multiple="">
                        <input id="fileupload_file" type="file" name="picture3" multiple="">
                        <input id="fileupload_file" type="file" name="picture4" multiple="">
