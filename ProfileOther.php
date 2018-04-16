@@ -269,7 +269,11 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 
               <div class="entry-thumb">
                   <a href="eventView.php?id=<?php echo $event_joinings[$i]["event_id"]; ?>" class="thumb-link">
-                    <img src="event_picture/<?php echo $event_joinings[$i]["event_picture"]; ?>" alt="building">             
+                    <?php if (!empty($event_joinings[$i]["event_picture"])){ ?>
+                    <img src="event_picture/<?php echo $event_joinings[$i]["event_picture"]; ?>" alt="building">
+                       <?php }else{ ?>
+
+                     <?php } ?>             
                   </a>
                </div>
 
@@ -331,7 +335,11 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 
               <div class="entry-thumb">
                   <a href="store_details.php?name=<?php echo $reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $reviews[$i]["shop_name_abc"]; ?>" class="thumb-link">
-                    <img src="review_picture/<?php echo $reviews[$i]['review_picture']; ?>" alt="building">             
+                    <?php if (!empty($reviews[$i]['review_picture'])){ ?>
+                    <img src="review_picture/<?php echo $reviews[$i]['review_picture']; ?>" alt="building">
+                    <?php }else{ ?>
+                        <img src="review_picture/01.jpg" alt="building">
+                     <?php } ?>             
                   </a>
                </div>
 

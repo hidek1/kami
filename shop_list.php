@@ -287,7 +287,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
                    </div>
                    <div class="col-xs-2 col-md-2 col-lg-2" >
                      <div class="avatar">
-                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_search_shops[$i]['shop_pic']; ?>" alt="">
+                        <img width="50" height="50" class="avatar pull-right" src="shop_pic/<?php echo $kami_search_shops[$i]['shop_pic']; ?>" alt="">
                      </div>
                   </div>
                   <div class="col-xs-6 col-md-6 col-lg-6" >
@@ -318,7 +318,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
                    </div>
                    <div class="col-xs-2 col-md-2 col-lg-2" >
                      <div class="avatar">
-                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_shops[$i]['shop_pic']; ?>" alt="">
+                        <img width="50" height="50" class="avatar pull-right" src="shop_pic/<?php echo $kami_shops[$i]['shop_pic']; ?>" alt="">
                      </div>
                   </div>
                   <div class="col-xs-6 col-md-6 col-lg-6" >

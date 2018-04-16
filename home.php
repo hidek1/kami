@@ -328,8 +328,10 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                      開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
+                     <div class="text_overflow1">
                      詳細<br>
                      <?php echo $kami_events[$i]["detail"]; ?>
+                     </div>
 
 
                   </div>
@@ -369,9 +371,10 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                      開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
+                     <div class="text_overflow1">
                      詳細<br>
                      <?php echo $kami_events[$i]["detail"]; ?>
-
+                     </div>
 
                   </div>
                </div>
@@ -396,16 +399,26 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
   <?php for ($i=0; $i<count($kami_reviews);$i++){ ?>
 
                   <li class="depth-1">
+                    <div class="row">
+                      <div class="col-xs-２ col-md-2 col-lg-2" style="text-align: left;">
                      <a href="ProfileOther.php?id=<?php echo $kami_reviews[$i]["member_id"]; ?>">
                      <div class="avatar">
                        
                         <img src="picture_path/<?php echo $kami_reviews[$i]["picture_path"]; ?>" alt="building">
                      </div>
                     </a>
+                     </div>
+                      <div class="col-xs-8 col-md-8 col-lg-8">
+                    <a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a>
+                    </div>
+                      <div class="col-xs-2 col-md-2 col-lg-2">
+                           </div>
+                      </div>
+
                      <div class="comment-content">
 
                         <div class="comment-info">
-                           <cite><a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a></cite>
+                           
 
                            <div class="comment-meta">
                               <time class="comment-time" datetime="2014-07-12T25:15">July 12, 2014 @ 25:15</time>
@@ -414,7 +427,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                         </div>
 
                         <div class="comment-text">
-                           <p><?php echo $kami_reviews[$i]["review"]; ?></p>
+                           <p class="text_overflow2"><?php echo $kami_reviews[$i]["review"]; ?></p>
                         </div>
 
                      </div>
@@ -479,7 +492,54 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
    <script src="js/jquery.appear.js"></script>
    <script src="js/main.js"></script>
    <script src="js/bootstrap.js"></script>
-
+   <script>$(function() {
+    var count = 250;
+ $('.text_overflow1').each(function() {
+     var thisText = $(this).text();
+      var textLength = thisText.length;
+       if (textLength > count) {
+            var showText = thisText.substring(0, count);
+            var hideText = thisText.substring(count, textLength);
+           var insertText = showText;
+          insertText += '<span class="hide">' + hideText + '</span>';
+           insertText += '<span class="omit">…</span>';
+            insertText += '<a href="" class="more">もっと見る</a>';
+            $(this).html(insertText);
+       };
+  });
+ $('.text_overflow1 .hide').hide();
+ $('.text_overflow1 .more').click(function() {
+      $(this).hide()
+          .prev('.omit').hide()
+         .prev('.hide').fadeIn();
+      return false;
+   });
+});
+</script>
+<script>$(function() {
+    var count = 120;
+ $('.text_overflow2').each(function() {
+     var thisText = $(this).text();
+      var textLength = thisText.length;
+       if (textLength > count) {
+            var showText = thisText.substring(0, count);
+            var hideText = thisText.substring(count, textLength);
+           var insertText = showText;
+          insertText += '<span class="hide">' + hideText + '</span>';
+           insertText += '<span class="omit">…</span>';
+            insertText += '<a href="" class="more">もっと見る</a>';
+            $(this).html(insertText);
+       };
+  });
+ $('.text_overflow2 .hide').hide();
+ $('.text_overflow2 .more').click(function() {
+      $(this).hide()
+          .prev('.omit').hide()
+         .prev('.hide').fadeIn();
+      return false;
+   });
+});
+</script>
 </body>
 
 </html>
