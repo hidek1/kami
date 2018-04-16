@@ -34,28 +34,13 @@
  $pre_set_price = $event['set_price'];
  $pre_detail = $event['detail'];
  $pre_meeting_place = $event['meeting_place'];
- if (!isset($event['max'])) {$pre_max = 0;
- }
- if (isset($event['max'])) {
  $pre_max = $event['max'];
- }
-
- if (!isset($event['min'])) {$pre_min = 0;
- }
- if (isset($event['min'])) {
  $pre_min = $event['min'];
- }
 
 
-
- 
-
-echo('<pre>');
-var_dump($event) ;
-echo('</pre>');
 
 if (!empty($_POST)) {
-	if ($pre_eventname == '' ){
+	if ($_POST['eventname'] == '' ){
 	$error['event_name'] = 'blank';
 	}
 	if ($_POST['shop_name'] == '') {
@@ -67,7 +52,7 @@ if (!empty($_POST)) {
 
 //写真関係
 //写真の判定をすべてチェックでやるのか。。。悩みどころ
-	if(isset($_FILES['event_picture_user'])){
+	if($_FILES['event_picture_user'] =! $pre_event_picture){
 		$picture = substr($_FILES['event_picture_user']['name'], -3);
   	$picture = strtolower($picture);
  		if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
