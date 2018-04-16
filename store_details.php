@@ -19,9 +19,41 @@ $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
 // echo "<br>";echo "<br>";echo "<br>";
 // var_dump($_GET['id']);
 
-
-
 // }
+
+$sql = 'SELECT * FROM `kami_reviews` LEFT JOIN `kami_members` ON `kami_reviews` . `member_id` = `kami_members` . `member_id` WHERE `shop_id`=? ORDER BY `review_created` DESC';
+$data = array($store_detail['shop_id']);
+$stmt = $dbh->prepare($sql);
+$stmt->execute($data);
+
+$records = array();
+while (true) {
+  $record = $stmt->fetch(PDO::FETCH_ASSOC);
+  if($record == false){
+    break;
+  }$records[] = $record;
+}
+
+// echo '<pre>';
+// var_dump($records);
+// echo '</pre>';
+// exit;
+
+// foreach ($records as $record_user) {
+//   // member_idを元にユーザーの情報を取得
+//   $sql = 'SELECT * FROM `kami_members` where `member_id`=?';
+//   $data = array($record_user['member_id']);
+//   $stmt = $dbh->prepare($sql);
+//   $stmt->execute($data);
+//   $record = $stmt->fetch(PDO::FETCH_ASSOC);
+//   $records[] = $record;
+// }
+
+$count = count($records);
+$dbh = null;
+
+
+
 
  ?>
 
@@ -193,26 +225,27 @@ $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
                <ol class="commentlist">
                 <li class="depth-1">
                  <div class="avatar">
-                  <img width="50" height="50" class="avatar" src="images/avatars/user-01.jpg" alt="">
+                  
                    </div>
                     <div class="comment-content">
                      <div class="comment-info">
 
                       <!-- レビュー投稿 -->
-
-                      <cite>Itachi Uchiha</cite>
+                    <?php for ($i=0; $i < $count; $i++) { ?>
+                     <img width="50" height="50" class="avatar" src="picture_path/<?php echo $records[$i]['picture_path']; ?>" alt="">
+                      <div>nickname (<?php echo $records[$i]['nickname']; ?>)</div>
                        <div class="comment-meta">
-                        <time class="comment-time" datetime="2014-07-12T23:05">Jul 12, 2014 @ 23:05</time>
-                         <span class="sep">/</span><a class="reply" href="#">Reply</a>
+                        <a href="Profile.php?member_id=<?php echo $records[$i]['member_id']; ?>" style="font-size: 16px;"><span class="name">nickname (<?php echo $records[$i]['nickname']; ?>)</span></a>
+                        <time class="comment-time" datetime="2014-07-12T23:05"><?php echo date('Y/m/d',strtotime($records[$i]['review_created']));?></time>
                           </div>
                            </div>
                             <div class="comment-text">
-                             <p><?php echo $store_detail['review']; ?></p>
+                             <p>レビュー <br> <?php echo $records[$i]['review']; ?></p>
 
 <table cellpadding="0" cellspacing="30"><tbody>
 <tr>
 <td>
-<img src="review_picture/<?php echo $store_detail['review_picture'] ?>" width="150" height="150" alt="">
+<img src="review_picture/<?php echo $records[$i]['review_picture']; ?>" width="150" height="150" alt="">
 </td>
 <td>
 <img src="images/thumbs/salad.jpg" width="150" height="150" alt="">
@@ -229,87 +262,8 @@ $store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
                          </div>
                       </div>
                   </li>
-                  <li class="thread-alt depth-1">
-                     <div class="avatar">
-                        <img width="50" height="50" class="avatar" src="images/avatars/user-04.jpg" alt="">
-                     </div>
-                     <div class="comment-content">
-                         <div class="comment-info">
-                            <cite>John Doe</cite>
-                            <div class="comment-meta">
-                               <time class="comment-time" datetime="2014-07-12T24:05">Jul 12, 2014 @ 24:05</time>
-                               <span class="sep">/</span><a class="reply" href="#">Reply</a>
-                            </div>
-                         </div>
-                         <div class="comment-text">
-                            <p>Sumo euismod dissentiunt ne sit, ad eos iudico qualisque adversarium, tota falli et mei. Esse euismod
-                            urbanitas ut sed, et duo scaevola pericula splendide. Primis veritus contentiones nec ad, nec et
-                            tantas semper delicatissimi.</p>
-
-                            <table cellpadding="0" cellspacing="30"><tbody>
-<tr>
-<td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt="">
-</td>
-<td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt="">
-</td>
-<td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt=""/>
-</td>
-<td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt=""/>
-</td>
-</tr>
-</tbody></table>
-
-                         </div>
-                      </div>
-
-                        </li>
-                     </ul>
-                  </li>
-                  <li class="depth-1">
-                     <div class="avatar">
-                        <img width="50" height="50" class="avatar" src="images/avatars/user-02.jpg" alt="">
-                     </div>
-                     <div class="comment-content">
-                         <div class="comment-info">
-                            <cite>Shikamaru Nara</cite>
-                            <div class="comment-meta">
-                               <time class="comment-time" datetime="2014-07-12T25:15">July 12, 2014 @ 25:15</time>
-                               <span class="sep">/</span><a class="reply" href="#">Reply</a>
-                            </div>
-                         </div>
-                         <div class="comment-text">
-                            <p> break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!break a leg!</p>
-
-                            <table cellpadding="0" cellspacing="30"><tbody>
-<tr>
-<td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt="">
-</td>
-<td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt="">
-</td>
-<td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt=""/>
-</td>
-<td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt=""/>
-</td>
-</tr>
-</tbody></table>
-
-                         </div>
-                     </div>
-                  </li>
-               </ol> 
-               
-            </div> <!-- end col-full -->
-         </div> <!-- end row comments -->
-        </div> <!-- end comments-wrap -->
-
+                  <hr>
+       <?php } ?>
 
             <br>
             <br>
