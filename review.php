@@ -4,7 +4,7 @@ require('dbconnect.php');
 session_start();
 
 // var_dump($_SESSION);exit;
-$_SESSION['member_id'] = 4;
+// $_SESSION['member_id'] = 4;
 
 
 // echo "<br>";
@@ -34,18 +34,17 @@ if ($_POST['review']=='') {
 if (!isset($error)) {
 
 // 写真４枚挿入したい。
-// for ($i=0; $i < 4; $i++) {
+for ($i=0; $i < 4; $i++) {
 
-  $ext = substr($_FILES['picture']['name'], -3);
+  $ext = substr($_FILES['picture']['name'][$i], -3);
   $ext = strtolower($ext);
-
   if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-$review_pic = date('YmdHis') . $_FILES['picture']['name'];
-move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pic);
+$review_pic['picture']['name'][$i] = date('YmdHis') . $_FILES['picture']['name'][$i];
+move_uploaded_file($_FILES['picture']['tmp_name'][$i] , 'review_picture/'.$review_pic['picture']['name'][$i]);
 
 
 // echo '<pre>';
-// var_dump($_FILES);
+// var_dump($review_pic);
 // echo '</pre>';
 // exit;
 
@@ -54,16 +53,16 @@ move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pi
   // $review_pic = htmlspecialchars($_POST['picture1']);
 
 
-  $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` =? , `review_picture` =? , `review_created`=NOW() , `modified`=NOW()';
+  $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` =? , `review_picture` =? ,`review_picture2` =? ,`review_picture3` =? ,`review_picture4` =? ,`review_created`=NOW() , `modified`=NOW()';
   
-  $data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , $review_pic);
+  $data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , $review_pic[0], $review_pic[1], $review_pic[2], $review_pic[3]);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);
 
   header('Location: store_details.php?name=' . $store_info['shop_name']);
   exit();
 }
-// }
+}
  }
   }
 
@@ -219,10 +218,10 @@ move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pi
 
                        <span class="retty-btn fileinput-button fileinput-button-mypage">
                        <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
-                       <input id="fileupload_file" type="file" name="picture" multiple="">
-                       <input id="fileupload_file" type="file" name="picture2" multiple="">
-                       <input id="fileupload_file" type="file" name="picture3" multiple="">
-                       <input id="fileupload_file" type="file" name="picture4" multiple="">
+                       <input id="fileupload_file" type="file" name="picture[]" multiple="">
+                       <input id="fileupload_file" type="file" name="picture[]" multiple="">
+                       <input id="fileupload_file" type="file" name="picture[]" multiple="">
+                       <input id="fileupload_file" type="file" name="picture[]" multiple="">
 
 
                       </span>
@@ -252,10 +251,11 @@ move_uploaded_file($_FILES['picture']['tmp_name'] , 'review_picture/'.$review_pi
    ================================================== -->
 
 <footer>
+             <center>
 
                   <p class="keigo"><span>© kami 2018</span>
                   <span>by team pelo</a></span></p>
-
+            </center>
                 <!-- end footer-bottom -->
    </footer>
 

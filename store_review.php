@@ -86,9 +86,9 @@ exit;
 
 <body id="top">
 
- <header class="short-header">   
+ <header class="short-header">
 
-      <div class="gradient-block"></div>  
+      <div class="gradient-block"></div>
 
       <div class="row header-content">
 
@@ -98,14 +98,14 @@ exit;
 
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
-               <li class="has-children"><a href="home.php" title="">ホーム</a></li>   
-               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
-               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
+               <li class="has-children"><a href="home.php" title="">ホーム</a></li>
+               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>
+               <li class="current"><a href="store_review.php" title="">お店を投稿する</a></li>
 
                <li class="has-children">
                   <a href="eventItiran.php" title="">イベント一覧</a>
                </li>
-               <li class="current">
+               <li class="has-children">
                   <a href="shop_list.php" title="">お店一覧</a>
                </li>
        <li class="has-children">
@@ -184,11 +184,11 @@ exit;
 
                        <select name="category">
                        <option value="未選択">選択してください</option>
-                       <option value="比国">比国 👍</option>
+                       <option value="比国">比国🍔</option>
                        <option value="韓国">韓国🖕</option>
-                       <option value="中華">中華 </option>
-                       <option value="和食">和食</option>
-                       <option value="洋食">洋食</option>
+                       <option value="中華">中華🍜</option>
+                       <option value="和食">和食🍙</option>
+                       <option value="洋食">洋食🍕</option>
                        </select>
                        </div>
                         <br>
