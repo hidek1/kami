@@ -25,7 +25,7 @@
 	$lhm =  date("H:i", strtotime($ltime));
 
 //一旦保存
- $pre_eventname = $event['event_name'];
+ $pre_event_name = $event['event_name'];
  $pre_event_place = $event['event_place'];
  $pre_event_picture = $event['event_picture'];
  $pre_invite = $event['invite'];
@@ -40,37 +40,52 @@
 
 
 if (!empty($_POST)) {
-	if ($_POST['eventname'] == '' ){
+	if ($_POST['event_name'] == '' && $_POST['event_name'] != $pre_event_name){
 	$error['event_name'] = 'blank';
 	}
 	if ($_POST['shop_name'] == '') {
-	$error['event_place'] = 'blank';
+	$error['shop_name'] = 'blank';
 	}
-
-
-
+	if ($_POST['meeting_place'] == '') {
+	$error['meeting_place'] = 'blank';
+	}
+	
 
 //写真関係
-//写真の判定をすべてチェックでやるのか。。。悩みどころ
-	if($_FILES['event_picture_user'] =! $pre_event_picture){
-		$picture = substr($_FILES['event_picture_user']['name'], -3);
-  	$picture = strtolower($picture);
- 		if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
-		$event_picture = date('YmdHis') . $_FILES['event_picture_user']['name'];
-		move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$event_picture);}
-		if ($picture != 'jpg' || $picture != 'png' || $picture != 'gif') {
-		$error['event_picture_user'] = 'type';
-		
-		$com_event_picture = $event_picture;
+//ショップの写真の引用と開催地がshopsにある際・ない際の処理
+if(!empty($_POST['event_sp'])){
+	if ($_POST['event_sp'] == '1' ) {
+		$sql = 'SELECT `shop_pic` FROM `kami_shops` WHERE `shop_name`=? OR `shop_name_abc` = ?';
+		$data = array($_POST['shop_name'] , $_POST['shop_name']);
+		$stmt = $dbh->prepare($sql);
+		$stmt->execute($data);
+		$event_picture = $stmt->fetch(PDO::FETCH_ASSOC);
+		$event_picture = $event_picture["shop_pic"];
+		if($event_picture == false){
+		$error['kouho'] = 'kouho';
 		}
 	}
+///ユーザーが写真をアップロードしていて、拡張子の都合がいい場合、悪い際の処理
+	if ($_POST['event_sp'] == '2' && empty($_FILES['event_picture_user'] )) {
+	$error['event_picture_user'] = 'blank';
+	}
+	if ($_POST['event_sp'] == '2' && !empty($_FILES['event_picture_user'])) {
+		$picture = substr($_FILES['event_picture_user']['name'], -3);
+		$picture = strtolower($picture);
+		if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
+		$com_event_picture = date('YmdHis') . $_FILES['event_picture_user']['name'];
+		move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$com_event_picture);}
+		elseif ($picture != 'jpg' || $picture != 'png' || $picture != 'gif') {
+		$error['event_picture_user'] = 'type';
+		}
+	}
+	if ($_POST['event_sp'] == '3') {
+		$com_event_picture = $_POST['event_picture_temp'];
+	}
+}else{
+	$com_event_picture = $event_picture;
+}
 
-
-	// if ($_POST['event_picture_temp'] != '') {
-	// 	if(isset($_FILES['event_picture_user'])){
-	// 		!isset($_FILES['event_picture_user']);}
-	// 	$event_picture = $_POST['event_picture_temp'];
-	// }
 
 
 
@@ -98,7 +113,7 @@ if (!empty($_POST)) {
 	$com_meet_time = $meet_time;
 	}
 
- $com_eventname = $_POST['event_name'];
+ $com_event_name = $_POST['event_name'];
  $com_event_place = $_POST['shop_name'];
  $com_invite = $_POST['invite'];
  $com_graduation = $_POST['graduation'];
@@ -110,12 +125,11 @@ if (!empty($_POST)) {
  $com_max = $_POST['max'];
 
 	$event_edit_sql =' UPDATE  `kami_events` SET  `event_name` = ?, `starttime` = ?, `event_place` = ?, `event_picture` = ?, `invite` = ?, `graduation` = ?, `teachers` = ?, `set_price` = ?, `detail` = ?, `meeting_time` = ?, `meeting_place` = ?, `max` = ?, `min` = ?, `answer_limitation` = ?, `modified`= NOW() WHERE `event_id` = ? ';
-	$event_edit_data = array( $com_eventname, $com_starttime, $com_event_place, $com_event_picture, $com_invite, $com_graduation, $com_teachers, $com_set_price, $com_detail, $com_meet_time, $com_meeting_place, $com_max, $com_min, $com_answer_limitation,$_GET['id']);
+	$event_edit_data = array( $com_event_name, $com_starttime, $com_event_place, $com_event_picture, $com_invite, $com_graduation, $com_teachers, $com_set_price, $com_detail, $com_meet_time, $com_meeting_place, $com_max, $com_min, $com_answer_limitation,$_GET['id']);
 	$event_edit_stmt = $dbh->prepare($event_edit_sql);
 	$event_edit_stmt->execute($event_edit_data);
-
-
-
+		header('Location: eventView.php?id='.$_GET['id']);
+		exit();
 }
  }
 
@@ -258,9 +272,8 @@ window.addEventListener ?
 			<h2 style>イベント名</h2>
 		</div>
 		<div class="col-xs-8 col-md-8 col-lg-8">
-			<?php echo ("<input value = '$pre_eventname' type='text' name = 'event_name'>"); ?>
-			
-			<?php if(isset($error) && $error['event_name'] == 'blank'){ ?>
+			<?php echo("<input value = '$pre_event_name' type='text' name = 'event_name' >")?>
+			<?php if(isset($error) && $error['event_name'] == 'blank'){?>
 			<p style="color:red; font-size: 15px;">*イベント名を入力してください</p>
 			<?php } ?>
 		</div>
@@ -284,7 +297,7 @@ window.addEventListener ?
       <div class="row">
         <div class="col-lg-4">
         <!-- 入力フォーム -->
-        <input type="text" id="ac2" name="shop_name">
+        <?php echo"<input value='$pre_event_place' type='text' id='ac2' name='shop_name'>" ?>
         </div>
         <div align="right" class="col-lg-2">
         <!-- <p>自由記入欄</p> -->
@@ -305,25 +318,38 @@ window.addEventListener ?
 	<div class="col-lg-8">
 		<div class="row" style="height: 12rem;">
 			<div class="col-lg-4" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-			<p style=" margin-bottom: 0px;"><input type="checkbox" name="">お店の写真を使う</p>
+				<p style=' margin-bottom: 0px;'><input type='radio' name='event_sp' value='1'>お店の写真を使う</p>
+				<?php if(isset($error['kouho']) && $error['kouho'] == 'kouho'){ ?>
+				<p style="color:red; font-size: 15px;">*写真がありません。<br>ほかを指定してください。</p>
+				<?php } ?>
+			</div>
+			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">
+				<p style=" margin-bottom: 0px;"><input type="radio" name="event_sp" value='2'>自分で指定する</p>
+				<input id="fileupload_file" type="file" name="event_picture_user">
+				<?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'type' ){ ?>
+				<p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかのファイルを選んでください。</p>
+				<?php } ?>
+				<?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'blank' ){ ?>
+				<p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかのファイルを選んでください。</p>
+				<?php } ?>
 			</div>
 			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-				<p style=" margin-bottom: 0px;"><input type="checkbox" name="">自分で指定する</p>
-			<?php echo"<input id='fileupload_file' type='file' name='event_picture_user' value='$pre_event_picture'>" ?>
-			<?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'type'){ ?>
-			<p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかの拡張子を選んでください。</p>
-			<?php } ?>
-
-			</div>
-			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
+				<input type="radio" name="event_sp" value="3">
 				<select name="event_picture_temp" style="display: inline; padding: 50px;">
-						<option value=''>いろんな写真</option>
-						<option value="temp/graduation_party.png">卒業式</option>
-						<option value="temp/happy_birthday.png">誕生日</option>
-						<option value="temp/nomikai.png">飲み会</option>
-					</select></p>
+					<option value=''>テンプレートから選ぶ</option>
+					<option value="temp/graduation_party.png">卒業式</option>
+					<option value="temp/happy_birthday.png">誕生日</option>
+					<option value="temp/nomikai.png">飲み会</option>
+				</select>
 			</div>
 		</div>
+			<?php if(isset($error['event_sp']) && $error['event_sp'] == 'blank'){ ?>
+				<div class="row">
+					<div class="col-lg-12">
+						<p style="color:red; font-size: 15px; margin-top:0px; ">*いずれかの写真を選んでください。</p>
+					</div>
+				</div>
+			<?php } ?>
 	</div>
 </div>
 	
@@ -392,7 +418,7 @@ window.addEventListener ?
 			<h2>集合場所</h2>
 			</div>
 	<div class="col-lg-8" >
-		<?php echo("<input type='text' name='meeting_place' value = '$pre_meeting_place'>") ?>
+		<input type='text' name='meeting_place' value = "<?php echo $pre_meeting_place?>">
 		<?php if(isset($error) && $error['meeting_place'] == 'blank'){ ?>
 		<p style="color:red; font-size: 15px;">*集合場所を入力してください</p>
 		<?php } ?>
@@ -425,7 +451,7 @@ window.addEventListener ?
 				<div class="col-lg-6" style="text-align: center; padding:50px; border-radius: 15px; ">
 					<a class="button button-primary full-width" href="eventView.php?id=<?php echo $_GET['id']; ?>" style=" border-radius: 15px; ">キャンセル</a>
 				</div>
-				<div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px; "> <input class="button button-primary full-width" type="submit" value="編集を終了する" style="border-radius: 15px;" action="eventView.php?id=<?php echo $_GET['id']; ?>" >
+				<div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px; "> <input class="button button-primary full-width" type="submit" value="編集を終了する" style="border-radius: 15px;" >
 						</div>
 
 		</div>
