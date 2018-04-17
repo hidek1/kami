@@ -296,6 +296,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
          <div class="row">
 
   <?php for ($i=0; $i<count($kami_events);$i++){ ?>
+    <?php if (strtotime(date('Y-m-d H:i')) < strtotime($kami_events[$i]["answer_limitation"])) { ?>
      <?php if ($kami_events[$i]["graduation"]==0) { ?>
 
          <div class="col-xs-4">
@@ -382,6 +383,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
             </article> <!-- end article -->
 </div>
             <?php } ?>
+      <?php } ?>
    <?php } ?>
 
 
@@ -459,7 +461,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
             <a href="home.php?page=<?php echo $page +1; ?>" class="page-numbers next">Next</a>
             <?php } ?>
          </nav>
-
+　　　　　　　　　　　　　
       <!-- </div> -->
 
    </section> <!-- end bricks -->

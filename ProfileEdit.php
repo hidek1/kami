@@ -215,9 +215,9 @@ exit();
                 <center>
 
               <div class="input_file" style="width: 80%;
-                              height: 400px;">
-                     <div class="preview" style="width: 100%;
-                              height: 380px; background-size: cover;">
+                              height: 320px;">
+                     <div class="preview" style="width: 68%;
+                              height: 260px; background-size: cover; border-radius: 100%;">
                      <input accept="image/*" id="imgFile" name="files" type="file">
                     </div>
                     <p class="btn_upload">

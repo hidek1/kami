@@ -95,7 +95,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
       <div class="row header-content">
 
          <div class="logo">
-            <a href="index.html">Author</a>
+            <a href="home.php">Author</a>
          </div>
 
          <nav id="main-nav-wrap">
@@ -177,7 +177,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
          
 
   <center>
-                           <img src="picture_path/<?php echo $profile['picture_path']; ?>" width="200" height="200" alt="building">
+                           <img src="picture_path/<?php echo $profile['picture_path']; ?>" width="200" height="200" alt="building" style="border-radius: 100%;">
     </center>
 
  
@@ -265,6 +265,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                              <div class="row">
 <?php if (isset($event_joinings)) {?>
 <?php for ($i=0; $i<count($event_joinings);$i++){ ?>
+    <?php if (strtotime(date('Y-m-d H:i')) < strtotime($kami_joinings[$i]["starttime"])) { ?>
 <div class="col-xs-4 col-md-4 col-lg-4">
           <article class="brick entry format-standard animate-this">
 
@@ -297,7 +298,8 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
 
             </article> <!-- end article -->
           </div>
-<?php } ?>
+    <?php } ?>             
+  <?php } ?>
 <?php } ?>
 
 
