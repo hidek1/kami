@@ -188,11 +188,11 @@ exit();
 
                        <select name="category">
                        <option value="未選択">選択してください</option>
-                       <option value="比国">比国 👍</option>
-                       <option value="韓国">韓国🖕</option>
-                       <option value="中華">中華 </option>
-                       <option value="和食">和食</option>
-                       <option value="洋食">洋食</option>
+                       <option value="比国">比国🍔</option>
+                       <option value="韓国">韓国</option>
+                       <option value="中華">中華🍜</option>
+                       <option value="和食">和食🍙</option>
+                       <option value="洋食">洋食🍕</option>
                        </select>
                        </div>
 
