@@ -139,16 +139,16 @@
 	   });
 
 
-	   closeSearch.on('click', function(){
-	      var $this = $(this);
+	   // closeSearch.on('click', function(){
+	   //    var $this = $(this);
 	      
-	      if(body.hasClass('search-visible')){
-	         body.removeClass('search-visible');
-	         setTimeout(function(){
-	            $('.search-wrap').find('.search-field').blur();
-	         }, 100);
-	      }
-	   });
+	   //    if(body.hasClass('search-visible')){
+	   //       body.removeClass('search-visible');
+	   //       setTimeout(function(){
+	   //          $('.search-wrap').find('.search-field').blur();
+	   //       }, 100);
+	   //    }
+	   // });
 
 	   searchWrap.on('click',  function(e){
 	   	if( !$(e.target).is('.search-field') ) {   		

@@ -280,7 +280,9 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
 <?php if (!empty($_GET['event'])) { ?>
   <?php for ($i=0; $i<count($kami_search_events);$i++){ ?>
-   <?php if ($kami_search_events[$i]["graduation"]==0) { ?>
+   <?php if (strtotime(date('Y-m-d H:i')) < strtotime($kami_search_events[$i]["answer_limitation"])) { ?>
+
+    <?php if ($kami_search_events[$i]["graduation"]==0) { ?>
          <article class="brick entry format-standard animate-this">
 
                <div class="entry-thumb">
@@ -307,9 +309,11 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                      開催日: <?php echo date('n月j日' , strtotime($kami_search_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_search_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_search_events[$i]["join_search_count"]; ?>人/<?php echo $kami_search_events[$i]["max"]; ?>人<br>
+                                          <div class="text_overflow1">
+
                      詳細<br>
                      <?php echo $kami_search_events[$i]["detail"]; ?>
-
+                     </div>
                   </div>
                </div>
 
@@ -341,17 +345,22 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                      開催日: <?php echo date('n月j日' , strtotime($kami_search_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_search_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_search_events[$i]["join_search_count"]; ?>人/<?php echo $kami_search_events[$i]["max"]; ?>人<br>
+                                          <div class="text_overflow1">
+
                      詳細<br>
                      <?php echo $kami_search_events[$i]["detail"]; ?>
+                     </div>
 
                   </div>
                </div>
 
             </article> <!-- end article -->
             <?php } ?>
+        <?php } ?>
     <?php } ?>
   <?php } else { ?>
   <?php for ($i=0; $i<count($kami_events);$i++){ ?>
+    <?php if (strtotime(date('Y-m-d H:i')) < strtotime($kami_events[$i]["answer_limitation"])) { ?>
      <?php if ($kami_events[$i]["graduation"]==0) { ?>
          <article class="brick entry format-standard animate-this">
 
@@ -379,9 +388,10 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                      開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
+                    <div class="text_overflow1">
                      詳細<br>
                      <?php echo $kami_events[$i]["detail"]; ?>
-
+                    s</div>
                   </div>
                </div>
 
@@ -413,14 +423,17 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                      開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
+                     <div class="text_overflow1">
+
                      詳細<br>
                      <?php echo $kami_events[$i]["detail"]; ?>
-
+                     </div>
                   </div>
                </div>
 
             </article> <!-- end article -->
             <?php } ?>
+                <?php } ?>
 
    <?php } ?>
     <?php } ?>
@@ -476,7 +489,30 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="js/main.js"></script>
-
+   <script>$(function() {
+    var count = 250;
+ $('.text_overflow1').each(function() {
+     var thisText = $(this).text();
+      var textLength = thisText.length;
+       if (textLength > count) {
+            var showText = thisText.substring(0, count);
+            var hideText = thisText.substring(count, textLength);
+           var insertText = showText;
+          insertText += '<span class="hide">' + hideText + '</span>';
+           insertText += '<span class="omit">…</span>';
+            insertText += '<a href="" class="more">もっと見る</a>';
+            $(this).html(insertText);
+       };
+  });
+ $('.text_overflow1 .hide').hide();
+ $('.text_overflow1 .more').click(function() {
+      $(this).hide()
+          .prev('.omit').hide()
+         .prev('.hide').fadeIn();
+      return false;
+   });
+});
+</script>
 </body>
 
 </html>
