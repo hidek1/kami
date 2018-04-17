@@ -4,7 +4,6 @@ require('dbconnect.php');
 session_start();
 
 // var_dump($_SESSION);exit;
-// $_SESSION['member_id'] = 4;
 
 
 // echo "<br>";
@@ -24,6 +23,8 @@ $store_info = $stmt->fetch(PDO::FETCH_ASSOC);
 // var_dump($store_info);
 // exit();
 
+$review_pic = array();
+
 // ポスト送信された時
 if (!empty($_POST)) {
 
@@ -39,32 +40,27 @@ for ($i=0; $i < 4; $i++) {
   $ext = substr($_FILES['picture']['name'][$i], -3);
   $ext = strtolower($ext);
   if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-$review_pic['picture']['name'][$i] = date('YmdHis') . $_FILES['picture']['name'][$i];
-move_uploaded_file($_FILES['picture']['tmp_name'][$i] , 'review_picture/'.$review_pic['picture']['name'][$i]);
-
-
-// echo '<pre>';
-// var_dump($review_pic);
-// echo '</pre>';
-// exit;
-
+    $review_pic['picture']['name'][$i] = date('YmdHis') . $_FILES['picture']['name'][$i];
+    move_uploaded_file($_FILES['picture']['tmp_name'][$i] , 'review_picture/'.$review_pic['picture']['name'][$i]);
+  }
+}
 
   $store_review = htmlspecialchars($_POST['review']);
-  // $review_pic = htmlspecialchars($_POST['picture1']);
 
+// var_dump($review_pic['picture']['name']);
+// exit();
 
-  $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =? ,`member_id`=? , `review` =? , `review_picture` =? ,`review_picture2` =? ,`review_picture3` =? ,`review_picture4` =? ,`review_created`=NOW() , `modified`=NOW()';
+  $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =?, `member_id`=?, `review`=?, `review_picture`=?, `review_picture2` =?, `review_picture3`=?, `review_picture4`=?, `review_created`=NOW(), `modified`=NOW()';
   
-  $data = array($store_info['shop_id'] , $_SESSION['member_id'] , $store_review , $review_pic[0], $review_pic[1], $review_pic[2], $review_pic[3]);
+  $data = array($store_info['shop_id'], $_SESSION['id'], $store_review, $review_pic['picture']['name'][0], $review_pic['picture']['name'][1], $review_pic['picture']['name'][2], $review_pic['picture']['name'][3]);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);
 
   header('Location: store_details.php?name=' . $store_info['shop_name']);
   exit();
-}
-}
+
  }
-  }
+}
 
 
 // else {

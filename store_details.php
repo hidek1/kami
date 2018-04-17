@@ -63,7 +63,8 @@ $dbh = null;
 <!--[if (gte IE 9)|!(IE)]><!-->
 <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-<link href=“assets/css/bootstrap.css” rel=“stylesheet”>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
+
    <!--- basic page needs
    ================================================== -->
    <meta charset="utf-8">
@@ -90,7 +91,7 @@ $dbh = null;
   ================================================== -->
   <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
-
+<link rel="stylesheet" href="css/lightbox.css">
 </head>
 
 <body id="top">
@@ -163,10 +164,14 @@ $dbh = null;
          <br>
           <br>
            <div class="primary-content">
-            <h1 class="entry-title add-bottom">店名:<?php echo $store_detail['shop_name_abc']; ?>(<?php echo $store_detail['shop_name']; ?>)</h1>
+            <h1 class="entry-title add-bottom"><?php echo $store_detail['shop_name_abc']; ?>
+              <img src="shop_pic/<?php echo $store_detail['shop_pic']; ?>" width="200" height="300" style="margin-top: -2rem; margin-right: 0px;margin-bottom: -19rem;margin-left: 54rem;">
+                <br>
+                (<?php echo $store_detail['shop_name']; ?>)
+                 </h1>
              <p>ジャンル：<?php echo $store_detail['shop_type']; ?></p>
               <div>
-               <img src="shop_pic/<?php echo $store_detail['shop_pic']; ?>" width="400" height="300" >
+               
                 </div>
 
           <a href="store_review_edit.php?name=<?php echo $store_detail['shop_name']; ?>" title=""><button type="submit" class="submit button-primary">お店情報を編集する</button></a>
@@ -203,7 +208,9 @@ $dbh = null;
 
 <div class="slider">
 <div>
-<img src="review_picture/<?php echo $store_detail['review_picture'] ?>" alt="" style="padding: 0px 50px;">
+  <a href="review_picture/<?php echo $store_detail['review_picture'] ?>" data-lightbox="sample"><img src="review_picture/<?php echo $store_detail['review_picture'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
+<!-- <a href="review_picture/<?php echo $store_detail['review_picture'] ?>" data-lightbox="abc" data-title="写真拡大"></a>
+<img src="review_picture/<?php echo $store_detail['review_picture'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"> -->
 </div>
 <div>
 <img src="images/thumbs/salad.jpg" alt="" style="padding: 0px 50px;">
@@ -245,7 +252,7 @@ $dbh = null;
 <table cellpadding="0" cellspacing="30"><tbody>
 <tr>
 <td>
-<img src="review_picture/<?php echo $records[$i]['review_picture']; ?>" width="150" height="150" alt="">
+<a href="review_picture/<?php echo $records[$i]['review_picture']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture']; ?>" width="150" height="150" alt=""></a>
 </td>
 <td>
 <img src="images/thumbs/salad.jpg" width="150" height="150" alt="">
@@ -318,7 +325,7 @@ $dbh = null;
    <script src="js/main.js"></script><link rel="stylesheet" href="slick.css">
    <script src="slick.min.js"></script>
 
-
+<script src="js/lightbox.min.js"></script>
 </body>
 
 </html>
