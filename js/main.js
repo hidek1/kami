@@ -121,7 +121,7 @@
 
    	var searchWrap = $('.search-wrap');
 	   var searchField = searchWrap.find('.search-field');
-	   var closeSearch = $('#close-search');
+	   // var closeSearch = $('#close-search');
 	   var searchTrigger = $('.search-trigger');
 	   var body = $('body');
 
@@ -138,6 +138,20 @@
 
 	   });
 
+	   $(function () {
+    //消す
+   $('.close-btn').click( function(){
+        var $target = $(this).parents('.tenkyu');
+        $target.fadeOut();
+    });
+});
+
+  $(function() {
+    $('.search-trigger').click(function(){
+        $('.tenkyu').show();
+    });
+});
+
 
 	   // closeSearch.on('click', function(){
 	   //    var $this = $(this);
@@ -145,7 +159,7 @@
 	   //    if(body.hasClass('search-visible')){
 	   //       body.removeClass('search-visible');
 	   //       setTimeout(function(){
-	   //          $('.search-wrap').find('.search-field').blur();
+	   //          $('.tenkyu').find('.search-field').blur();
 	   //       }, 100);
 	   //    }
 	   // });

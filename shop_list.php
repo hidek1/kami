@@ -262,7 +262,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
       <center>
 
       <div class="row current-cat">
-         <div class="col-full">
+         <div class="col-full" style="padding-bottom: 0;">
             <h1>お店一覧<?php 
            if(!empty($_GET['shop'])){
              echo "：";
@@ -285,12 +285,15 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
          <div class="row">
                    <div class="col-xs-2 col-md-2 col-lg-2" >
                    </div>
-                   <div class="col-xs-2 col-md-2 col-lg-2" >
-                     <div class="avatar">
-                        <img width="50" height="50" class="avatar pull-right" src="shop_pic/<?php echo $kami_search_shops[$i]['shop_pic']; ?>" alt="">
+                   <div class="col-xs-8 col-md-8 col-lg-8">
+             <div class="row">
+              <div class="" style="height: 240px; width: 1000px">
+                   <div class="col-xs-3 col-md-3 col-lg-3" >
+                     <div class="avatar" style="margin-top: 0rem;">
+                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_search_shops[$i]['shop_pic']; ?>" alt="">
                      </div>
                   </div>
-                  <div class="col-xs-6 col-md-6 col-lg-6" >
+                  <div class="col-xs-9 col-md-9 col-lg-9" >
                      <div class="comment-content">
                          <div class="comment-info">
                             <cite><a href="store_details.php?name=<?php echo $kami_search_shops[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_search_shops[$i]["shop_name_abc"]; ?>"><?php echo $kami_search_shops[$i]["shop_name_abc"]; ?>(<?php echo $kami_search_shops[$i]["shop_name"]; ?>)</a></cite>
@@ -303,6 +306,10 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
                          </div>
                       </div>
                   </div>
+              </div>
+            <hr style="padding-top: 0px; margin-top: -44px">
+            </div>
+          </div>
   <div class="col-xs-2 col-md-2 col-lg-2" >
                    </div>
                  </div>
@@ -316,12 +323,15 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
          <div class="row">
                    <div class="col-xs-2 col-md-2 col-lg-2" >
                    </div>
-                   <div class="col-xs-2 col-md-2 col-lg-2" >
-                     <div class="avatar">
-                        <img width="50" height="50" class="avatar pull-right" src="shop_pic/<?php echo $kami_shops[$i]['shop_pic']; ?>" alt="">
+            <div class="col-xs-8 col-md-8 col-lg-8">
+             <div class="row">
+              <div class="" style="height: 240px; width: 1000px">
+                   <div class="col-xs-3 col-md-3 col-lg-3">
+                     <div class="avatar" style="margin-top: 0rem;">
+                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_shops[$i]['shop_pic']; ?>" alt="">
                      </div>
                   </div>
-                  <div class="col-xs-6 col-md-6 col-lg-6" >
+                  <div class="col-xs-9 col-md-9 col-lg-9">
                      <div class="comment-content">
                          <div class="comment-info">
                             <cite><a href="store_details.php?name=<?php echo $kami_shops[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_shops[$i]["shop_name_abc"]; ?>"><?php echo $kami_shops[$i]["shop_name_abc"]; ?>(<?php echo $kami_shops[$i]["shop_name"]; ?>)</a></cite>
@@ -334,6 +344,10 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
                          </div>
                       </div>
                   </div>
+              </div>
+               <hr style="padding-top: 0px; margin-top: -44px">
+            </div>
+          </div>
   <div class="col-xs-2 col-md-2 col-lg-2" >
                    </div>
                  </div>

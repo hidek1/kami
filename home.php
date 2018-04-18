@@ -125,13 +125,14 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
    <link rel="stylesheet" href="css/home_bootstrap.css">
    <link rel="stylesheet" href="css/home_main.css">
+   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
 
    <!-- script
    ================================================== -->
    <script src="js/modernizr.js"></script>
    <script src="js/pace.min.js"></script>
-
+   
    <!-- favicons
    ================================================== -->
    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -175,7 +176,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
             </ul>
          </nav> <!-- end main-nav-wrap -->
 
-         <div class="search-wrap">
+         <div class="search-wrap tenkyu">
             
             <form role="search" method="get" class="search-form" action="search.php">
                <label>
@@ -198,6 +199,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
          </div> <!-- end search wrap -->  
 
          <div class="triggers">
+            <a class="" href="#"><i class="far fa-bell"></i></a>
             <a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
             <a class="menu-toggle" href="#"><span>Menu</span></a>
          </div> <!-- end triggers -->  
@@ -303,7 +305,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
             <!-- <div class ="container"> -->
          <!--       <div class="row">
          <div class="col-xs-10 col-md-10 col-lg-10"> -->
-            <article class="brick entry format-standard animate-this">
+            <article class="brick entry format-standard animate-this" style="background-color: white;">
 
                <div class="entry-thumb">
                   <a href="single-standard.html" class="thumb-link">
@@ -393,7 +395,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 </div>
              <div class="col-xs-3 col-md-3 col-lg-3 review" >
 
-<ol class="commentlist">
+<ol class="commentlist box17" style="padding: 30px; background-color: white;">
             <h1 class="sintyaku">新着レビュー</h1>
 
                   
@@ -410,7 +412,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                      </div>
                     </a>
                      </div>
-                      <div class="col-xs-8 col-md-8 col-lg-8">
+                      <div class="col-xs-8 col-md-8 col-lg-8" style="padding-bottom: 0;">
                     <a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a>
                     </div>
                       <div class="col-xs-2 col-md-2 col-lg-2">
@@ -517,8 +519,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
       return false;
    });
 });
-</script>
-<script>$(function() {
+$(function() {
     var count = 120;
  $('.text_overflow2').each(function() {
      var thisText = $(this).text();
@@ -541,6 +542,9 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
       return false;
    });
 });
+
+
+
 </script>
 </body>
 
