@@ -6,10 +6,31 @@ session_start();
 
 if (!empty($_POST)) {
 
-
+// お店の名前が入ってないとき
+if ($_POST['store_name_abc'] == '') {
+  $error['store_name_abc'] == 'blank';
+}
+// お店の名前が入ってないとき
  if ($_POST['store_name'] == '') {
   $error['store_name'] = 'blank';
 }
+
+// 登録するstoreのduplicate cheak!!
+if (!isset($error)) {
+
+  $sql = 'SELECT COUNT(*) AS `name_count` FROM `kami_shops` WHERE `shop_name_abc`=?';
+  $data = array($_POST['store_name_abc']);
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute($data);
+
+  $name_count = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($name_count['name_count'] >=1) {
+    $error['store_name_abc'] = 'duplicated';
+ }
+}
+
+
     if (!isset($error)) {
 
 $ext = substr($_FILES['picture']['name'],-3);
@@ -166,14 +187,20 @@ exit;
 
             <form name="cForm" id="cForm" method="post" action="" class="form-horizontal" role="form" enctype="multipart/form-data">
                  <fieldset>
-                   <?php if (isset($error) && $error == 'blank') { ?>
-                    <p class="error">なんか入れてよ！</p>
-                     <?php } ?>
+                   
 
-                       <div><h1>店名</h1></div>
+                       <div><h1>店名</h1></div><?php if (isset($error['store_name_abc']) && $error['store_name_abc'] == 'duplicated') { ?>
+                        <P class="error"><font color="red">そのお店...既にありますから〜〜</font></P>
+                     <?php } ?>
                        <div class="form-field">
                       <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
+                      <?php if (isset($error['store_name_abc']) && $error['store_name_abc'] == 'blank') { ?>
+                    <p class="error"><font color="red">なんか入れてよ！</p>
+                     <?php } ?>
                       <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
+                     <?php if (isset($error['store_name']) && $error['store_name'] == 'blank') { ?>
+                    <p class="error"><font color="red">なんか入れてよ！</p>
+                     <?php } ?>
                        </div>
 
                        <br>
@@ -181,15 +208,14 @@ exit;
                        <br>
 
                        <div><h1>ジャンル</h1>
-
-                       <select name="category">
-                       <option value="未選択">選択してください</option>
-                       <option value="比国">比国🍔</option>
-                       <option value="韓国">韓国🖕</option>
-                       <option value="中華">中華🍜</option>
-                       <option value="和食">和食🍙</option>
-                       <option value="洋食">洋食🍕</option>
-                       </select>
+                        <select name="category">
+                         <option value="未選択">選択してください</option>
+                          <option value="比国">比国🍔</option>
+                           <option value="韓国">韓国🖕</option>
+                            <option value="中華">中華🍜</option>
+                             <option value="和食">和食🍙</option>
+                              <option value="洋食">洋食🍕</option>
+                        </select>
                        </div>
                         <br>
                          <br>
