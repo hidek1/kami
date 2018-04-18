@@ -137,7 +137,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
             </form>
 
 
-            <a href="#" id="close-search" class="close-btn">Close</a>
+            <a href="#" onclick="window.location.reload();" id="close-search" class="close-btn">Close</a>
 
          </div> <!-- end search wrap -->  
 
@@ -265,7 +265,7 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
                              <div class="row">
 <?php if (isset($event_joinings)) {?>
 <?php for ($i=0; $i<count($event_joinings);$i++){ ?>
-    <?php if (strtotime(date('Y-m-d H:i')) < strtotime($kami_joinings[$i]["starttime"])) { ?>
+    <?php if (strtotime(date('Y-m-d H:i')) < strtotime($event_joinings[$i]["starttime"])) { ?>
 <div class="col-xs-4 col-md-4 col-lg-4">
           <article class="brick entry format-standard animate-this">
 

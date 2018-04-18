@@ -217,7 +217,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
             </ul>
          </nav> <!-- end main-nav-wrap -->
 
-         <div class="search-wrap">
+         <div class="search-wrap tenkyu">
             
             <form role="search" method="get" class="search-form" action="search.php">
                <label>
