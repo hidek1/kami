@@ -15,8 +15,7 @@ if ($_POST['store_name_abc'] == '') {
   $error['store_name'] = 'blank';
 }
 
-// 登録するstoreのduplicate cheak!!
-if (!isset($error)) {
+// 登録するstoreのduplicate cheak!!if (!isset($error)) {
 
   $sql = 'SELECT COUNT(*) AS `name_count` FROM `kami_shops` WHERE `shop_name_abc`=?';
   $data = array($_POST['store_name_abc']);
@@ -61,9 +60,6 @@ $stmt->execute($date);
 header('Location: store_details.php?name='.$shop_name);
 exit();
 
-}else
-header('Location:store_review.php');
-exit;
 }
 }
 
@@ -73,7 +69,7 @@ exit;
  <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="ja"> <!--<![endif]-->
 <head>
 
    <!--- basic page needs
@@ -181,14 +177,12 @@ exit;
 
           <div class="primary-content">
 
-            <h1 class="entry-title add-bottom">お店投稿</h1>  
+            <h1 class="entry-title add-bottom">お店投稿</h1>
 
             <p class="lead">新しいお店を投稿しよう！！</p> 
 
             <form name="cForm" id="cForm" method="post" action="" class="form-horizontal" role="form" enctype="multipart/form-data">
                  <fieldset>
-                   
-
                        <div><h1>店名</h1></div><?php if (isset($error['store_name_abc']) && $error['store_name_abc'] == 'duplicated') { ?>
                         <P class="error"><font color="red">そのお店...既にありますから〜〜</font></P>
                      <?php } ?>
@@ -211,7 +205,7 @@ exit;
                         <select name="category">
                          <option value="未選択">選択してください</option>
                           <option value="比国">比国🍔</option>
-                           <option value="韓国">韓国🖕</option>
+                           <option value="韓国">韓国🍺</option>
                             <option value="中華">中華🍜</option>
                              <option value="和食">和食🍙</option>
                               <option value="洋食">洋食🍕</option>
@@ -222,14 +216,24 @@ exit;
                           <br>
 
                       <!-- 写真 -->
-                      <span class="retty-btn fileinput-button fileinput-button-mypage">
-                      <div class="add_files"><h1>写真（外観１枚）</h1></div>
-                       <input id="fileupload_file" type="file" name="picture" multiple=""></span>
+                      <h1>写真</h1>
+                       <p class="btn_upload">画像ファイルを選択してアップロード</p>
+                      <div class="input_file" style="width: 80%;height: 320px;">
+                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
+                         <input accept="image/*" id="imgFile" type="file" name="picture">
+                        </div>
+                       </div>
+
+
+
+                      <!-- <div class="add_files"><h1>写真（外観１枚）</h1>
+                       <div class="preview"><input id="fileupload_file" type="file" name="picture" accept="image/*"></div>
+                      </div> -->
 
                       <br>
                        <br>
                         <br>
-                        
+
                       <!-- 地図 -->
                       <div><h1>地図</h1></div>
 
@@ -275,7 +279,23 @@ exit;
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="http://maps.google.com/maps/api/js?v=3.13&amp;sensor=false"></script>
-   <script src="js/main.js"></script>  
+   <script src="js/main.js"></script>
+   <script>$('#imgFile').change(
+    function () {
+        if (!this.files.length) {
+            return;
+        }
+
+        var file = $(this).prop('files')[0];
+        var fr = new FileReader();
+        $('.preview').css('background-image', 'none');
+        fr.onload = function() {
+            $('.preview').css('background-image', 'url(' + fr.result + ')');
+        }
+        fr.readAsDataURL(file);
+        $(".preview img").css('opacity', 0);
+    }
+   );</script>
 
 </body>
 
