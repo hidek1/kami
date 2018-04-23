@@ -2,9 +2,11 @@
 //今後
 	//写真の表示
 	//興味ユーザーの作成
-	require('dbconnect.php');
-	session_start();
+require('function.php');
+  login_check();
 
+require('dbconnect.php');
+require('tsuuti.php');
 //詳細を見るイベントの表示
 
 
@@ -194,72 +196,10 @@ if ($store_detail == true) {
 
 
 
-   <!-- header 
-   ================================================== -->
- <!-- header 
-   ================================================== -->
-   <header class="short-header">   
-
-      <div class="gradient-block"></div>  
-
-      <div class="row header-content">
-
-         <div class="logo">
-            <a href="index.html">Author</a>
-         </div>
-
-         <nav id="main-nav-wrap">
-            <ul class="main-navigation sf-menu">
-               <li class="has-children"><a href="home.php" title="">ホーム</a></li>   
-               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
-               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
-
-               <li class="has-children">
-                  <a href="eventItiran.php" title="">イベント一覧</a>
-               </li>
-               <li class="has-children">
-                  <a href="shop_list.php" title="">お店一覧</a>
-               </li>
-       <li class="has-children">
-                  <a href="Profile.php" title="">マイページ</a>
-               </li>
-                <li class="has-children">
-                  <a href="logout.php" title="">ログアウト</a>
-               </li>
-            </ul>
-         </nav> <!-- end main-nav-wrap -->
-
-         <div class="search-wrap">
-            
-            <form role="search" method="get" class="search-form" action="search.php">
-               <label>
-                  <span class="hide-content">Search for:</span>
-                             <select class="search-select" name="list">
-        <option value="event" selected>イベントを探す</option>
-        <option value="omise">店を探す</option>
-       
-      </select>
-                  <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
-
-               </label>
-               <input type="submit" class="search-submit" value="Search">
-
-            </form>
-
-
-            <a href="#" id="close-search" class="close-btn">Close</a>
-
-         </div> <!-- end search wrap -->  
-
-         <div class="triggers">
-            <a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
-            <a class="menu-toggle" href="#"><span>Menu</span></a>
-         </div> <!-- end triggers -->  
-         
-      </div>   
-
-      
-   </header> <!-- end header -->
+ 
+<?php 
+require('header.php');
+?>
 
    <!-- content
    ================================================== -->
@@ -536,6 +476,7 @@ if ($store_detail == true) {
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="js/main.js"></script>
+   <script src="js/modal.js"></script>
    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript" src="js/slick-1.8.0/slick/slick.min.js"></script>
