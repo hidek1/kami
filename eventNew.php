@@ -5,7 +5,7 @@ require('dbconnect.php');
 
 
 if(!empty($_POST)){
-
+//空白時のエラー	
 	if($_POST['event_name'] == '' ){
 	$error['event_name'] = 'blank';
 	}
@@ -33,10 +33,12 @@ if(!empty($_POST)){
 	if($_POST['atime'] == '' ){
 	$error['atime'] = 'blank';
 	}
+/////
 
+//空白時の初期値
  if (!isset($_POST['teachers'])) {$_POST['teachers'] = 0;}
  if (!isset($_POST['graduation'])) {$_POST['graduation'] = 0;}
-
+/////
 
 //写真関係
 //ショップの写真の引用と開催地がshopsにある際・ない際の処理
@@ -52,7 +54,7 @@ if(!empty($_POST['event_sp'])){
 		$error['kouho'] = 'kouho';
 		}
 	}
-///ユーザーが写真をアップロードしていて、拡張子の都合がいい場合、悪い際の処理
+//ユーザーが写真をアップロードしていて、拡張子の都合がいい場合、悪い際の処理
 	if ($_POST['event_sp'] == '2' && empty($_FILES['event_picture_user'])) {
 	$error['event_picture_user'] = 'blank';
 	}
@@ -73,6 +75,7 @@ if(!empty($_POST['event_sp'])){
 		$error['event_sp'] = 'blank';
 	}
 }
+/////
 
 //集合時間の指定
 //直接時間指定された場合
@@ -89,14 +92,15 @@ if(!empty($_POST['event_sp'])){
 	}
 	$starttime = $_POST['edate'] ." ". $_POST['etime'];
 	$answer_limitation = $_POST['adate'] ." ". $_POST['atime'];
+/////
 
 //イベント詳細へのジャンプ用
 	$jump_sql='SELECT `event_id` FROM `kami_events`ORDER BY `created` DESC LIMIT 1';
 	$stmt = $dbh->prepare($jump_sql);
 	$stmt->execute();
 	$jump =$stmt -> fetch(PDO::FETCH_ASSOC);
-
 	$_GET['id'] =  intval($jump['event_id']) + 1;
+/////
 
 	if (!isset($error)) {
 //イベント作成SQL
@@ -104,15 +108,16 @@ if(!empty($_POST['event_sp'])){
 	$event_make_data = array( $_SESSION['id'], $_POST['event_name'], $starttime, $_POST['shop_name'], $event_picture, $_POST['invite'], $_POST['graduation'], $_POST['teachers'], $_POST['set_price'], $_POST['detail'], $meet_time, $_POST['meeting_place'], $_POST['max'], $_POST['min'], $answer_limitation);
 	$event_make_stmt = $dbh->prepare($event_make_sql);
 	$event_make_stmt->execute($event_make_data);
+/////
 
 //イベント作成後、作成者を参加に指定
 	$update_1_sql = 'INSERT INTO `kami_event_joinings` SET `member_id`=? , `event_id`=? ,`status` = 1 , `created` = NOW() , `modified` = NOW()';
 	$update_1_data = array($_SESSION['id'],$_GET['id'],);
 	$stmt = $dbh->prepare($update_1_sql);
-	$stmt->execute($update_1_data); 
+	$stmt->execute($update_1_data);
+/////
 
 		header('Location: eventView.php?id='.$_GET['id']);
-
 			exit;
 	}
 }
@@ -395,14 +400,12 @@ if(!empty($_POST['event_sp'])){
 		<div class="col-lg-4" >
 			<h2>集合場所</h2>
 			</div>
-	<div class="col-lg-8" >
-		<input type="text" name="meeting_place" >
-		<?php if(isset($error['meeting_place']) && $error['meeting_place'] == 'blank'){ ?>
-		<p style="color:red; font-size: 15px;">*集合場所を入力してください</p>
-		<?php } ?>
-
+			<div class="col-lg-8" >
+			<input type="text" name="meeting_place" >
+			<?php if(isset($error['meeting_place']) && $error['meeting_place'] == 'blank'){ ?>
+			<p style="color:red; font-size: 15px;">*集合場所を入力してください</p>
+			<?php } ?>
 			</div>
-		
 	</div>
 
 
@@ -436,7 +439,8 @@ if(!empty($_POST['event_sp'])){
 				<div class="col-lg-6" style="text-align: center; padding:50px; border-radius: 15px; ">
 					<a class="button button-primary full-width" href="index.html" style=" border-radius: 15px; ">キャンセル</a>
 				</div>
-				<div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px; "> <input class="button button-primary full-width" type="submit" value="作成する" style="border-radius: 15px;" >
+				<div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px; ">
+					<input class="button button-primary full-width" type="submit" value="作成する" style="border-radius: 15px;" >
 					</div>
 
 		</div>
