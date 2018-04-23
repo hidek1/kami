@@ -26,12 +26,27 @@ $data = array($store_detail['shop_id']);
 $stmt = $dbh->prepare($sql);
 $stmt->execute($data);
 
+// 写真表示（４枚全部入っている時と、入っていない時）  
 $records = array();
+$pictures = array();
 while (true) {
   $record = $stmt->fetch(PDO::FETCH_ASSOC);
+  if($record["review_picture"] != ''){
+  $pictures[] = $record["review_picture"];
+  }
+  if($record["review_picture2"] != ''){
+  $pictures[] = $record["review_picture2"];
+  }
+  if($record["review_picture3"] != ''){
+  $pictures[] = $record["review_picture3"];
+  }
+  if($record["review_picture4"] != ''){
+  $pictures[] = $record["review_picture4"];
+  }
   if($record == false){
     break;
-  }$records[] = $record;
+  }
+  $records[] = $record;
 }
 
 // echo '<pre>';
@@ -39,20 +54,34 @@ while (true) {
 // echo '</pre>';
 // exit;
 
-// foreach ($records as $record_user) {
-//   // member_idを元にユーザーの情報を取得
-//   $sql = 'SELECT * FROM `kami_members` where `member_id`=?';
-//   $data = array($record_user['member_id']);
+$count = count($records);
+// $dbh = null;
+
+// echo '<br>';echo '<br>';echo '<br>';echo '<br>';
+// echo '<pre>';
+// var_dump($records);
+// echo '</pre>';
+// echo '<pre>';
+// var_dump($pictures);
+// echo '</pre>';
+// shop_id を元に写真情報を取得してみる。
+
+//   $pictures = array();
+//   $sql = 'SELECT * FROM `kami_reviews` WHERE `review_picture`=?' ;
+//   $data = array($all_picture['review_picture']);
 //   $stmt = $dbh->prepare($sql);
 //   $stmt->execute($data);
+//   $picture = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// while (true) {
 //   $record = $stmt->fetch(PDO::FETCH_ASSOC);
-//   $records[] = $record;
+//   if($record == false){
+//     break;
+//   }$records[] = $record;
 // }
 
-$count = count($records);
-$dbh = null;
-
-
+//   $pictures[] = $picture;
+// }
 
 
  ?>
@@ -61,7 +90,7 @@ $dbh = null;
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<html class="no-js" lang="ja"> <!--<![endif]-->
 <head>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
 
@@ -163,16 +192,14 @@ $dbh = null;
         <section>
          <br>
           <br>
+          <img src="shop_pic/<?php echo $store_detail['shop_pic']; ?>" width="200" height="300" style="margin-top: -2rem; margin-right: 0px;margin-bottom: -19rem;margin-left: 6.3rem;">
            <div class="primary-content">
-            <h1 class="entry-title add-bottom"><?php echo $store_detail['shop_name_abc']; ?>
-              <img src="shop_pic/<?php echo $store_detail['shop_pic']; ?>" width="200" height="300" style="margin-top: -2rem; margin-right: 0px;margin-bottom: -19rem;margin-left: 54rem;">
-                <br>
-                (<?php echo $store_detail['shop_name']; ?>)
-                 </h1>
+            <h1 class="entry-title add-bottom" style="margin-left: 26rem;"><?php echo $store_detail['shop_name_abc']; ?>
+             <br>
+              (<?php echo $store_detail['shop_name']; ?>)
+            </h1>
              <p>ジャンル：<?php echo $store_detail['shop_type']; ?></p>
-              <div>
-               
-                </div>
+
 
           <a href="store_review_edit.php?name=<?php echo $store_detail['shop_name']; ?>" title=""><button type="submit" class="submit button-primary">お店情報を編集する</button></a>
            <a href="review.php?name=<?php echo $store_detail['shop_name']; ?>">
@@ -206,19 +233,31 @@ $dbh = null;
 <br>
 <br>
 
+
 <div class="slider">
-<div>
-  <a href="review_picture/<?php echo $store_detail['review_picture'] ?>" data-lightbox="sample"><img src="review_picture/<?php echo $store_detail['review_picture'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
+    <?php foreach ($pictures as $pic) { ?>
+  <div>
+  <a href="review_picture/<?php echo $pic?>" data-lightbox="sample"><img src="review_picture/<?php echo $pic?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
+  </div>
+    <?php } ?>
+</div>
+  <?php /* ?>
+
 <!-- <a href="review_picture/<?php echo $store_detail['review_picture'] ?>" data-lightbox="abc" data-title="写真拡大"></a>
 <img src="review_picture/<?php echo $store_detail['review_picture'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"> -->
 </div>
 <div>
-<img src="images/thumbs/salad.jpg" alt="" style="padding: 0px 50px;">
+<a href="review_picture/<?php echo $store_detail['review_picture2'] ?>" data-lightbox="sample"><img src="review_picture/<?php echo $store_detail['review_picture2'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
 </div>
 <div>
-<img src="images/thumbs/salad.jpg" alt="" style="padding: 0px 50px;">
+<a href="review_picture/<?php echo $store_detail['review_picture3'] ?>" data-lightbox="sample"><img src="review_picture/<?php echo $store_detail['review_picture3'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
+</div>
+<div>
+<a href="review_picture/<?php echo $store_detail['review_picture4'] ?>" data-lightbox="sample"><img src="review_picture/<?php echo $store_detail['review_picture4'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
 </div>
 </div>
+<?php */ ?>
+
 
 
 
@@ -231,13 +270,14 @@ $dbh = null;
               <div class="col-full">
                <ol class="commentlist">
                 <li class="depth-1">
-                 <div class="avatar">
+                 <!-- <div class="avatar">
                   
-                   </div>
+                   </div> -->
                     <div class="comment-content">
                      <div class="comment-info">
 
                       <!-- レビュー投稿 -->
+
                     <?php for ($i=0; $i < $count; $i++) { ?>
                      <img width="50" height="50" class="avatar" src="picture_path/<?php echo $records[$i]['picture_path']; ?>" alt="">
                       <div>nickname (<?php echo $records[$i]['nickname']; ?>)</div>
@@ -251,18 +291,26 @@ $dbh = null;
 
 <table cellpadding="0" cellspacing="30"><tbody>
 <tr>
+<?php if ($records[$i]['review_picture'] != ''): ?>
 <td>
 <a href="review_picture/<?php echo $records[$i]['review_picture']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture']; ?>" width="150" height="150" alt=""></a>
 </td>
+<?php endif ?>
+<?php if ($records[$i]['review_picture2'] != ''): ?>
 <td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt="">
+<a href="review_picture/<?php echo $records[$i]['review_picture2']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture2']; ?>" width="150" height="150" alt=""></a>
 </td>
+<?php endif ?>
+<?php if ($records[$i]['review_picture3'] != ''): ?>
 <td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt=""/>
+<a href="review_picture/<?php echo $records[$i]['review_picture3']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture3']; ?>" width="150" height="150" alt=""></a>
 </td>
+<?php endif ?>
+<?php if ($records[$i]['review_picture4'] != ''): ?>
 <td>
-<img src="images/thumbs/salad.jpg" width="150" height="150" alt=""/>
+<a href="review_picture/<?php echo $records[$i]['review_picture4']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture4']; ?>" width="150" height="150" alt=""></a>
 </td>
+<?php endif ?>
 </tr>
 </tbody></table>
 
@@ -303,8 +351,6 @@ $dbh = null;
    </section> <!-- end content -->
 
 
-
-   
    <!-- footer
    ================================================== -->
 
@@ -325,7 +371,14 @@ $dbh = null;
    <script src="js/main.js"></script><link rel="stylesheet" href="slick.css">
    <script src="slick.min.js"></script>
 
-<script src="js/lightbox.min.js"></script>
+   <script src="js/lightbox.min.js"></script>
+   <script src="js/lightbox-plus-jquery.min.js"></script>
+   <script>
+    lightbox.option({
+      'resizeDuration': 200,
+      'wrapAround': true
+    })
+</script>
 </body>
 
 </html>

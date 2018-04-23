@@ -51,7 +51,7 @@ for ($i=0; $i < 4; $i++) {
 // exit();
 
   $sql = 'INSERT INTO `kami_reviews` SET `shop_id` =?, `member_id`=?, `review`=?, `review_picture`=?, `review_picture2` =?, `review_picture3`=?, `review_picture4`=?, `review_created`=NOW(), `modified`=NOW()';
-  
+
   $data = array($store_info['shop_id'], $_SESSION['id'], $store_review, $review_pic['picture']['name'][0], $review_pic['picture']['name'][1], $review_pic['picture']['name'][2], $review_pic['picture']['name'][3]);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);
@@ -212,15 +212,45 @@ for ($i=0; $i < 4; $i++) {
                        <br>
                        <br>
 
-                       <span class="retty-btn fileinput-button fileinput-button-mypage">
-                       <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
-                       <input id="fileupload_file" type="file" name="picture[]" multiple="">
-                       <input id="fileupload_file" type="file" name="picture[]" multiple="">
-                       <input id="fileupload_file" type="file" name="picture[]" multiple="">
-                       <input id="fileupload_file" type="file" name="picture[]" multiple="">
+                       <!-- <span class="retty-btn fileinput-button fileinput-button-mypage"> -->
+                        <!-- <div class="input_file">
+                         <div class="preview">
+                          <input accept="image/*" id="imgFile" type="file">
+                        </div>
+                        <p class="btn_upload">画像ファイルを選択してアップロード
+                        </p>
+                        </div> -->
+                        <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
+                        <table border="1">
+                         <tr>
+                          <td>
+                            <div class="input_file" style="width: 80%;height: 320px;">
+                             <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
+                             <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple="">
+                           </td>
+                           <td><div class="input_file" style="width: 80%;height: 320px;">
+                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
+                       <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple=""></td>
+                         </tr>
+                          <tr>
+                           <td><div class="input_file" style="width: 80%;height: 320px;">
+                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
+                       <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple=""></td><td><div class="input_file" style="width: 80%;height: 320px;">
+                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
+                       <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple=""></td>
+                          </tr>
+                         </table>
 
-
-                      </span>
+                       <!-- <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
+                       <div class="input_file" style="width: 80%;height: 320px;">
+                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
+                       <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple="">
+                       <input accept="image/*" id="fileupload_file" type="file" name="picture[]" multiple="">
+                       <input accept="image/*" id="fileupload_file" type="file" name="picture[]" multiple="">
+                       <input accept="image/*" id="fileupload_file" type="file" name="picture[]" multiple=""> -->
+                     <!--   </span> -->
+                     <!-- </div>
+                   </div> -->
 
                        <br>
                        <br>
@@ -261,6 +291,22 @@ for ($i=0; $i < 4; $i++) {
    <script src="js/plugins.js"></script>
    <script src="http://maps.google.com/maps/api/js?v=3.13&amp;sensor=false"></script>
    <script src="js/main.js"></script>
+   <script>$('#imgFile').change(
+    function () {
+        if (!this.files.length) {
+            return;
+        }
+
+        var file = $(this).prop('files')[0];
+        var fr = new FileReader();
+        $('.preview').css('background-image', 'none');
+        fr.onload = function() {
+            $('.preview').css('background-image', 'url(' + fr.result + ')');
+        }
+        fr.readAsDataURL(file);
+        $(".preview img").css('opacity', 0);
+    }
+   );</script>
 
 </body>
 
