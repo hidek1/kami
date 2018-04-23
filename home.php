@@ -2,8 +2,8 @@
 require('function.php');
   login_check();
 
- require('dbconnect.php');
-
+require('dbconnect.php');
+require('tsuuti.php');
   // ページング機能
   // 空の変数を用意
   $page = '';
@@ -42,13 +42,11 @@ require('function.php');
   $st = ($page - 1) * $view_cnt;
 
   $page_num = 10;            // 表示ページ数
-$page_end = $page_num - 1; // 末ベージ数計算用
-$page_pos = 5;             // 該当ページ表示位置
+  $page_end = $page_num - 1; // 末ベージ数計算用
+  $page_pos = 5;             // 該当ページ表示位置
 
-
-
-$start = 0; // 開始ページ
-$end = 0;   // 末ページ
+  $start = 0; // 開始ページ
+  $end = 0;   // 末ページ
 
 // 開始ページの計算
 if ($all_view_cnt <= $page_num) {
@@ -121,6 +119,8 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
    ================================================== -->
    <link rel="stylesheet" href="css/home_base.css">
    <link rel="stylesheet" href="css/vendor.css">  
+   <link rel="stylesheet" href="css/modal.css">  
+
    
 
    <link rel="stylesheet" href="css/home_bootstrap.css">
@@ -132,6 +132,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
    ================================================== -->
    <script src="js/modernizr.js"></script>
    <script src="js/pace.min.js"></script>
+
    
    <!-- favicons
    ================================================== -->
@@ -142,72 +143,9 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
 <body id="top">
 
-    <!-- header 
-   ================================================== -->
-   <header class="short-header">   
-
-      <div class="gradient-block"></div>  
-
-      <div class="row header-content">
-
-         <div class="logo">
-            <a href="index.html">Author</a>
-         </div>
-
-         <nav id="main-nav-wrap">
-            <ul class="main-navigation sf-menu">
-               <li class="current"><a href="home.php" title="">ホーム</a></li>   
-               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
-               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
-
-               <li class="has-children">
-                  <a href="eventItiran.php" title="">イベント一覧</a>
-               </li>
-               <li class="has-children">
-                  <a href="shop_list.php" title="">お店一覧</a>
-               </li>
-       <li class="has-children">
-                  <a href="Profile.php" title="">マイページ</a>
-               </li>
-               <li class="has-children">
-                  <a href="logout.php" title="">ログアウト</a>
-               </li>
-               
-            </ul>
-         </nav> <!-- end main-nav-wrap -->
-
-         <div class="search-wrap tenkyu">
-            
-            <form role="search" method="get" class="search-form" action="search.php">
-               <label>
-                  <span class="hide-content">Search for:</span>
-                             <select class="search-select" name="list">
-        <option value="event" selected>イベントを探す</option>
-        <option value="omise">店を探す</option>
-       
-      </select>
-                  <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
-
-               </label>
-               <input type="submit" class="search-submit" value="Search">
-
-            </form>
-
-
-            <a href="#" id="close-search" class="close-btn">Close</a>
-
-         </div> <!-- end search wrap -->  
-
-         <div class="triggers">
-            <a class="" href="#"><i class="far fa-bell"></i></a>
-            <a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
-            <a class="menu-toggle" href="#"><span>Menu</span></a>
-         </div> <!-- end triggers -->  
-         
-      </div>   
-
-      
-   </header> <!-- end header -->
+<?php 
+require('header.php');
+?>
 
 
 
@@ -238,7 +176,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                                     <li><a href="#" >team pelo</a></li>           
                                  </ul> 
 
-                                 <h1 class="slide-title"><a href="single-standard.html" title="">セブでの食事を楽しくするサービス</a></h1> 
+                                 <h1 class="slide-title"><a href="#" title="">セブでの食事を楽しくするサービス</a></h1> 
                               </div>                                
                         
                            </div>
@@ -257,7 +195,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                                     <li><a href="#">team pelo</a></li>
                                  </ul> 
 
-                                 <h1 class="slide-title"><a href="single-standard.html" title="">行きたいお店がすぐに見つかる</a></h1>
+                                 <h1 class="slide-title"><a href="#" title="">行きたいお店がすぐに見つかる</a></h1>
                               </div>                                         
                         
                            </div>
@@ -276,7 +214,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                                     <li><a href="#" class="author">team pelo</a></li>               
                                  </ul> 
 
-                                 <h1 class="slide-title"><a href="single-standard.html" title="">あなたの食事をマッチング</a></h1>
+                                 <h1 class="slide-title"><a href="#" title="">あなたの食事をマッチング</a></h1>
                               </div>
 
                            </div>
@@ -308,7 +246,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
             <article class="brick entry format-standard animate-this" style="background-color: white;">
 
                <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
+                  <a href="#" class="thumb-link">
                      <img src="event_picture/<?php echo $kami_events[$i]['event_picture'] ?>" alt="building">             
                   </a>
                </div>
@@ -351,7 +289,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
             <article class="brick entry format-standard animate-this" style="background-color: #F5A9A9;">
 
                <div class="entry-thumb">
-                  <a href="single-standard.html" class="thumb-link">
+                  <a href="#" class="thumb-link">
                      <img src="event_picture/<?php echo $kami_events[$i]["event_picture"]; ?>" alt="building">             
                   </a>
                </div>
@@ -386,17 +324,14 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 </div>
             <?php } ?>
       <?php } ?>
-   <?php } ?>
+    <?php } ?>
 
-
-         
-    <!-- </div> end colサイズ指定  -->
    </div>
 </div>
-             <div class="col-xs-3 col-md-3 col-lg-3 review" >
 
-<ol class="commentlist box17" style="padding: 30px; background-color: white;">
-            <h1 class="sintyaku">新着レビュー</h1>
+<div class="col-xs-3 col-md-3 col-lg-3 review" >
+   <ol class="commentlist box17" style="padding: 30px; background-color: white;">
+      <h1 class="sintyaku">新着レビュー</h1>
 
                   
 
@@ -425,7 +360,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
                            
 
                            <div class="comment-meta">
-                              <time class="comment-time" datetime="2014-07-12T25:15">July 12, 2014 @ 25:15</time>
+                              <time class="comment-time"><?php echo $kami_reviews[$i]["review_created"]; ?></time>
                             
                            </div>
                         </div>
@@ -448,19 +383,19 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
     <!-- <div class="row"> -->
          
          
-               <nav class="pagination">
+          <nav class="pagination">
             <?php if($page == 1) { ?>
-            <span class="page-numbers prev inactive">Prev</span>
+             <span class="page-numbers prev inactive">Prev</span>
             <?php } else { ?>
-            <a href="home.php?page=<?php echo $page -1; ?>"><span class="page-numbers prev">Prev</span></a>
+             <a href="home.php?page=<?php echo $page -1; ?>"><span class="page-numbers prev">Prev</span></a>
             <?php } ?>
             <?php for($start; $start <= $end; $start++): ?>
-            <li <?= ($start == $page)? 'class="current"' : '' ?>><a href="home.php?page=<?= ($start) ?>" class="page-numbers"><?= $start ?></a></li>
+             <li <?= ($start == $page)? 'class="current"' : '' ?>><a href="home.php?page=<?= ($start) ?>" class="page-numbers"><?= $start ?></a></li>
             <?php endfor; ?>
             <?php if($page == $all_view_cnt) { ?>
-            <span class="page-numbers inactive">Next</span>
+              <span class="page-numbers inactive">Next</span>
             <?php } else {  ?>
-            <a href="home.php?page=<?php echo $page +1; ?>" class="page-numbers next">Next</a>
+              <a href="home.php?page=<?php echo $page +1; ?>" class="page-numbers next">Next</a>
             <?php } ?>
          </nav>
 　　　　　　　　　　　　　
@@ -496,7 +431,31 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
    <script src="js/jquery.appear.js"></script>
    <script src="js/main.js"></script>
    <script src="js/bootstrap.js"></script>
-   <script>$(function() {
+   <script src="js/modal.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
+   <script>
+
+     Push.Permission.request();
+ 
+<?php for ($i=0; $i<count($tsuuti_events);$i++){ ?>
+
+  <?php if ($tsuuti_events[$i]['min']<$tsuuti_events[$i]['join_count']): ?>
+    Push.create('KAMI', {
+　　body: 'イベント <?php  
+  echo $tsuuti_events[$i]["event_name"] ?>が成立しました！',
+　　icon: 'images/logo1.png',
+　　timeout: 8000, // 通知が消えるタイミング
+　　vibrate: [100, 100, 100], // モバイル端末でのバイブレーション秒数
+　　   onClick: function() {
+　　　　   // 通知がクリックされた場合の設定
+　　　　    console.log(this);
+　　           }
+  });
+ <?php endif ?>
+<?php } ?>
+
+
+    $(function() {
     var count = 250;
  $('.text_overflow1').each(function() {
      var thisText = $(this).text();
@@ -542,10 +501,8 @@ $(function() {
       return false;
    });
 });
-
-
-
 </script>
+
 </body>
 
 </html>

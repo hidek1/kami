@@ -1,5 +1,37 @@
 <?php
-session_start();
+//Facebook SDK for PHP の src/ にあるファイルを
+  //サーバ内の適当な場所にコピーしておく
+  require_once('src/facebook.php');
+  $config = array(
+    'appId'  => '[209031146358029]',
+    'secret' => '[fe9acccd30b2be6b18fd53240aaadee0]'
+  );
+  $facebook = new Facebook($config);
+  //ログイン済みの場合はユーザー情報を取得
+  if ($facebook->getUser()) {
+    try {
+      $user = $facebook->api('/me','GET');
+    } catch(FacebookApiException $e) {
+      //取得に失敗したら例外をキャッチしてエラーログに出力
+      error_log($e->getType());
+      error_log($e->getMessage());
+    }
+  }
+?>
+<html>
+  <body>
+  <?php
+    if (isset($user)) {
+      //ログイン済みでユーザー情報が取れていれば表示
+      echo '<pre>';
+      print_r($user);
+      echo '</pre>';
+    } else {
+      //未ログインならログイン URL を取得してリンクを出力
+      $loginUrl = $facebook->getLoginUrl();
+      echo '<a href="' . $loginUrl . '">Login with Facebook</a>';
+    }
+
 require('dbconnect.php');
 
 
@@ -112,13 +144,19 @@ exit();
 
           <button type="" class="main-navigation button-primary" style="margin-top: 35px">ログイン</button>
 
+   <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
 
 
-</fieldset>
-</form>
-</section>
-</div>
-</div>
-</section>
-</body>
+
+
+
+                    </fieldset>
+
+               </form>
+            </section>
+     </div>
+     </div>
+    </section>
+
+    </body>
 </html>
