@@ -15,19 +15,48 @@
 	$stmt->execute($event_data);
 	$event =$stmt -> fetch(PDO::FETCH_ASSOC);
 
-//レビュー関係の取得	
-	$reviwes = array();
-		$sql = 'SELECT * FROM `kami_reviews` LEFT JOIN `kami_shops` ON `kami_reviews`.`shop_id`=`kami_shops`.`shop_id` WHERE `shop_name`=? OR `shop_name_abc` = ?';
-		$data = array($event['event_place'] , $event['event_place']);
-		$stmt = $dbh->prepare($sql);
-		$stmt->execute($data);
-		while (true) {
-			$review = $stmt->fetch(PDO::FETCH_ASSOC);
-			if ($review == false){
-				break;
-			$reviews[] = $review;
-			}
-		}
+//レビュー関係の取得
+	$sql = 'SELECT * FROM `kami_shops` WHERE `shop_name`=? or `shop_name_abc`=?';
+	//本番用
+	$data = array($event['event_place'],$event['event_place']);
+	//練習
+	// $data = array('jfさlkjfdさljf','ふぁsfだshfはskふぁhds');
+	$stmt = $dbh->prepare($sql);
+	$stmt->execute($data);
+	$store_detail = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($store_detail == true) {
+
+	$sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=? ORDER BY `review_created` DESC';
+	$data = array($store_detail['shop_id']);
+	$stmt = $dbh->prepare($sql);
+	$stmt->execute($data);
+	$records = array();
+	$pictures = array();
+	while (true) {
+  $record = $stmt->fetch(PDO::FETCH_ASSOC);
+  if($record["review_picture"] != ''){
+  $pictures[] = $record["review_picture"];
+  }
+  if($record["review_picture2"] != ''){
+  $pictures[] = $record["review_picture2"];
+  }
+  if($record["review_picture3"] != ''){
+  $pictures[] = $record["review_picture3"];
+  }
+  if($record["review_picture4"] != ''){
+  $pictures[] = $record["review_picture4"];
+  }
+  if($record == false){
+		break;
+  }
+  $records[] = $record;
+	}
+	}
+	if($store_detail == false ){
+  $caution = 'no_pic' ;
+}
+
+
 
 
 //イベントの参加者+自分の参加/状況取得
@@ -130,7 +159,7 @@
    <!--- basic page needs
    ================================================== -->
 	<meta charset="utf-8">
-	<title>イベントの作成</title>
+	<title>イベントの詳細</title>
 	<meta name="description" content="">  
 	<meta name="author" content="">
 
@@ -236,6 +265,13 @@
    ================================================== -->
 <!-- <div id="content-wrap" class="styles"> -->
 <!-- created time & edit button [right top] -->
+<?php if ($event['max'] == 0 || count($attends) >= $event['min']): ?>
+	<style>
+		body{
+			background-color: #e0ffff;
+		}
+	</style>
+<?php endif; ?>
 <div class ="container" style="padding-top: 200px;">
 	<div class="row">
 		<div class="col-xs-3 col-md-3 col-lg-3" >
@@ -247,7 +283,8 @@
 		<div class="col-xs-6 col-md-6 col-lg-6" >
 			<h2>
 				MIN <?php echo $event['min']; ?>
-				MIN <?php echo $event['max']; ?>
+
+				MAX <?php echo $event['max']; ?>
 				<br>@<?php echo $event['invite'] ;?>
 			</h2>
 		</div>
@@ -273,6 +310,13 @@
 
 <!-- main info about the event [top-block]-->
 <div class ="container" style="padding-top: 50px;">
+	<?php if ($event['max'] != 0 && count($attends) >= $event['max']):?>
+		<div class="row">
+			<div class="col-xs-12 col-md-12 col-lg-12" style="text-align:center;">
+				<img src="event_picture/temp/mannin.png" height="100" >
+			</div>
+		</div>
+	<?php endif; ?>
 	<div class="row">
 <!-- image of the shop or event [top-block left]-->
 		<div class="col-xs-3 col-md-3 col-lg-3" style="text-align:center;">
@@ -303,7 +347,7 @@
 
 <div class ="container">
 <?php if($event['graduation'] != 0 || $event['teachers'] != 0 || $event['set_price'] != '指定なし'){ ?>
-	<div class="row">
+	<div class="row" style="padding-top: 15px;"">
 		<div class="col-xs-2 col-md-2 col-lg-2" >
 			<h2 >TAG</h2>
 		</div>
@@ -333,7 +377,7 @@
 			<h2 style="margin-top: 0;">WHERE</h2>
 		</div>
 		<div class="col-xs-5 col-md-5 col-lg-5" >
-			<h2 style="margin-top: 0;"><?php echo $event['event_place'] ;?></h2>
+			<h2 style="margin-top: 0;"><a href="http://localhost/kami/store_details.php?name=<?php echo $event['event_place'] ?>&name_abc=<?php echo $event['event_place'] ?>"><?php echo $event['event_place'] ;?></a></h2>
 		</div>
 		<div class="col-xs-5 col-md-5 col-lg-5" hidden-md-down>
 		</div>
@@ -363,48 +407,32 @@
 		<div class="col-xs-10 col-md-12col-lg-10">
 		<div class="slider-for">
 			<div>
-				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
-					<img src="img/images.jpg" width="300px" height="300px">
-				</a>
+					<img src="img/images.jpg" width="300px" height="300px" style="margin:auto; width: 300px; height: 300px; display:block;">
 			</div>
-			<div>
-				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
-					<img src="img/download-1.jpg" width="300px" height="300px">
-				</a>
-			</div>
-			<div>
-				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
-					<img src="img/download-1.jpg" width="300px" height="300px">
-				</a>
-			</div>
-			<div>
-				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
-					<img src="img/download-3.jpg" width="300px" height="300px">
-				</a>
-			</div>
-			<div>
-				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
-					<img src="img/download-3.jpg" width="300px" height="300px">
-				</a>
-			</div>
-			<div>
-				<a href="#" style="margin:auto; width: 300px; height: 300px; display:block;">
-					<img src="img/download-5.jpg" width="300px" height="300px">
-				</a>
-			</div>
+				<?php if (!isset($caution) && !empty($pictures)): ?>
+				<?php foreach ($pictures as $pic): ?>
+				<div>
+					<img src="review_picture/<?php echo $pic ?>" width="300px" height="300px" style="margin:auto; width: 300px; height: 300px; display:block;" >
+				</div>
+				<?php endforeach ?>
+				<?php endif ?>
 		</div>
 		</div>
 	</div>
+<?php if (!isset($caution) && !empty($pictures)): ?>
 	<div class="row">
 		<div class="slider-nav col-xs-12 col-md-12 col-lg-12">
-			<div><img src="img/images.jpg" width="200" height="200"></div>
-			<div><img src="img/download-1.jpg" width="200" height="200"></div>
-			<div><img src="img/download-1.jpg" width="200" height="200"></div>
-			<div><img src="img/download-3.jpg" width="200" height="200"></div>
-			<div><img src="img/download-3.jpg" width="200" height="200"></div>
-			<div><img src="img/download-5.jpg" width="200" height="200"></div>
+			<div>
+				<img src="img/images.jpg" width="200" height="200">
+			</div>
+			<?php foreach ($pictures as $pic): ?>
+			<div>
+				<img src="review_picture/<?php echo $pic ?>" width="200" height="200"">
+			</div>
+			<?php endforeach ?>
 		</div>
 	</div>
+<?php endif ?>
 </div>
 
 <div class ="container" style="padding-top: 20px;" >
@@ -442,29 +470,37 @@
 <form method="POST">
 	<div class="row  background-color: #f5f5f5;">
 		<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:15px;">
-		<?php if (!isset($my_position)): ?>
-		<button style="border-radius: 15px;" type='submit' name='status' value='1' class="button button-primary full-width" >参加する</button>
-		<?php endif; ?>
+			<?php if (!isset($my_position)): ?>
+				<?php if($event['max'] == 0 || count($attends) < $event['max']): ?>
+				<button style="border-radius: 15px;" type='submit' name='status' value='1' class="button button-primary full-width" >参加する</button>
+				<?php endif; ?>
+				<?php if (count($attends) >= $event['max']): ?>
+				<button style="border-radius: 15px; background-color: #f5f5f5; color: black;" class="button button-primary full-width" >参加できません</button>
+				<?php endif; ?>
+			<?php endif; ?>
 
-		<?php if (isset($my_position) && $my_position['status'] == '0'): ?>
-		<button style="border-radius: 15px;" type='submit' name='status' value='4' class="button button-primary full-width" >参加する</button>
-		<?php endif; ?>
-
-		<?php if (isset($my_position) && $my_position['status'] == '1'): ?>
-		<button style="border-radius: 15px; background-color: #f5f5f5; color: black;" type='submit' name='status' value='3' class="button button-primary full-width">参加を取りやめる</button>
-		<?php endif; ?>
-	</div>
-	<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:15px; border-radius: 30px;">
-		<?php if (!isset($my_position)): ?>
-		<button style="border-radius: 15px;" type='submit' name='status' value='2' class="button button-primary full-width" >興味がある</button>
-		<?php endif; ?>
-		<?php if (isset($my_position) && $my_position['status'] == '1'): ?>
-		<button style="border-radius: 15px;" type='submit' name='status' value='5' class="button button-primary full-width" >興味がある</button>
-		<?php endif; ?>
-		<?php if (isset($my_position) && $my_position['status'] == '0'): ?>
-		<button style="border-radius: 15px; background-color: #f5f5f5; color: black;" type='submit' name='status' value='3' class="button button-primary full-width">興味がない</button>
-		<?php endif; ?>
-
+			<?php if (isset($my_position) && $my_position['status'] == '0'): ?>
+				<?php if( $event['max'] == 0 || count($attends) < $event['max']): ?>
+				<button style="border-radius: 15px;" type='submit' name='status' value='4' class="button button-primary full-width" >参加する</button>
+				<?php endif; ?>
+				<?php if (count($attends) >= $event['max']): ?>
+				<button style="border-radius: 15px; background-color: #f5f5f5; color: black;" class="button button-primary full-width" >参加できません</button>
+				<?php endif; ?>
+			<?php endif; ?>
+			<?php if (isset($my_position) && $my_position['status'] == '1'): ?>
+				<button style="border-radius: 15px; background-color: #f5f5f5; color: black;" type='submit' name='status' value='3' class="button button-primary full-width">参加を取りやめる</button>
+			<?php endif; ?>
+		</div>
+		<div class="col-xs-6 col-md-6 col-lg-6" style="text-align: center; padding:15px; border-radius: 30px;">
+			<?php if (!isset($my_position)): ?>
+				<button style="border-radius: 15px;" type='submit' name='status' value='2' class="button button-primary full-width" >興味がある</button>
+			<?php endif; ?>
+			<?php if (isset($my_position) && $my_position['status'] == '1'): ?>
+			<button style="border-radius: 15px;" type='submit' name='status' value='5' class="button button-primary full-width" >興味がある</button>
+			<?php endif; ?>
+			<?php if (isset($my_position) && $my_position['status'] == '0'): ?>
+			<button style="border-radius: 15px; background-color: #f5f5f5; color: black;" type='submit' name='status' value='3' class="button button-primary full-width">興味がない</button>
+			<?php endif; ?>
 		</div>
 	</div>
 </form>
