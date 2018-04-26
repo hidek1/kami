@@ -37,7 +37,18 @@
  *  02. base style overrides - (_document-setup.scss)
  *
  * ------------------------------------------------------------------- */
-
+.box7{
+    padding: 0.5em 1em;
+    margin: 0;
+    color: #474747;
+    background: whitesmoke;/*背景色*/
+    border-left: double 7px #FFC778;/*左線*/
+    border-right: double 7px #FFC778;/*右線*/
+}
+.box7 p {
+    margin: 0; 
+    padding: 0;
+}
 .box5 {
     padding: 0.5em 1em;
     margin: 2em 0;
@@ -2924,7 +2935,6 @@ footer ul li {
 #comments {
 	padding-top: 1.2rem;
 	padding-bottom: 1.2rem;
-	margin-left: -8rem;
 }
 
 #comments h3 {

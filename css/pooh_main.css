@@ -32,6 +32,18 @@
 @import url("micons/micons.css");
 @import url("fonts.css");
 
+.box7{
+    padding: 0.5em 1em;
+    margin: 0;
+    color: #474747;
+    background: white;/*背景色*/
+    border-left: double 7px #4ec4d3;/*左線*/
+    border-right: double 7px #4ec4d3;/*右線*/
+}
+.box7 p {
+    margin: 0; 
+    padding: 0;
+}
 #suggest {
     position: absolute;
     background-color: #FFFFFF;

@@ -4,6 +4,8 @@ require('function.php');
 
 require('dbconnect.php');
 require('tsuuti.php');
+
+
   // ページング機能
   // 空の変数を用意
   $page = '';
@@ -230,7 +232,7 @@ require('header.php');
       <div class="container">
          <div class="row">
                   <div class="col-xs-9 col-md-9 col-lg-9">
-                     <h1 class="sintyaku">締め切り間近のイベント</h1>
+                     <h1 class="sintyaku" style="margin: 0 253px 44px; border-bottom: double 5px #FFC778;">締め切り間近のイベント</h1>
 
 
          <div class="row">
@@ -331,7 +333,11 @@ require('header.php');
 
 <div class="col-xs-3 col-md-3 col-lg-3 review" >
    <ol class="commentlist box17" style="padding: 30px; background-color: white;">
-      <h1 class="sintyaku">新着レビュー</h1>
+      <h1 class="sintyaku" style="color: black;/*文字色*/
+padding: 0.3em 0;/*上下の余白*/
+border-top: solid 2px #FFC778;/*上線*/
+border-bottom: solid 2px #FFC778;/*下線*/
+margin-bottom: 30px">新着レビュー</h1>
 
                   
 
