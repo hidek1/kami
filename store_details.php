@@ -29,7 +29,7 @@ $data = array($store_detail['shop_id']);
 $stmt = $dbh->prepare($sql);
 $stmt->execute($data);
 
-// 写真表示（４枚全部入っている時と、入っていない時）  
+// 写真表示（４枚全部入っている時と、入っていない時）
 $records = array();
 $pictures = array();
 while (true) {
@@ -60,39 +60,11 @@ while (true) {
 $count = count($records);
 // $dbh = null;
 
-// echo '<br>';echo '<br>';echo '<br>';echo '<br>';
-// echo '<pre>';
-// var_dump($records);
-// echo '</pre>';
-// echo '<pre>';
-// var_dump($pictures);
-// echo '</pre>';
-// shop_id を元に写真情報を取得してみる。
-
-//   $pictures = array();
-//   $sql = 'SELECT * FROM `kami_reviews` WHERE `review_picture`=?' ;
-//   $data = array($all_picture['review_picture']);
-//   $stmt = $dbh->prepare($sql);
-//   $stmt->execute($data);
-//   $picture = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// while (true) {
-//   $record = $stmt->fetch(PDO::FETCH_ASSOC);
-//   if($record == false){
-//     break;
-//   }$records[] = $record;
-// }
-
-//   $pictures[] = $picture;
-// }
-
 
  ?>
 
 <!DOCTYPE html>
-<!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
-<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
+
 <html class="no-js" lang="ja"> <!--<![endif]-->
 <head>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
@@ -142,7 +114,7 @@ require('header.php');
         <section>
          <br>
           <br>
-          <img src="shop_pic/<?php echo $store_detail['shop_pic']; ?>" width="200" height="300" style="margin-top: -2rem; margin-right: 0px;margin-bottom: -19rem;margin-left: 6.3rem;">
+          <img src="shop_pic/<?php echo $store_detail['shop_pic']; ?>" width="200" height="300" style="margin-top: -2rem; margin-right: 0px;margin-bottom: -19rem;">
            <div class="primary-content">
             <h1 class="entry-title add-bottom" style="margin-left: 26rem;"><?php echo $store_detail['shop_name_abc']; ?>
              <br>
@@ -156,8 +128,7 @@ require('header.php');
             <button type="submit" class="submit button-primary">レビューを投稿する</button>
              </a>
 
-            <br>
-            <br>
+
 
 <div class="moroha">
 <!-- <a href="#link1" class="bz"><span class="icon-home-2"></span>店トップ</a> -->
@@ -169,14 +140,10 @@ require('header.php');
 </div>
 
 
-<br>
-<br>
-<br>
-
 
 
             <div id="link2">
-            <h1>写真</h1>
+            <h1></h1>
             </div>
 
 
@@ -191,44 +158,21 @@ require('header.php');
   </div>
     <?php } ?>
 </div>
-  <?php /* ?>
-
-<!-- <a href="review_picture/<?php echo $store_detail['review_picture'] ?>" data-lightbox="abc" data-title="写真拡大"></a>
-<img src="review_picture/<?php echo $store_detail['review_picture'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"> -->
-</div>
-<div>
-<a href="review_picture/<?php echo $store_detail['review_picture2'] ?>" data-lightbox="sample"><img src="review_picture/<?php echo $store_detail['review_picture2'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
-</div>
-<div>
-<a href="review_picture/<?php echo $store_detail['review_picture3'] ?>" data-lightbox="sample"><img src="review_picture/<?php echo $store_detail['review_picture3'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
-</div>
-<div>
-<a href="review_picture/<?php echo $store_detail['review_picture4'] ?>" data-lightbox="sample"><img src="review_picture/<?php echo $store_detail['review_picture4'] ?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
-</div>
-</div>
-<?php */ ?>
-
-
-
-
             <div id="link3">
-            <h1>レビュー</h1>
+            <h1 style="margin-top: 70px;" ></h1>
             </div>
 
             <div class="comments-wrap">
              <div id="comments" class="row">
               <div class="col-full">
                <ol class="commentlist">
+                 <?php for ($i=0; $i < $count; $i++) { ?>
                 <li class="depth-1">
-                 <!-- <div class="avatar">
-                  
-                   </div> -->
+                 <!-- <div class="avatar">                  </div> -->
+                 
                     <div class="comment-content">
                      <div class="comment-info">
-
                       <!-- レビュー投稿 -->
-
-                    <?php for ($i=0; $i < $count; $i++) { ?>
                      <img width="50" height="50" class="avatar" src="picture_path/<?php echo $records[$i]['picture_path']; ?>" alt="">
                       <div>nickname (<?php echo $records[$i]['nickname']; ?>)</div>
                        <div class="comment-meta">
@@ -236,19 +180,18 @@ require('header.php');
                         <time class="comment-time" datetime="2014-07-12T23:05"><?php echo date('Y/m/d',strtotime($records[$i]['review_created']));?></time>
                           </div>
                            </div>
-                            <div class="comment-text">
-                             <p>レビュー <br> <?php echo $records[$i]['review']; ?></p>
-
-<table cellpadding="0" cellspacing="30"><tbody>
-<tr>
-<?php if ($records[$i]['review_picture'] != ''): ?>
-<td>
-<a href="review_picture/<?php echo $records[$i]['review_picture']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture']; ?>" width="150" height="150" alt=""></a>
-</td>
-<?php endif ?>
-<?php if ($records[$i]['review_picture2'] != ''): ?>
-<td>
-<a href="review_picture/<?php echo $records[$i]['review_picture2']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture2']; ?>" width="150" height="150" alt=""></a>
+<div class="comment-text">
+ <p>レビュー <br> <?php echo $records[$i]['review']; ?></p>
+  <table cellpadding="0" cellspacing="30"><tbody>
+   <tr>
+    <?php if ($records[$i]['review_picture'] != ''): ?>
+     <td>
+      <a href="review_picture/<?php echo $records[$i]['review_picture']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture']; ?>" width="150" height="150" alt=""></a>
+     </td>
+      <?php endif ?>
+      <?php if ($records[$i]['review_picture2'] != ''): ?>
+      <td>
+      <a href="review_picture/<?php echo $records[$i]['review_picture2']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture2']; ?>" width="150" height="150" alt=""></a>
 </td>
 <?php endif ?>
 <?php if ($records[$i]['review_picture3'] != ''): ?>
@@ -261,20 +204,21 @@ require('header.php');
 <a href="review_picture/<?php echo $records[$i]['review_picture4']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture4']; ?>" width="150" height="150" alt=""></a>
 </td>
 <?php endif ?>
-</tr>
-</tbody></table>
+  </tr>
+ </tbody>
+</table>
+</div>
+</div>
+</li>
+<hr>
+<?php } ?>
+</ol>
+</div>
+</div>
 
-                         </div>
-                      </div>
-                  </li>
-                  <hr>
-       <?php } ?>
-
-            <br>
-            <br>
 
             <div id="link4">
-            <h1>地図</h1>
+            <h1></h1>
             </div>
 
             <br>

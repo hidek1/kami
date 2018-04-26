@@ -1,4 +1,4 @@
-/* =================================================================== 
+	/* =================================================================== 
  *
  *  Abstract v1.0 Main Stylesheet
  *  url: www.styleshout.com
@@ -580,6 +580,7 @@ select {
 	-webkit-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+
 }
 
 .ss-custom-select {
@@ -629,6 +630,11 @@ select {
 /* IE9 and below */
 .oldie .ss-custom-select::after {
 	display: none;
+}
+
+.view_box{
+	width: 250px;height: 250px; background-size:cover
+	background-position:50% 50%;
 }
 
 textarea {
@@ -757,6 +763,7 @@ input[type="reset"].button-primary,
 input[type="button"].button-primary {
 	background: #151515;
 	color: #FFFFFF;
+
 
 }
 
@@ -942,6 +949,7 @@ input::-moz-focus-inner {
 
 .bz{
 	padding-left:100px;
+	padding-right: 63px;
 }
 /** 
  * Pull Quotes
@@ -2242,6 +2250,8 @@ main.css 1555~1611
  *  11. content wrap - (_layout.scss)
  *
  * ------------------------------------------------------------------- */
+
+
 #content-wrap {
 	margin-top: 6.6rem;
 }
@@ -2269,7 +2279,7 @@ main.css 1555~1611
 }
 
 #content-wrap .primary-content {
-	padding-left: 6rem;
+	/*padding-left: 6rem;*/
 	padding-right: 6rem;
 }
 

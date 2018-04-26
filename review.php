@@ -130,7 +130,7 @@ require('header.php');
               <div id="map-container"></div>
                 <div id="map-zoom-in"></div>
               <div id="map-zoom-out"></div>
-            </div>  
+            </div> 
           </div> -->
 
           <div class="primary-content">
@@ -140,83 +140,60 @@ require('header.php');
             <p class="lead">あなたのオススメをNexseedのみんなにシェアしよう！</p>
 
             </div>
-            <br>
+
             <form name="cForm" id="cForm" method="post" action="" enctype="multipart/form-data">
                  <fieldset>
-                       <div><h1 class="entry-title add-bottom">店名: <?php echo $store_info['shop_name_abc']; ?></h1></div>
+                       <div><h1 class="entry-title add-bottom"><?php echo $store_info['shop_name_abc']; ?></h1></div>
                        <br><br><br>
 
                        <div><h1>レビュー</h1></div>
                        <div class="message form-field">
                           <textarea name="review" id="cMessage" class="full-width" placeholder="（例）セブに来て、こんなに料理の美味しい店は初めてです。特にBird's Nest Soupが最高です。これを食べずして「セブに行ったよ！」なんて言おうものなら末代まで笑われます。" ></textarea>
                        </div>
+    <!-- 写真の選択 -->
 
-                       <br>
-                       <br>
-                       <br>
-                       <br>
-
-                       <!-- <span class="retty-btn fileinput-button fileinput-button-mypage"> -->
-                        <!-- <div class="input_file">
-                         <div class="preview">
-                          <input accept="image/*" id="imgFile" type="file">
-                        </div>
-                        <p class="btn_upload">画像ファイルを選択してアップロード
-                        </p>
-                        </div> -->
-                        <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
-                        <table border="1">
+                      <h1 style="margin-top: 150px">写真（４枚まで）</h1>
+                       <table>
+                        <tr>
+                         <td>
+                          <div class="view_box">
+                            <label>画像１</label>
+                            <input type="file" class="file" name="picture[]">
+                          </div>
+                         </td>
+                          <td>
+                            <div class="view_box">
+                             <label>画像2</label>
+                             <input type="file" class="file" name="picture[]">
+                            </div>
+                          </td>
+                        </tr>
                          <tr>
                           <td>
-                            <div class="input_file" style="width: 80%;height: 320px;">
-                             <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
-                             <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple="">
-                           </td>
-                           <td><div class="input_file" style="width: 80%;height: 320px;">
-                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
-                       <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple=""></td>
+                           <div class="view_box" style="padding-top: 40px">
+                            <label>画像3</label>
+                            <input type="file" class="file" name="picture[]">
+                           </div>
+                          </td>
+                          <td>
+                           <div class="view_box" style="padding-top: 40px">
+                            <label>画像4</label>
+                            <input type="file" class="file" name="picture[]">
+                           </div>
+                          </td>
                          </tr>
-                          <tr>
-                           <td><div class="input_file" style="width: 80%;height: 320px;">
-                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
-                       <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple=""></td><td><div class="input_file" style="width: 80%;height: 320px;">
-                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
-                       <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple=""></td>
-                          </tr>
-                         </table>
-
-                       <!-- <div class="add_files"><h1>写真（最大４枚まで）</h1></div>
-                       <div class="input_file" style="width: 80%;height: 320px;">
-                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
-                       <input accept="image/*" id="imgFile" type="file" name="picture[]" multiple="">
-                       <input accept="image/*" id="fileupload_file" type="file" name="picture[]" multiple="">
-                       <input accept="image/*" id="fileupload_file" type="file" name="picture[]" multiple="">
-                       <input accept="image/*" id="fileupload_file" type="file" name="picture[]" multiple=""> -->
-                     <!--   </span> -->
-                     <!-- </div>
-                   </div> -->
-
-                       <br>
-                       <br>
-                       <br>
-                       <br>
-                       <br>
-
-                     
-                       <button type="submit" class="submit button-primary full-width-on-mobile"><center>投稿</center></button>
+                       </table>
+                       <button type="submit" class="submit button-primary full-width-on-mobile" style="margin-top: 65px" margin-left:""><center>投稿</center></button>
                        </div>
 
                  </fieldset>
                 </form> <!-- end form -->
 
         </section>
-      
-
       </div> <!-- end col-twelve -->
-    </div> <!-- end row -->   
+    </div> <!-- end row -->
    </section> <!-- end content -->
 
-   
    <!-- footer
    ================================================== -->
 
@@ -236,23 +213,46 @@ require('header.php');
    <script src="http://maps.google.com/maps/api/js?v=3.13&amp;sensor=false"></script>
    <script src="js/main.js"></script>
    <script src="js/modal.js"></script>
-   <script>$('#imgFile').change(
-    function () {
-        if (!this.files.length) {
-            return;
-        }
+<!-- 画像複数表示 -->
+   <script>
+     $(document).ready(function () {
+  $(".file").on('change', function(){
+     var fileprop = $(this).prop('files')[0],
+         find_img = $(this).parent().find('img'),
+         filereader = new FileReader(),
+         view_box = $(this).parent('.view_box');
 
-        var file = $(this).prop('files')[0];
-        var fr = new FileReader();
-        $('.preview').css('background-image', 'none');
-        fr.onload = function() {
-            $('.preview').css('background-image', 'url(' + fr.result + ')');
-        }
-        fr.readAsDataURL(file);
-        $(".preview img").css('opacity', 0);
+    if(find_img.length){
+       find_img.nextAll().remove();
+       find_img.remove();
     }
-   );</script>
 
+    var img = '<div class="img_view"><img alt="" class="img"><p><a href="#" class="img_del">画像を削除する</a></p></div>';
+
+    view_box.append(img);
+
+    filereader.onload = function() {
+      view_box.find('img').attr('src', filereader.result);
+      img_del(view_box);
+    }
+    filereader.readAsDataURL(fileprop);
+  });
+
+  function img_del(target){
+    target.find("a.img_del").on('click',function(){
+      var self = $(this),
+          parentBox = self.parent().parent().parent();
+      if(window.confirm('画像を削除します。\nよろしいですか？')){
+        setTimeout(function(){
+          parentBox.find('input[type=file]').val('');
+          parentBox.find('.img_view').remove();
+        } , 0);
+      }
+      return false;
+    });
+  }
+
+});
+</script>
 </body>
-
 </html>
