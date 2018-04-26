@@ -4,7 +4,7 @@
    <link rel="stylesheet" href="css/modal.css">  
    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
-<header class="short-header">   
+<header class="short-header"">   
 
     <div class="gradient-block"></div>  
 
@@ -16,19 +16,43 @@
 
          <nav id="main-nav-wrap">
             <ul class="main-navigation sf-menu">
-               <li class="has-children"><a href="home.php" title="">ホーム</a></li>   
-               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>                          
-               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li>                          
+              <?php if ($_SERVER['SCRIPT_NAME'] =="/kami/home.php"): ?>
+              <li class="current"><a href="home.php" title="">ホーム</a></li>
+              <?php else: ?>
+               <li class="has-children"><a href="home.php" title="">ホーム</a></li>
+              <?php endif ?>
 
-               <li class="has-children">
-                  <a href="eventItiran.php" title="">イベント一覧</a>
-               </li>
-               <li class="has-children">
-                  <a href="shop_list.php" title="">お店一覧</a>
-               </li>
-               <li class="has-children">
-                  <a href="Profile.php" title="">マイページ</a>
-               </li>
+              <?php if ($_SERVER['SCRIPT_NAME'] =="/kami/eventNew.php"): ?>
+               <li class="current"><a href="eventNew.php" title="">イベント作成</a></li>
+              <?php else: ?>
+               <li class="has-children"><a href="eventNew.php" title="">イベント作成</a></li>
+              <?php endif ?>
+
+              <?php if ($_SERVER['SCRIPT_NAME'] =="/kami/store_review.php"): ?>
+               <li class="current"><a href="store_review.php" title="">お店を投稿する</a></li> 
+              <?php else: ?>
+               <li class="has-children"><a href="store_review.php" title="">お店を投稿する</a></li> 
+              <?php endif ?>
+
+              <?php if ($_SERVER['SCRIPT_NAME'] =="/kami/eventItiran.php"): ?>
+               <li class="current"><a href="eventItiran.php" title="">イベント一覧</a></li>
+              <?php else: ?>
+               <li class="has-children"><a href="eventItiran.php" title="">イベント一覧</a></li>
+              <?php endif ?>
+
+              <?php if ($_SERVER['SCRIPT_NAME'] =="/kami/shop_list.php"): ?>
+               <li class="current"><a href="shop_list.php" title="">お店一覧</a></li>
+              <?php else: ?>
+               <li class="has-children"><a href="shop_list.php" title="">お店一覧</a></li>
+              <?php endif ?>
+
+              <?php if ($_SERVER['SCRIPT_NAME'] =="/kami/Profile.php"): ?>
+               <li class="current"><a href="Profile.php" title="">マイページ</a></li>
+              <?php else: ?>
+               <li class="has-children"><a href="Profile.php" title="">マイページ</a></li>
+              <?php endif ?>
+
+
                <li class="has-children">
                   <a href="logout.php" title="">ログアウト</a>
                </li>
@@ -46,7 +70,7 @@
         <option value="omise">店を探す</option>
        
       </select>
-                  <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off">
+                  <input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="s" title="Search for:" autocomplete="off"  style="font-size: 60px">
 
                </label>
                <input type="submit" class="search-submit" value="Search">
@@ -78,8 +102,8 @@
 
 
          <div class="triggers">
-            <a id="modal-open" class="button-link" href="#"><i class="fas fa-bell" style="font-size: 2.2rem; color: #FFFF00;"></i></a>
-            <a class="search-trigger" href="#"><i class="fa fa-search" style="font-size: 2.2rem;"></i></a>
+            <a id="modal-open" class="button-link" href="#"><i class="fas fa-bell" style="font-size: 25px; color: #FFFF00;"></i></a>
+            <a class="search-trigger" href="#"><i class="fa fa-search" style="font-size: 25px;"></i></a>
             <a class="menu-toggle" href="#"><span>Menu</span></a>
          </div> <!-- end triggers -->  
          

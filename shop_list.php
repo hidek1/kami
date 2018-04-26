@@ -107,7 +107,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
     $where = "WHERE ";
 
    for($i = 0; $i < count($array);$i++){
-      $where .= "(shop_name_abc LIKE '%$array[$i]%' OR shop_name LIKE '%$array[$i]%' OR shop_type LIKE '%$array[$i]%')";
+      $where .= "(shop_name_abc LIKE '%$array[$i]%' OR shop_name collate utf8_unicode_ci LIKE '%$array[$i]%' OR shop_type LIKE '%$array[$i]%')";
       if ($i <count($array) -1){
         $where .= " AND ";
       }
@@ -125,7 +125,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
     if ($kami_search_shop == false) {
          break;
       }
-  $review_sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=?order by `created` desc limit 1';
+  $review_sql = 'SELECT * FROM `kami_reviews` WHERE `shop_id`=? order by `created` desc limit 1';
   $review_data = array($kami_search_shop['shop_id']);
   $review_stmt = $dbh->prepare($review_sql);
   $review_stmt->execute($review_data);
@@ -147,7 +147,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
 <!DOCTYPE html>
 <!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
 <!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="ja"> <!--<![endif]-->
 <head>
 
    <!--- basic page needs
@@ -190,46 +190,46 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
 require('header.php');
 ?>
 
-   <!-- page header
-   ================================================== -->
   
 
    
    <!-- masonry
    ================================================== -->
    <section id="bricks" class="with-top-sep">
-      <center>
-
+     <div class="container">
       <div class="row current-cat">
-         <div class="col-full" style="padding-bottom: 0;">
-            <h1>お店一覧<?php 
+         <div class="col-xs-4 col-md-3 col-lg-2" >
+                   </div>
+         <div class="col-xs-7 col-md-8 col-lg-9" style="padding-bottom: 0;">
+            <h1 style="font-weight: 900; margin-bottom: -30px; text-align: center;">お店一覧<?php 
            if(!empty($_GET['shop'])){
              echo "：";
              echo $_GET['shop']; }?></h1>
          </div>         
+          <div class="col-xs-1 col-md-1 col-lg-1" >
+                   </div>
       </div>
-       </center>
+    </div>
           <div class="comments-wrap">
 
             <div id="comments" class="row">
                 <div class="col-full">
-                  <center>
                <!-- commentlist -->
-               <ol class="commentlist2">
+               <ol class="commentlist2" style="padding: 30px;">
     <?php if (!empty($_GET['shop'])) { ?>
       <?php for ($i=0; $i<count($kami_search_shops);$i++){ ?>
 
                     <li class="depth-1">
                    <div class="container">
          <div class="row">
-                   <div class="col-xs-2 col-md-2 col-lg-2" >
+                     <div class="col-xs-1 col-md-1 col-lg-1" >
                    </div>
-                   <div class="col-xs-8 col-md-8 col-lg-8">
+                   <div class="col-xs-9 col-md-9 col-lg-9">
              <div class="row">
               <div class="" style="height: 240px; width: 1000px">
                    <div class="col-xs-3 col-md-3 col-lg-3" >
-                     <div class="avatar" style="margin-top: 0rem;">
-                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_search_shops[$i]['shop_pic']; ?>" alt="">
+                     <div class="avatar" style="margin-top: 0rem; height: 20rem">
+                        <img class="avatar" src="shop_pic/<?php echo $kami_search_shops[$i]['shop_pic']; ?>" alt="" style="width: 100%; object-fit: cover; object-position: center; height: 20rem">
                      </div>
                   </div>
                   <div class="col-xs-9 col-md-9 col-lg-9" >
@@ -246,7 +246,7 @@ require('header.php');
                       </div>
                   </div>
               </div>
-            <hr style="padding-top: 0px; margin-top: -44px">
+            <hr style="padding-top: 0px; margin-top: -44px;">
             </div>
           </div>
   <div class="col-xs-2 col-md-2 col-lg-2" >
@@ -260,14 +260,14 @@ require('header.php');
    <li class="depth-1">
                    <div class="container">
          <div class="row">
-                   <div class="col-xs-2 col-md-2 col-lg-2" >
+            <div class="col-xs-1 col-md-1 col-lg-1" >
                    </div>
-            <div class="col-xs-8 col-md-8 col-lg-8">
+                   <div class="col-xs-9 col-md-9 col-lg-9">
              <div class="row">
               <div class="" style="height: 240px; width: 1000px">
                    <div class="col-xs-3 col-md-3 col-lg-3">
-                     <div class="avatar" style="margin-top: 0rem;">
-                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_shops[$i]['shop_pic']; ?>" alt="">
+                     <div class="avatar" style="margin-top: 0rem; width: 100%; height: 20rem;">
+                        <img width="50" height="50" class="avatar" src="shop_pic/<?php echo $kami_shops[$i]['shop_pic']; ?>" alt="" style="width: 100%; object-fit: cover; object-position: center; height: 20rem">
                      </div>
                   </div>
                   <div class="col-xs-9 col-md-9 col-lg-9">
@@ -284,7 +284,7 @@ require('header.php');
                       </div>
                   </div>
               </div>
-               <hr style="padding-top: 0px; margin-top: -44px">
+               <hr style="padding-top: 0px; margin-top: -44px;">
             </div>
           </div>
   <div class="col-xs-2 col-md-2 col-lg-2" >
@@ -298,8 +298,7 @@ require('header.php');
  
 
             
-               </ol> <!-- Commentlist End -->
-               </center>                   
+               </ol> <!-- Commentlist End -->                  
                <!-- respond -->
               
             </div> <!-- end col-full -->

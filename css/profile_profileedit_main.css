@@ -37,6 +37,9 @@
  *  02. base style overrides - (_document-setup.scss)
  *
  * ------------------------------------------------------------------- */
+article {
+	    margin-bottom: 50px;
+}
 .input-file .preview {
   background-image: url(picture_path/01.jpg);
 }

@@ -104,7 +104,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
     $where = "WHERE ";
 
    for($i = 0; $i < count($array);$i++){
-      $where .= "(event_name LIKE '%$array[$i]%' OR detail LIKE '%$array[$i]%')";
+      $where .= "(event_name collate utf8_unicode_ci LIKE '%$array[$i]%' OR detail collate utf8_unicode_ci LIKE '%$array[$i]%')";
       if ($i <count($array) -1){
         $where .= " AND ";
       }
