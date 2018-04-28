@@ -67,7 +67,6 @@ $count = count($records);
 
 <html class="no-js" lang="ja"> <!--<![endif]-->
 <head>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
 
    <!--- basic page needs
    ================================================== -->
@@ -75,7 +74,7 @@ $count = count($records);
   <title>お店詳細</title>
   <meta name="description" content="">
   <meta name="author" content="">
-
+<!--  -->
    <!-- mobile specific metas
    ================================================== -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -90,6 +89,9 @@ $count = count($records);
    ================================================== -->
   <script src="js/modernizr.js"></script>
   <script src="js/pace.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="js/slick-1.8.0/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="js/slick-1.8.0/slick/slick-theme.css"/>
 
    <!-- favicons
   ================================================== -->
@@ -122,44 +124,46 @@ require('header.php');
             </h1>
              <p>ジャンル：<?php echo $store_detail['shop_type']; ?></p>
 
+<!-- ナビバー -->
+          <a href="review.php?name=<?php echo $store_detail['shop_name']; ?>">
+            <button type="submit" class="submit button-primary">
+            投稿
+            </button>
+          </a>
+          <a href="#link2">
+            <button type="submit" class="submit button-primary">
+             写真
+            </button>
+          </a>
+          <a href="#link3">
+            <button type="submit" class="submit button-primary">
+              レビュー
+            </button>
+          </a>
+          <a href="#link4">
+            <button type="submit" class="submit button-primary">
+              アクセス
+            </button>
+          </a>
+          <a href="store_review_edit.php?name=<?php echo $store_detail['shop_name']; ?>" title="">
+            <button type="submit" class="submit button-primary">
+             編集
+            </button>
+          </a>
 
-          <a href="store_review_edit.php?name=<?php echo $store_detail['shop_name']; ?>" title=""><button type="submit" class="submit button-primary">お店情報を編集する</button></a>
-           <a href="review.php?name=<?php echo $store_detail['shop_name']; ?>">
-            <button type="submit" class="submit button-primary">レビューを投稿する</button>
-             </a>
-
-
-
-<div class="moroha">
-<!-- <a href="#link1" class="bz"><span class="icon-home-2"></span>店トップ</a> -->
-<a href="#link2" class="bz"><span class="icon-report-1"></span>写真</a>
-<a href="#link3" class="bz"><span class="icon-photo-1"></span>レビュー</a>
-
-<a href="#link4" class="bz">
-<span class="icon-map-1"></span>地図・アクセス</a>
-</div>
-
-
-
-
-            <div id="link2">
-            <h1></h1>
+            <div id="link2" style="margin-top: 100px;">
+             <h1></h1>
+            </div>
+            <div class="slider">
+             <?php foreach ($pictures as $pic) { ?>
+              <div>
+               <a href="review_picture/<?php echo $pic?>" data-lightbox="sample"><img src="review_picture/<?php echo $pic?>" alt="投稿写真" style="padding: 0px 50px; height: 430px; width: 100%;object-fit: cover;"></a>
+              </div>
+             <?php } ?>
             </div>
 
-
-<br>
-<br>
-
-
-<div class="slider">
-    <?php foreach ($pictures as $pic) { ?>
-  <div>
-  <a href="review_picture/<?php echo $pic?>" data-lightbox="sample"><img src="review_picture/<?php echo $pic?>" alt="投稿写真" width="400" height="300" style="padding: 0px 50px;"></a>
-  </div>
-    <?php } ?>
-</div>
             <div id="link3">
-            <h1 style="margin-top: 70px;" ></h1>
+             <h1 style="margin-top: 70px;" ></h1>
             </div>
 
             <div class="comments-wrap">
@@ -168,82 +172,70 @@ require('header.php');
                <ol class="commentlist">
                  <?php for ($i=0; $i < $count; $i++) { ?>
                 <li class="depth-1">
-                 <!-- <div class="avatar">                  </div> -->
-                 
+
                     <div class="comment-content">
                      <div class="comment-info">
-                      <!-- レビュー投稿 -->
+<!-- レビュー投稿 -->
                      <img width="50" height="50" class="avatar" src="picture_path/<?php echo $records[$i]['picture_path']; ?>" alt="">
                       <div>nickname (<?php echo $records[$i]['nickname']; ?>)</div>
                        <div class="comment-meta">
                         <a href="Profile.php?member_id=<?php echo $records[$i]['member_id']; ?>" style="font-size: 16px;"><span class="name">nickname (<?php echo $records[$i]['nickname']; ?>)</span></a>
                         <time class="comment-time" datetime="2014-07-12T23:05"><?php echo date('Y/m/d',strtotime($records[$i]['review_created']));?></time>
                           </div>
+                        </div>
+                          <div class="comment-text">
+                           <p>レビュー <br> <?php echo $records[$i]['review']; ?></p>
+                            <table cellpadding="0" cellspacing="30"><tbody>
+                             <tr>
+                              <?php if ($records[$i]['review_picture'] != ''): ?>
+                               <td>
+                                <a href="review_picture/<?php echo $records[$i]['review_picture']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture']; ?>" width="150" height="150" alt=""></a>
+                              </td>
+                               <?php endif ?>
+                                <?php if ($records[$i]['review_picture2'] != ''): ?>
+                                 <td>
+                                  <a href="review_picture/<?php echo $records[$i]['review_picture2']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture2']; ?>" width="150" height="150" alt=""></a>
+                              </td>
+                              <?php endif ?>
+                              <?php if ($records[$i]['review_picture3'] != ''): ?>
+                               <td>
+                                <a href="review_picture/<?php echo $records[$i]['review_picture3']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture3']; ?>" width="150" height="150" alt=""></a>
+                              </td>
+                              <?php endif ?>
+                              <?php if ($records[$i]['review_picture4'] != ''): ?>
+                              <td>
+                               <a href="review_picture/<?php echo $records[$i]['review_picture4']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture4']; ?>" width="150" height="150" alt=""></a>
+                              </td>
+                              <?php endif ?>
+                              </tr>
+                             </tbody>
+                            </table>
                            </div>
-<div class="comment-text">
- <p>レビュー <br> <?php echo $records[$i]['review']; ?></p>
-  <table cellpadding="0" cellspacing="30"><tbody>
-   <tr>
-    <?php if ($records[$i]['review_picture'] != ''): ?>
-     <td>
-      <a href="review_picture/<?php echo $records[$i]['review_picture']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture']; ?>" width="150" height="150" alt=""></a>
-     </td>
-      <?php endif ?>
-      <?php if ($records[$i]['review_picture2'] != ''): ?>
-      <td>
-      <a href="review_picture/<?php echo $records[$i]['review_picture2']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture2']; ?>" width="150" height="150" alt=""></a>
-</td>
-<?php endif ?>
-<?php if ($records[$i]['review_picture3'] != ''): ?>
-<td>
-<a href="review_picture/<?php echo $records[$i]['review_picture3']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture3']; ?>" width="150" height="150" alt=""></a>
-</td>
-<?php endif ?>
-<?php if ($records[$i]['review_picture4'] != ''): ?>
-<td>
-<a href="review_picture/<?php echo $records[$i]['review_picture4']; ?>" data-lightbox="sample"><img src="review_picture/<?php echo $records[$i]['review_picture4']; ?>" width="150" height="150" alt=""></a>
-</td>
-<?php endif ?>
-  </tr>
- </tbody>
-</table>
-</div>
-</div>
-</li>
-<hr>
-<?php } ?>
-</ol>
-</div>
-</div>
-
-
-            <div id="link4">
-            <h1></h1>
-            </div>
-
-            <br>
-
-            <div class="content-media">
-             <div id="map-wrap">
-              <div id="map-container"></div>
-               <div id="map-zoom-in"></div>
-                <div id="map-zoom-out"></div>
-                 </div>
-                  </div>
-
-<br><br><br>
-
-<div align="center">
-<a href="#link1">TOP</a>
-</div>
-
-        </section>
-      
-
-      </div> <!-- end col-twelve -->
-    </div> <!-- end row -->   
-   </section> <!-- end content -->
-
+                          </div>
+                         </li>
+                          <hr>
+                           <?php } ?>
+                       </ol>
+                      </div>
+                     </div>
+                      <div id="link4">
+                       <h1></h1>
+                      </div>
+                       <br>
+                       <div class="content-media">
+                        <div id="map-wrap">
+                          <div id="map-container"></div>
+                           <div id="map-zoom-in"></div>
+                            <div id="map-zoom-out"></div>
+                        </div>
+                       </div>
+                       <div align="center">
+                         <a href="#link1">TOP</a>
+                       </div>
+                      </section>
+                     </div>
+                    </div>
+                   </section>
 
    <!-- footer
    ================================================== -->
@@ -262,9 +254,22 @@ require('header.php');
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
    <script src="http://maps.google.com/maps/api/js?v=3.13&amp;sensor=false"></script>
-   <script src="js/main.js"></script><link rel="stylesheet" href="slick.css">
-   <script src="slick.min.js"></script>
+   <script src="js/main.js"></script>
+   <!-- <script src="js/slick.min.js"></script> -->
    <script src="js/modal.js"></script>
+   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="js/slick-1.8.0/slick/slick.min.js"></script>
+ <script>
+      $('.slider').slick({
+         dots: true,
+  infinite: true,
+  speed: 500,
+  fade: true,
+  cssEase: 'linear'
+      });
+
+  </script>
 
    <script src="js/lightbox.min.js"></script>
    <script src="js/lightbox-plus-jquery.min.js"></script>

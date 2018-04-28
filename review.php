@@ -130,7 +130,7 @@ require('header.php');
               <div id="map-container"></div>
                 <div id="map-zoom-in"></div>
               <div id="map-zoom-out"></div>
-            </div> 
+            </div>
           </div> -->
 
           <div class="primary-content">
@@ -140,7 +140,7 @@ require('header.php');
             <p class="lead">あなたのオススメをNexseedのみんなにシェアしよう！</p>
 
             </div>
-
+            
             <form name="cForm" id="cForm" method="post" action="" enctype="multipart/form-data">
                  <fieldset>
                        <div><h1 class="entry-title add-bottom"><?php echo $store_info['shop_name_abc']; ?></h1></div>
