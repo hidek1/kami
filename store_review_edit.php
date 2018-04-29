@@ -15,10 +15,27 @@ $store_infoo = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!empty($_POST)) {
 
+// お店の名前が入ってないとき
+  if ($_POST['store_name_abc'] == '') {
+    $error['store_name_abc'] = 'blank';
+}
 
 if ($_POST['store_name'] == '') {
   $error['store_name'] = 'blank';
 }
+
+// 重複チェック
+$sql = 'SELECT COUNT(*) AS `name_count` FROM `kami_shops` WHERE `shop_name_abc`=?';
+  $data = array($_POST['store_name_abc']);
+  $stmt = $dbh->prepare($sql);
+  $stmt->execute($data);
+
+  $name_count = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if ($name_count['name_count'] >=1) {
+    $error['store_name_abc'] = 'duplicated';
+ }
+
 
 if (!isset($error)) {
 
@@ -47,7 +64,7 @@ exit();
 
 }else{
 
-header('Location:store_review.php');
+header('Location:store_review_edit.php');
 exit();
 }
 }
@@ -118,10 +135,22 @@ require('header.php');
 
             <form name="cForm" id="cForm" method="post" action="" enctype="multipart/form-data">
                  <fieldset>
-                       <div><h1>店名:<?php echo $store_infoo['shop_name_abc'] ; ?></h1></div>
+                       <div>
+                        <h1>
+                          <?php echo $store_infoo['shop_name_abc'] ; ?>
+                        </h1>
+                       </div>
                        <div class="form-field">
-                      <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
+                        <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
+                        <?php if (isset($error['store_name_abc']) && $error['store_name_abc'] == 'blank') { ?>
+                         <P class="error"><font color="red">入力をお忘れでは？？</font></P>
+                        <?php } elseif (isset($error['store_name_abc']) && $error['store_name_abc'] == 'duplicated'){ ?>
+                         <p class="error"><font color="red">そのお店...既にありますから〜〜</font></p>
+                        <?php } ?>
                       <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
+                      <?php if (isset($error['store_name']) && $error['store_name'] == 'blank') { ?>
+                      <p class="error"><font color="red">なんか入れてよ！</p>
+                      <?php } ?>
                        </div>
 
                        <br>
@@ -133,7 +162,7 @@ require('header.php');
                        <select name="category">
                        <option value="未選択">選択してください</option>
                        <option value="比国">比国🍔</option>
-                       <option value="韓国">韓国</option>
+                       <option value="韓国">韓国🍺</option>
                        <option value="中華">中華🍜</option>
                        <option value="和食">和食🍙</option>
                        <option value="洋食">洋食🍕</option>

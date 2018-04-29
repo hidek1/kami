@@ -177,7 +177,7 @@ if (!empty($_POST) && isset($_POST)) {
               <p class="error" style="color: red;">* メールアドレスを入力してください。</p>
               <?php } elseif(isset($error['email']) && $error['email'] == 'duplicated') { ?>
               <p class="error" style="color: red;">* 入力されたメールアドレスは登録済みです。</p>
-              <?php } 
+              <?php }
 
       ?>
      </div>
