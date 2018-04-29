@@ -153,7 +153,7 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
    <!--- basic page needs
    ================================================== -->
    <meta charset="utf-8">
-  <title>Category Page - Abstract</title>
+  <title>お店一覧</title>
   <meta name="description" content="">  
   <meta name="author" content="">
 

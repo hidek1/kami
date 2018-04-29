@@ -66,38 +66,38 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
  // var_dump($_GET);
  // exit();
- $sql = "SELECT * FROM `kami_events` ORDER BY `modified` DESC LIMIT ".$st.",".$view_cnt."";
-    $stmt = $dbh->prepare($sql);
-      $stmt->execute();
-      while(true) {
-      $kami_event = $stmt->fetch(PDO::FETCH_ASSOC);
-      if ($kami_event == false) {
-         break;
-      }
-    $join_sql = 'SELECT COUNT(*) AS `join_count` FROM `kami_event_joinings` WHERE `event_id`=?';
-    $join_data = array($kami_event['event_id']);
-    $join_stmt = $dbh->prepare($join_sql);
-    $join_stmt->execute($join_data);
+$sql = "SELECT * FROM `kami_events` ORDER BY `answer_limitation` ASC LIMIT ".$st.",".$view_cnt."";
+  $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+    while(true) {
+    $kami_event = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($kami_event == false) {
+       break;
+    }
+  $join_sql = 'SELECT COUNT(*) AS `join_count` FROM `kami_event_joinings` WHERE `event_id`=?';
+  $join_data = array($kami_event['event_id']);
+  $join_stmt = $dbh->prepare($join_sql);
+  $join_stmt->execute($join_data);
 
-    $join_count = $join_stmt->fetch(PDO::FETCH_ASSOC);
+  $join_count = $join_stmt->fetch(PDO::FETCH_ASSOC);
 
-    // 一行分のデータに新しいキーを用意し、$join_countを代入
-    $kami_event['join_count'] = $join_count['join_count'];
+  // 一行分のデータに新しいキーを用意し、$join_countを代入
+  $kami_event['join_count'] = $join_count['join_count'];
 
-     $kami_events[] = $kami_event;
-     }
-     // var_dump($kami_events);
+   $kami_events[] = $kami_event;
+   }
+   // var_dump($kami_events);
 
-     $sql = "SELECT * FROM (`kami_reviews` LEFT JOIN `kami_members` ON `kami_reviews`.`member_id`=`kami_members`.`member_id`) LEFT JOIN `kami_shops` ON `kami_reviews`.`shop_id`=`kami_shops`.`shop_id` ORDER BY `review_created` DESC LIMIT 5";
-      $stmt = $dbh->prepare($sql);
-      $stmt->execute();
-      while(true) {
-      $kami_review = $stmt->fetch(PDO::FETCH_ASSOC);
-      if ($kami_review == false) {
-         break;
-      }
-     $kami_reviews[] = $kami_review;
-     }
+$sql = "SELECT * FROM (`kami_reviews` LEFT JOIN `kami_members` ON `kami_reviews`.`member_id`=`kami_members`.`member_id`) LEFT JOIN `kami_shops` ON `kami_reviews`.`shop_id`=`kami_shops`.`shop_id` ORDER BY `review_created` DESC LIMIT 5";
+$stmt = $dbh->prepare($sql);
+$stmt->execute();
+while(true) {
+$kami_review = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($kami_review == false) {
+   break;
+}
+$kami_reviews[] = $kami_review;
+}
      // var_dump($kami_reviews);
  ?>
 <!DOCTYPE html>
@@ -109,7 +109,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
    <!--- basic page needs
    ================================================== -->
    <meta charset="utf-8">
-   <title>Abstract</title>
+   <title>home</title>
    <meta name="description" content="">  
    <meta name="author" content="">
 
@@ -343,48 +343,42 @@ margin-bottom: 30px">新着レビュー</h1>
 
   <?php for ($i=0; $i<count($kami_reviews);$i++){ ?>
 
-                  <li class="depth-1">
-                    <div class="row">
-                      <div class="col-xs-２ col-md-2 col-lg-2" style="text-align: left;">
-                     <a href="ProfileOther.php?id=<?php echo $kami_reviews[$i]["member_id"]; ?>">
-                     <div class="avatar">
-                       
-                        <img src="picture_path/<?php echo $kami_reviews[$i]["picture_path"]; ?>" alt="building">
-                     </div>
-                    </a>
-                     </div>
-                      <div class="col-xs-8 col-md-8 col-lg-8" style="padding-bottom: 0;">
-                    <a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a>
-                    </div>
-                      <div class="col-xs-2 col-md-2 col-lg-2">
-                           </div>
-                      </div>
+  <li class="depth-1">
+    <div class="row">
+      <div class="col-xs-２ col-md-2 col-lg-2" style="text-align: left;">
+     <a href="ProfileOther.php?id=<?php echo $kami_reviews[$i]["member_id"]; ?>">
+     <div class="avatar">
+        <img src="picture_path/<?php echo $kami_reviews[$i]["picture_path"]; ?>" alt="building">
+     </div>
+    </a>
+     </div>
+      <div class="col-xs-8 col-md-8 col-lg-8" style="padding-bottom: 0;">
+    <a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a>
+    </div>
+      <div class="col-xs-2 col-md-2 col-lg-2">
+           </div>
+      </div>
 
-                     <div class="comment-content">
+     <div class="comment-content">
+      <div class="comment-info">
+         <div class="comment-meta">
+            <time class="comment-time"><?php echo $kami_reviews[$i]["review_created"]; ?></time>
+          
+         </div>
+      </div>
 
-                        <div class="comment-info">
-                           
+      <div class="comment-text">
+         <p class="text_overflow2"><?php echo $kami_reviews[$i]["review"]; ?></p>
+      </div>
 
-                           <div class="comment-meta">
-                              <time class="comment-time"><?php echo $kami_reviews[$i]["review_created"]; ?></time>
-                            
-                           </div>
-                        </div>
-
-                        <div class="comment-text">
-                           <p class="text_overflow2"><?php echo $kami_reviews[$i]["review"]; ?></p>
-                        </div>
-
-                     </div>
-
-                  </li>
-               <?php } ?>
-
-               </ol>
-            </div>
-         </div> <!-- end brick-wrapper --> 
-      </div><!-- end row -->
-   </div><!-- end container -->
+     </div>
+    </li>
+    <?php } ?>
+    </ol>
+     </div>
+    </div> <!-- end brick-wrapper --> 
+   </div><!-- end row -->
+  </div><!-- end container -->
 
     <!-- <div class="row"> -->
          
@@ -442,10 +436,10 @@ margin-bottom: 30px">新着レビュー</h1>
    <script>
 
      Push.Permission.request();
- 
-<?php for ($i=0; $i<count($tsuuti_events);$i++){ ?>
 
-  <?php if ($tsuuti_events[$i]['min']<$tsuuti_events[$i]['join_count']): ?>
+function alert1() {
+<?php for ($i=0; $i<count($tsuuti_events);$i++){ ?>
+  <?php if ($tsuuti_events[$i]['min']<=$tsuuti_events[$i]['join_count']): ?>
     Push.create('KAMI', {
 　　body: 'イベント <?php  
   echo $tsuuti_events[$i]["event_name"] ?>が成立しました！',
@@ -459,7 +453,8 @@ margin-bottom: 30px">新着レビュー</h1>
   });
  <?php endif ?>
 <?php } ?>
-
+};
+setTimeout(alert1, 300);
 
     $(function() {
     var count = 250;

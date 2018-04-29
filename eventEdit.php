@@ -63,6 +63,7 @@ if(!empty($_POST['event_sp'])){
 		$stmt->execute($data);
 		$event_picture = $stmt->fetch(PDO::FETCH_ASSOC);
 		$event_picture = $event_picture["shop_pic"];
+  $com_event_picture = $event_picture;
 		if($event_picture == false){
 		$error['kouho'] = 'kouho';
 		}
@@ -76,7 +77,8 @@ if(!empty($_POST['event_sp'])){
 		$picture = strtolower($picture);
 		if ($picture == 'jpg' || $picture == 'png' || $picture == 'gif') {
 		$com_event_picture = date('YmdHis') . $_FILES['event_picture_user']['name'];
-		move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$com_event_picture);}
+		move_uploaded_file($_FILES['event_picture_user']['tmp_name'], 'event_picture/'.$com_event_picture);
+  }
 		elseif ($picture != 'jpg' || $picture != 'png' || $picture != 'gif') {
 		$error['event_picture_user'] = 'type';
 		}
@@ -87,9 +89,6 @@ if(!empty($_POST['event_sp'])){
 }else{
 	$com_event_picture = $event_picture;
 }
-
-
-
 
 	if (!isset($error)) {
 	//開始時間の連結
@@ -197,38 +196,46 @@ require('header.php');
 ?>
 
 
-<!-- end header -->
-
-      <!-- header
-   ================================================== -->
-
 
 
 <div class ="container" style="padding-top: 150px; " >
-	<form method="POST" enctype="multipart/form-data">
-	<div class="row" style="padding-top: 20px">
-		<div class="col-xs-4 col-md-4 col-lg-4" >
-			<h2 style>イベント名</h2>
-		</div>
-		<div class="col-xs-8 col-md-8 col-lg-8">
-			<?php echo("<input value = '$pre_event_name' type='text' name = 'event_name' >")?>
-			<?php if(isset($error) && $error['event_name'] == 'blank'){?>
-			<p style="color:red; font-size: 15px;">*イベント名を入力してください</p>
-			<?php } ?>
-		</div>
-	</div>
+  <h1 class="entry-title add-bottom" style="font-size: 5.3rem;
+ line-height: 1.364; font-weight: 900;">イベント編集</h1>
 
-	<div class="row" style="padding-top: 50px">
-		<div class="col-xs-6 col-md-6  col-lg-4" >
-			<h2 >開始時間</h2>
-		</div>
-		<div class="col-lg-8" >
-			<?php echo("<input value = '$smd' type='date' name='edate' min=' max=' style=' text-align: center;'>" );?>
-			<?php echo("<input value = '$shm' type='time' name='etime' step= '300' style=' text-align: center;'>"); ?>
-		</div>
-	</div>
+ <p class="lead">イベント情報を編集しよう！！</p>
 
-	<div class="row" style="padding-top: 60px;" >
+  <form method="post" enctype="multipart/form-data">
+  <div class="row" style="padding-top: 50px">
+    <div class="col-xs-4 col-md-4 col-lg-4" >
+      <h2 style>イベント名</h2>
+    </div>
+    <div class="col-xs-5 col-md-5 col-lg-5">
+      <input class="form-control" value="<?php echo $pre_event_name ?>" type="text" name="event_name" >
+      <?php if(isset($error['event_name']) && $error['event_name'] == 'blank'){ ?>
+      <p style="color:red; font-size: 15px;">*イベント名を入力してください</p>
+      <?php } ?>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top: 50px">
+    <div class="col-xs-4 col-md-4  col-lg-4" >
+      <h2 >開始日時</h2>
+    </div>
+    <div class="col-lg-5" >
+      <input class="form-control" value="<?php echo $smd ?>" type="date" name="edate" min="" max="" style=" text-align: center;">
+      <?php if(isset($error['edate']) && $error['edate'] == 'blank'){ ?>
+      <p style="color:red; font-size: 15px;">*開催日を入力してください</p>
+      <?php } ?>
+    </div>
+    <div class="col-lg-3" >
+      <input class="form-control" value="<?php echo $shm ?>" type="time" name="etime" step= "300" style=" text-align: center;">
+      <?php if(isset($error['etime']) && $error['etime'] == 'blank'){ ?>
+      <p style="color:red; font-size: 15px;">*開催時間を入力してください</p>
+      <?php } ?>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top: 60px;" >
     <div class="col-lg-4">
       <h2>店名</h2>
     </div>
@@ -236,167 +243,204 @@ require('header.php');
       <div class="row">
         <div class="col-lg-4">
         <!-- 入力フォーム -->
-        <?php echo"<input value='$pre_event_place' type='text' id='ac2' name='shop_name'>" ?>
-        </div>
-        <div align="right" class="col-lg-2">
-        <!-- <p>自由記入欄</p> -->
-        </div>
-        <div class="col-lg-4">
-        <!-- <input type="text" name = "event_place" > -->
-        </div>
-        <div class="col-lg-2">
+        <input value="<?php echo $pre_event_place ?>" class="form-control" type="text" id="ac2" name="shop_name">
         </div>
       </div>
     </div>
   </div>
 
 <div class="row" style="padding-top: 50px ">
-	<div class="col-lg-4" style="height: 12rem;">
-		<h2 style=" margin-top: 0px; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">イベント写真</h2>
-	</div>
-	<div class="col-lg-8">
-		<div class="row" style="height: 12rem;">
-			<div class="col-lg-4" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-				<p style=' margin-bottom: 0px;'><input type='radio' name='event_sp' value='1'>お店の写真を使う</p>
-				<?php if(isset($error['kouho']) && $error['kouho'] == 'kouho'){ ?>
-				<p style="color:red; font-size: 15px;">*写真がありません。<br>ほかを指定してください。</p>
-				<?php } ?>
-			</div>
-			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">
-				<p style=" margin-bottom: 0px;"><input type="radio" name="event_sp" value='2'>自分で指定する</p>
-				<input id="fileupload_file" type="file" name="event_picture_user">
-				<?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'type' ){ ?>
-				<p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかのファイルを選んでください。</p>
-				<?php } ?>
-				<?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'blank' ){ ?>
-				<p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかのファイルを選んでください。</p>
-				<?php } ?>
-			</div>
-			<div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
-				<input type="radio" name="event_sp" value="3">
-				<select name="event_picture_temp" style="display: inline; padding: 50px;">
-					<option value=''>テンプレートから選ぶ</option>
-					<option value="temp/graduation_party.png">卒業式</option>
-					<option value="temp/happy_birthday.png">誕生日</option>
-					<option value="temp/nomikai.png">飲み会</option>
-				</select>
-			</div>
-		</div>
-			<?php if(isset($error['event_sp']) && $error['event_sp'] == 'blank'){ ?>
-				<div class="row">
-					<div class="col-lg-12">
-						<p style="color:red; font-size: 15px; margin-top:0px; ">*いずれかの写真を選んでください。</p>
-					</div>
-				</div>
-			<?php } ?>
-	</div>
+  <div class="col-lg-4" style="height: 12rem;">
+    <h2 style=" margin-top: 0px; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">イベント写真</h2>
+  </div>
+  <div class="col-lg-8">
+    <div class="row" style="height: 12rem;">
+      <div class="col-lg-4" style=" top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
+        <p style=' margin-bottom: 0px;'><input type='radio' name='event_sp' value='1'>お店の写真を使う</p>
+        <?php if(isset($error['kouho']) && $error['kouho'] == 'kouho'){ ?>
+        <p style="color:red; font-size: 15px;">*写真がありません。<br>ほかを指定してください。</p>
+        <?php } ?>
+      </div>
+      <div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">
+        <p style=" margin-bottom: 0px;"><input type="radio" name="event_sp" value='2'>自分で指定する</p>
+        <input id="fileupload_file" type="file" name="event_picture_user">
+        <?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'type' ){ ?>
+        <p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかのファイルを選んでください。</p>
+        <?php } ?>
+        <?php if(isset($error['event_picture_user']) && $error['event_picture_user'] == 'blank' ){ ?>
+        <p style="color:red; font-size: 15px;">*jpg、png、gifのいずれかのファイルを選んでください。</p>
+        <?php } ?>
+      </div>
+      <div class="col-lg-4" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">
+        <input type="radio" name="event_sp" value="3">
+        <select name="event_picture_temp" style="display: inline; padding: 50px;">
+          <option value=''>テンプレートから選ぶ</option>
+          <option value="temp/graduation_party.png">卒業式</option>
+          <option value="temp/happy_birthday.png">誕生日</option>
+          <option value="temp/nomikai.png">飲み会</option>
+        </select>
+      </div>
+    </div>
+      <?php if(isset($error['event_sp']) && $error['event_sp'] == 'blank'){ ?>
+        <div class="row">
+          <div class="col-lg-12">
+            <p style="color:red; font-size: 15px; margin-top:0px; ">*いずれかの写真を選んでください。</p>
+          </div>
+        </div>
+      <?php } ?>
+  </div>
 </div>
-	
-	<div class="row" style="padding-top: 50px">
-		<div class="col-lg-4" >
-			<h2>招待  </h2>
-		</div>
-		<div class="col-lg-8" >
-			<?php echo("<input type='text' name='invite' value = '$pre_invite'>"); ?>
-		</div>
-	</div>
-
-	<div class="row" style="padding-top: 50px">
-		<div class="col-lg-4"  style="height: 12rem;">
-			<h2 style=" margin-top: 0px; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">タグ</h2>
-		</div>
-		<div class="col-lg-8" >
-			<div class="row" style="height: 12rem;">
-			<div class="col-lg-3" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);" >
-				<p><input type="checkbox" name="teachers" value="1" <?php if ( $pre_teachers == 1): ?> checked<?php endif; ?> > <span>先生も参加する</span></p>
-			</div>
-				<div class="col-lg-3" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">
-					<p><input type="checkbox" name="graduation" value="1" <?php if ($pre_graduation == 1): ?> checked <?php endif; ?>	> <span>グラパ</span></p>
-			</div>
-				<div class="col-lg-5" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);" >
-					<p>金額指定する 約
-					<select name="set_price" style="display: inline;"" type="checkbox" >
-						<?php if ($pre_set_price != "指定なし"): ?>
-						<option value="<?php echo $pre_set_price;?>" selected ><?php echo $pre_set_price;?></option>
-						<?php endif; ?>
-						<option value="指定なし">指定しない↓</option>
-						<option value="~200ペソ">〜200ペソ</option>
-						<option value="200〜300ペソ">200〜300ペソ</option>
-						<option value="300〜400ペソ">300〜400ペソ</option>
-						<option value="400〜500ペソ">400〜500ペソ</option>
-						<option value="500〜ペソ"	>500〜ペソ</option>
-						<option value="指定なし">スマイル</option>
-					</select></p>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="row" style="padding-top: 50px">
-		<div class="col-lg-4" >
-			<h2 >詳細</h2>
-		</div>
-		<div class="col-lg-8">
-			<?php echo("<textarea name= 'detail' class='full-width'>$pre_detail</textarea>"); ?>
-		</div>
-	</div>
-
-	<div class="row" style="padding-top: 60px;" >
-		<div class="col-lg-4">
-			<h2>集合時間 </h2>
-	</div>
-	<div class="col-lg-8">
-			<p style="font-size: 28px;"> 
-			<h2 style="display: inline;"><?php echo("<input type='time' name='meeting_time' step= '300' style=' text-align: center;' value='$mhm'>"); ?>または、開始時間の<input type="number" name="meeting_time_cal" min="0" max="60" step="5" style=" text-align: center;">分前</h2>
-	</div>
-	</div>
-
-	<div class="row" style="padding-top: 60px;" >
-	
-		<div class="col-lg-4" >
-			<h2>集合場所</h2>
-			</div>
-	<div class="col-lg-8" >
-		<input type='text' name='meeting_place' value = "<?php echo $pre_meeting_place?>">
-		<?php if(isset($error) && $error['meeting_place'] == 'blank'){ ?>
-		<p style="color:red; font-size: 15px;">*集合場所を入力してください</p>
-		<?php } ?>
-
-			</div>
-		
-	</div>
+  
+  <div class="row" style="padding-top: 50px">
+    <div class="col-lg-4" >
+      <h2>招待  </h2>
+    </div>
+    <div class="col-lg-3" >
+      <input value="<?php echo $pre_invite ?>" class="form-control" type="text" name='invite'>
+    </div>
+  </div>
 
 
+  <div class="row" style="padding-top: 50px">
+    <div class="col-lg-4"  style="height: 12rem;">
+      <h2 style=" margin-top: 0px; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%); ">タグ</h2>
+    </div>
+    <div class="col-lg-8" >
+      <div class="row" style="height: 12rem;">
+      <div class="col-lg-3" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);" >
+        <p><input type="checkbox" name="teachers" value="1"  <?php if ( $pre_teachers == 1): ?> checked<?php endif; ?> > <span>先生も参加する</span></p>
+      </div>
+        <div class="col-lg-3" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">
+          <p><input type="checkbox" name="graduation" value="1" <?php if ($pre_graduation == 1): ?> checked <?php endif; ?>> <span>グラパ</span></p>
+      </div>
+        <div class="col-lg-5" style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);" >
+          <p>金額指定する 約
+          <select name="set_price" style="display: inline;" type="checkbox">
+            <?php if ($pre_set_price != "指定なし"): ?>
+            <option value="<?php echo $pre_set_price;?>" selected ><?php echo $pre_set_price;?></option>
+            <?php endif; ?>
+            <option value="指定なし">指定しない↓</option>
+            <option value="~200ペソ">〜200ペソ</option>
+            <option value="200〜300ペソ">200〜300ペソ</option>
+            <option value="300〜400ペソ">300〜400ペソ</option>
+            <option value="400〜500ペソ">400〜500ペソ</option>
+            <option value="500〜ペソ">500〜ペソ</option>
+            <!-- <option value="0">スマイル</option> -->
+          </select></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top: 50px">
+    <div class="col-lg-4" >
+      <h2 >詳細</h2>
+    </div>
+    <div class="col-xs-8 col-md-8 col-lg-8">
+      <textarea rows="3" style="resize:vertical; background: rgba(0, 0, 0, 0.1);" name= "detail" class="full-width form-control" placeholder="詳細" ><?php echo $pre_detail ?></textarea>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top: 60px;" >
+    <div class="col-lg-4">
+      <h2>集合時間</h2>
+  </div>
+  <div class="col-lg-3">
+      <input class="form-control" value = "<?php echo $mhm ?>" type="time" name="meeting_time" step= "300" style=" text-align: center;">
+  </div>
+  <div class="col-lg-2">
+    <h3 style="margin-top: 20px">または</h3>
+  </div>
+  <div class="col-lg-2">
+    <input class="form-control" type="number" name="meeting_time_cal" min="0" max="60" step="5" style=" text-align: center;">
+  </div>
+  <div class="col-lg-1">
+    <h3 style="margin-top: 20px">分前</h3>
+  </div>
+  </div>
+
+<div class="row">
+  <div class="col-lg-4">
+  </div>
+  <div class="col-lg-4">
+    <?php if(isset($error['meeting_time']) && $error['meeting_time'] == 'blank'){ ?>
+      <p style="color:red; font-size: 15px;">*集合時間を入力してください</p>
+      <?php } ?>
+      <?php if(isset($error['meeting_time']) && $error['meeting_time'] == 'doubled'){ ?>
+      <p style="color:red; font-size: 15px;">*入力はどちらかにしてください</p>
+      <?php } ?>
+  </div>
+</div>
 
 
-	<div class="row" style="padding-top: 60px;" >
-			<div class="col-lg-4" >
-				<h2 >参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MAX <?php echo("<input type='number' name='max' min='0' max='150' step='5' style='text-align: center;' value = '$pre_max'>"); ?></h2>
-			</div>
-			<div class="col-lg-4" >
-				<h2 >最低参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MIN<?php echo("<input type='number' name='min' min='0' max='150' step='1' style='text-align: center;' value = '$pre_min'>"); ?></h2>
-			</div>
-			<div class="col-lg-4">
-			<h2>回答期限</h2><?php echo("<input type='date' name='adate'  max='$smd' style=' text-align: center;' value = '$lmd'>"); ?>
-			<?php echo("<input type='time' name='atime' step= '300' style=' text-align: center;' value = '$lhm'>"); ?>
-				</div>
-		</div>
-		</div>
-	</div>
-	<div class ="container full-width">
-		<div class="row  background-color: #f5f5f5;">
-				<div class="col-lg-6" style="text-align: center; padding:50px; border-radius: 15px; ">
-					<a class="button button-primary full-width" href="eventView.php?id=<?php echo $_GET['id']; ?>" style=" border-radius: 15px; ">キャンセル</a>
-				</div>
-				<div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px; "> <input class="button button-primary full-width" type="submit" value="編集を終了する" style="border-radius: 15px;" >
-						</div>
+  <div class="row" style="padding-top: 60px;" >
+  
+    <div class="col-lg-4" >
+      <h2>集合場所</h2>
+      </div>
+      <div class="col-lg-4" >
+      <input value = "<?php echo $pre_meeting_place?>" class="form-control" type="text" name="meeting_place" >
+      <?php if(isset($error['meeting_place']) && $error['meeting_place'] == 'blank'){ ?>
+      <p style="color:red; font-size: 15px;">*集合場所を入力してください</p>
+      <?php } ?>
+      </div>
+  </div>
 
-		</div>
+
+
+
+  <div class="row" style="padding-top: 60px;" >
+      <div class="col-lg-4" >
+        <h2 >参加人数</h2>
+      </div>
+      <div class="col-lg-1" >
+       <h3>MAX</h3>
+      </div>
+    <div class="col-lg-3">
+       <input value = "<?php echo $pre_max ?>" class="form-control" type="number" name="max" min="0" max="150" step="5" style="text-align: center;" value="0">
+      </div>
+      <div class="col-lg-1" >
+       <h3>MIN</h3>
+     </div>
+    <div class="col-lg-3">
+       <input value = "<?php echo $pre_min ?>" class="form-control" type="number" name="min" min="0" max="150" step="1" style="text-align: center;" value="0">
+      </div>
+  </div>
+
+  <div class="row" style="padding-top: 60px;" >
+    <div class="col-lg-4">
+      <h2>回答期限</h2>
+    </div>
+    <div class="col-lg-6">
+      <input value = "<?php echo $lmd ?>" class="form-control" type="date" name="adate" min="<?php echo $Dmin ?>" max="<?php echo $Dmx ?>" style=" text-align: center;">
+      <?php if(isset($error['adate']) && $error['adate'] == 'blank'){ ?>
+      <p style="color:red; font-size: 15px;">*回答期限日を入力してください</p>
+      <?php } ?>
+    </div>
+  <div class="col-lg-2">
+      <input value = "<?php echo $lhm ?>" class="form-control" type="time" name="atime" step= "300" style=" text-align: center;">
+      <?php if(isset($error['atime']) && $error['atime'] == 'blank'){ ?>
+      <p style="color:red; font-size: 15px;">*回答期限時間を入力してください</p>
+      <?php } ?>
+    </div>
+  </div>
+
+    </div>
+  </div>
+  <div class ="container full-width">
+    <div class="row  background-color: #f5f5f5;">
+        <div class="col-lg-6" style="text-align: center; padding:50px; border-radius: 15px; ">
+          <a class="button button-primary full-width" href="index.html" style=" border-radius: 15px; ">キャンセル</a>
+        </div>
+        <div class="col-lg-6" style="text-align: center;padding:50px; border-radius: 15px; ">
+          <input class="button button-primary full-width" type="submit" value="作成する" style="border-radius: 15px;" >
+          </div>
+
+    </div>
 </div>
 </form>
 </div>
+
 
 
 

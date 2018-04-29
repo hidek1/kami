@@ -173,20 +173,20 @@ require('header.php');
 
 
 
-<!-- end header -->
-
-      <!-- header
-   ================================================== -->
-
 
 <div class ="container" style="padding-top: 150px; " >
+	<h1 class="entry-title add-bottom" style="font-size: 5.3rem;
+ line-height: 1.364; font-weight: 900;">イベント作成</h1>
+
+ <p class="lead">イベント情報を作成しよう！！</p>
+
 	<form method="post" enctype="multipart/form-data">
-	<div class="row" style="padding-top: 20px">
+	<div class="row" style="padding-top: 50px">
 		<div class="col-xs-4 col-md-4 col-lg-4" >
 			<h2 style>イベント名</h2>
 		</div>
-		<div class="col-xs-8 col-md-8 col-lg-8">
-			<input type="text" name="event_name" >
+		<div class="col-xs-5 col-md-5 col-lg-5">
+			<input class="form-control" type="text" name="event_name" >
 			<?php if(isset($error['event_name']) && $error['event_name'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*イベント名を入力してください</p>
 			<?php } ?>
@@ -195,14 +195,16 @@ require('header.php');
 
 	<div class="row" style="padding-top: 50px">
 		<div class="col-xs-6 col-md-6  col-lg-4" >
-			<h2 >開始時間</h2>
+			<h2 >開始日時</h2>
 		</div>
-		<div class="col-lg-8" >
-			<input type="date" name="edate" min="" max="" style=" text-align: center;">
+		<div class="col-lg-5" >
+			<input class="form-control" type="date" name="edate" min="" max="" style=" text-align: center;">
 			<?php if(isset($error['edate']) && $error['edate'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*開催日を入力してください</p>
 			<?php } ?>
-			<input type="time" name="etime" step= "300" style=" text-align: center;">
+		</div>
+		<div class="col-lg-3" >
+			<input class="form-control" type="time" name="etime" step= "300" style=" text-align: center;">
 			<?php if(isset($error['etime']) && $error['etime'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*開催時間を入力してください</p>
 			<?php } ?>
@@ -217,7 +219,7 @@ require('header.php');
 			<div class="row">
 				<div class="col-lg-4">
 				<!-- 入力フォーム -->
-				<input type="text" id="ac2" name="shop_name">
+				<input class="form-control" type="text" id="ac2" name="shop_name">
 				</div>
 				<div align="right" class="col-lg-2">
 				<!-- <p>自由記入欄</p> -->
@@ -277,8 +279,8 @@ require('header.php');
 		<div class="col-lg-4" >
 			<h2>招待  </h2>
 		</div>
-		<div class="col-lg-8" >
-			<input type="text" name='invite'>
+		<div class="col-lg-3" >
+			<input class="form-control" type="text" name='invite'>
 		</div>
 	</div>
 
@@ -316,7 +318,7 @@ require('header.php');
 			<h2 >詳細</h2>
 		</div>
 		<div class="col-xs-8 col-md-8 col-lg-8">
-			<textarea style="resize:vertical;" name= "detail" class="full-width" placeholder="詳細" ></textarea>
+			<textarea rows="3" style="resize:vertical; background: rgba(0, 0, 0, 0.1);" name= "detail" class="full-width form-control" placeholder="詳細" ></textarea>
 		</div>
 	</div>
 
@@ -324,24 +326,41 @@ require('header.php');
 		<div class="col-lg-4">
 			<h2>集合時間</h2>
 	</div>
-	<div class="col-lg-8">
-			<h2 style="display: inline;"><input type="time" name="meeting_time" step= "300" style=" text-align: center;">または<input type="number" name="meeting_time_cal" min="0" max="60" step="5" style=" text-align: center;">分前</h2>
-			<?php if(isset($error['meeting_time']) && $error['meeting_time'] == 'blank'){ ?>
+	<div class="col-lg-3">
+			<input class="form-control" type="time" name="meeting_time" step= "300" style=" text-align: center;">
+	</div>
+	<div class="col-lg-2">
+	  <h3 style="margin-top: 20px">または</h3>
+	</div>
+	<div class="col-lg-2">
+	  <input class="form-control" type="number" name="meeting_time_cal" min="0" max="60" step="5" style=" text-align: center;">
+	</div>
+	<div class="col-lg-1">
+	  <h3 style="margin-top: 20px">分前</h3>
+	</div>
+	</div>
+
+<div class="row">
+	<div class="col-lg-4">
+	</div>
+	<div class="col-lg-4">
+	  <?php if(isset($error['meeting_time']) && $error['meeting_time'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*集合時間を入力してください</p>
 			<?php } ?>
 			<?php if(isset($error['meeting_time']) && $error['meeting_time'] == 'doubled'){ ?>
 			<p style="color:red; font-size: 15px;">*入力はどちらかにしてください</p>
 			<?php } ?>
 	</div>
-	</div>
+</div>
+
 
 	<div class="row" style="padding-top: 60px;" >
 	
 		<div class="col-lg-4" >
 			<h2>集合場所</h2>
 			</div>
-			<div class="col-lg-8" >
-			<input type="text" name="meeting_place" >
+			<div class="col-lg-4" >
+			<input class="form-control" type="text" name="meeting_place" >
 			<?php if(isset($error['meeting_place']) && $error['meeting_place'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*集合場所を入力してください</p>
 			<?php } ?>
@@ -354,24 +373,39 @@ require('header.php');
 	<div class="row" style="padding-top: 60px;" >
 			<div class="col-lg-4" >
 				<h2 >参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MAX <input type="number" name="max" min="0" max="150" step="5" style="text-align: center;" value="0"></h2>
 			</div>
-			<div class="col-lg-4" >
-				<h2 >最低参加人数</h2>
-				<h2 style="display: inline; top: 50%;position: relative; top: 50%; -webkit-transform: translateY(-50%); /* Safari用 */ transform: translateY(-50%);">MIN<input type="number" name="min" min="0" max="150" step="1" style="text-align: center;" value="0"></h2>
+			<div class="col-lg-1" >
+			 <h3>MAX</h3>
 			</div>
-			<div class="col-lg-4">
+	  <div class="col-lg-3">
+			 <input class="form-control" type="number" name="max" min="0" max="150" step="5" style="text-align: center;" value="0">
+			</div>
+			<div class="col-lg-1" >
+			 <h3>MIN</h3>
+		 </div>
+	  <div class="col-lg-3">
+			 <input class="form-control" type="number" name="min" min="0" max="150" step="1" style="text-align: center;" value="0">
+			</div>
+	</div>
+
+	<div class="row" style="padding-top: 60px;" >
+		<div class="col-lg-4">
 			<h2>回答期限</h2>
-			<input type="date" name="adate" min="<?php echo $Dmin ?>" max="<?php echo $Dmx ?>" style=" text-align: center;">
+		</div>
+		<div class="col-lg-5">
+			<input class="form-control" type="date" name="adate" min="<?php echo $Dmin ?>" max="<?php echo $Dmx ?>" style=" text-align: center;">
 			<?php if(isset($error['adate']) && $error['adate'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*回答期限日を入力してください</p>
 			<?php } ?>
-			<input type="time" name="atime" step= "300" style=" text-align: center;">
+		</div>
+  <div class="col-lg-3">
+			<input class="form-control" type="time" name="atime" step= "300" style=" text-align: center;">
 			<?php if(isset($error['atime']) && $error['atime'] == 'blank'){ ?>
 			<p style="color:red; font-size: 15px;">*回答期限時間を入力してください</p>
 			<?php } ?>
-				</div>
 		</div>
+	</div>
+
 		</div>
 	</div>
 	<div class ="container full-width">

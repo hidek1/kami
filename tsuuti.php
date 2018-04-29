@@ -1,6 +1,6 @@
 <?php 
 
-$sql = 'SELECT * FROM `kami_event_joinings` LEFT JOIN `kami_events` ON `kami_event_joinings`.`event_id`=`kami_events`.`event_id` WHERE `member_id`=?';
+$sql = 'SELECT * FROM `kami_event_joinings` LEFT JOIN `kami_events` ON `kami_event_joinings`.`event_id`=`kami_events`.`event_id` WHERE `member_id`=? ORDER BY `answer_limitation` ASC';
   $data = array($_SESSION['id']);
   $stmt = $dbh->prepare($sql);
   $stmt->execute($data);
