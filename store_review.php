@@ -10,14 +10,14 @@ if (!empty($_POST)) {
 
 // お店の名前が入ってないとき
 if ($_POST['store_name_abc'] == '') {
-  $error['store_name_abc'] == 'blank';
+  $error['store_name_abc'] = 'blank';
 }
 // お店の名前が入ってないとき
  if ($_POST['store_name'] == '') {
   $error['store_name'] = 'blank';
 }
 
-// 登録するstoreのduplicate cheak!!if (!isset($error)) {
+// 登録するstoreのduplicate cheak!!
 
   $sql = 'SELECT COUNT(*) AS `name_count` FROM `kami_shops` WHERE `shop_name_abc`=?';
   $data = array($_POST['store_name_abc']);
@@ -28,7 +28,7 @@ if ($_POST['store_name_abc'] == '') {
 
   if ($name_count['name_count'] >=1) {
     $error['store_name_abc'] = 'duplicated';
- }
+}
 }
 
 
@@ -123,18 +123,17 @@ require('header.php');
 
             <h1 class="entry-title add-bottom">お店投稿</h1>
 
-            <p class="lead">新しいお店を投稿しよう！！</p> 
+            <p class="lead">新しいお店を投稿しよう！！</p>
 
             <form name="cForm" id="cForm" method="post" action="" class="form-horizontal" role="form" enctype="multipart/form-data">
                  <fieldset>
-                       <div><h1>店名</h1></div><?php if (isset($error['store_name_abc']) && $error['store_name_abc'] == 'duplicated') { ?>
-                        <P class="error"><font color="red">そのお店...既にありますから〜〜</font></P>
-                     <?php } ?>
+                       <div><h1>店名</h1></div>
                        <div class="form-field">
                       <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
                       <?php if (isset($error['store_name_abc']) && $error['store_name_abc'] == 'blank') { ?>
-                    <p class="error"><font color="red">なんか入れてよ！</p>
-                     <?php } ?>
+                      <p class="error"><font color="red">なんか入れてよ！</p>
+                      <?php } elseif (isset($error['store_name_abc']) && $error['store_name_abc'] == 'duplicated') { ?><P class="error"><font color="red">そのお店...既にありますから〜〜</font></P>
+                      <?php } ?>
                       <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
                      <?php if (isset($error['store_name']) && $error['store_name'] == 'blank') { ?>
                     <p class="error"><font color="red">なんか入れてよ！</p>
@@ -168,15 +167,6 @@ require('header.php');
                         </div>
                        </div>
 
-
-
-                      <!-- <div class="add_files"><h1>写真（外観１枚）</h1>
-                       <div class="preview"><input id="fileupload_file" type="file" name="picture" accept="image/*"></div>
-                      </div> -->
-
-                      <br>
-                       <br>
-                        <br>
 
                       <!-- 地図 -->
                       <div><h1>地図</h1></div>
