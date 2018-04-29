@@ -31,7 +31,12 @@
 @import url("font-awesome/css/font-awesome.min.css");
 @import url("micons/micons.css");
 @import url("fonts.css");
-
+h2 {
+padding: 0.5em;/*文字周りの余白*/
+color: #494949;/*文字色*/
+background: #fffaf4;/*背景色*/
+border-left: solid 5px #ffaf58;/*左線（実線 太さ 色）*/
+}
 .box7{
     padding: 0.5em 1em;
     margin: 0;

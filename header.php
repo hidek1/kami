@@ -84,19 +84,22 @@
 
 
 
-<div id="modal-content">
-　<?php for ($i=0; $i<count($tsuuti_events);$i++){ ?>
-　　<?php if (strtotime(date('Y-m-d H:i')) > strtotime($tsuuti_events[$i]["answer_limitation"])){ ?>
-   <?php if ($tsuuti_events[$i]['min']<$tsuuti_events[$i]['join_count']){ ?>
-   <p>イベント <a href="eventView.php?id=<?php echo $tsuuti_events[$i]["event_id"]; ?>"><?php  
-   echo $tsuuti_events[$i]["event_name"] ?></a>が成立しました。</p>
-   <?php } else {  ?>
-   <p>イベント <a href="eventView.php?id=<?php echo $tsuuti_events[$i]["event_id"]; ?>"><?php  
-   echo $tsuuti_events[$i]["event_name"] ?></a>は不成立でした。</p>
-　　　<?php } ?>
-　　<?php } ?>
-　<?php } ?>
-
+<div id="modal-content" style="text-align: center;">
+  <div style="overflow: auto; height: 500px;">
+  　<?php for ($i=count($tsuuti_events)-1; $i>=0;$i--){ ?>
+  　　<?php if (strtotime(date('Y-m-d H:i')) > strtotime($tsuuti_events[$i]["answer_limitation"])){ ?>
+     <?php if ($tsuuti_events[$i]['min']<=$tsuuti_events[$i]['join_count']){ ?>
+     <p style=" margin-bottom: 3rem;">イベント <a href="eventView.php?id=<?php echo $tsuuti_events[$i]["event_id"]; ?>"><?php  
+     echo $tsuuti_events[$i]["event_name"] ?></a>が成立しました。</p>
+     <hr>
+     <?php } else {  ?>
+     <p style=" margin-bottom: 3rem;">イベント <a href="eventView.php?id=<?php echo $tsuuti_events[$i]["event_id"]; ?>"><?php  
+     echo $tsuuti_events[$i]["event_name"] ?></a>は不成立でした。</p>
+     <hr>
+  　　　<?php } ?>
+  　　<?php } ?>
+  　<?php } ?>
+  </div>
   <p><a id="modal-close" class="button-link">閉じる</a></p>
 </div>
 

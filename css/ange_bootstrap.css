@@ -1146,10 +1146,15 @@ img {
   border-radius: 50%;
 }
 hr {
-  margin-top: 20px;
+  /*margin-top: 20px;
   margin-bottom: 20px;
   border: 0;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #eee;*/
+  border: solid #c2c2c2;
+  border-width: 1px 0 0;
+  clear: both;
+  margin: 2.4rem 0 1.5rem;
+  height: 0;
 }
 .sr-only {
   position: absolute;

@@ -38,15 +38,19 @@ if ($store_detail == true) {
   $record = $stmt->fetch(PDO::FETCH_ASSOC);
   if($record["review_picture"] != ''){
   $pictures[] = $record["review_picture"];
+  $reviews[] = $record["review"];
   }
   if($record["review_picture2"] != ''){
   $pictures[] = $record["review_picture2"];
+  $reviews[] = $record["review"];
   }
   if($record["review_picture3"] != ''){
   $pictures[] = $record["review_picture3"];
+  $reviews[] = $record["review"];
   }
   if($record["review_picture4"] != ''){
   $pictures[] = $record["review_picture4"];
+  $reviews[] = $record["review"];
   }
   if($record == false){
 		break;
@@ -58,7 +62,8 @@ if ($store_detail == true) {
   $caution = 'no_pic' ;
 }
 
-
+// var_dump($reviews);
+// exit();
 
 
 //イベントの参加者+自分の参加/状況取得
@@ -211,9 +216,13 @@ require('header.php');
 			</div>
 		</div>
 	<?php endif; ?> -->
-							<h1><?php echo $event['event_name'] ;?>@<a href="http://localhost/kami/store_details.php?name=<?php echo $event['event_place'] ?>&name_abc=<?php echo $event['event_place'] ?>"><?php echo $event['event_place'] ;?></a></h1>
-							<p class="major">MIN: <?php echo $event['min']; ?>
 
+			<h1><?php echo $event['event_name'] ;?>@<a href="http://localhost/kami/store_details.php?name=<?php echo $event['event_place'] ?>&name_abc=<?php echo $event['event_place'] ?>"><?php echo $event['event_place'] ;?></a></h1>
+
+    <?php if ($event['creater_id'] == $_SESSION['id']): ?>
+			<a style=" vertical-align:middle; text-align:right; margin: auto; width: 98px; height: 54px;" href="eventEdit.php?id=<?php echo $event['event_id'];?>" ><button style="color: black; text-align:center; display: block; margin: auto; margin-right: 0px; ;border-radius: 10px;">編集する</button></a>
+			<?php endif; ?>
+				<p class="major">MIN: <?php echo $event['min']; ?>
 				MAX: <?php echo $event['max']; ?>
 				<br>invite: @<?php echo $event['invite'] ;?><br>DeadLine: 
 				<?php 
@@ -246,21 +255,34 @@ require('header.php');
 
 	<!-- Gallery -->
 							<div class="gallery style2 medium lightbox onscroll-fade-in" style="margin-top: 120px">
+								<article>
+									<a href="img/images.jpg" class="image">
+										<img src="img/images.jpg" alt=""  style="height: 430px; object-fit: cover;"/>
+									</a>
+									<div class="caption">
+										<h3>地図</h3>
+								<!-- 		<p>Lorem ipsum dolor amet, consectetur magna etiam elit. Etiam sed ultrices.</p> -->
+										<ul class="actions">
+											<li><span class="button small">地図を表示</span></li>
+										</ul>
+									</div>
+								</article>
 								<?php if (!isset($caution) && !empty($pictures)): ?>
-				<?php foreach ($pictures as $pic): ?>
+     	<?php while ( (list($key1, $pic) = each($pictures))  
+            && (list($key2, $review) = each($reviews)) ) { ?>
 								<article>
 									<a href="review_picture/<?php echo $pic ?>" class="image">
 										<img src="review_picture/<?php echo $pic ?>" alt=""  style="height: 430px; object-fit: cover;"/>
 									</a>
 									<div class="caption">
-										<h3>Ipsum Dolor</h3>
-										<p>Lorem ipsum dolor amet, consectetur magna etiam elit. Etiam sed ultrices.</p>
+										<h3>Review</h3>
+										<p><?php echo $review ?></p>
 										<ul class="actions">
-											<li><span class="button small">Details</span></li>
+											<li><span class="button small">画像を表示</span></li>
 										</ul>
 									</div>
 								</article>
-        <?php endforeach ?>
+        <?php } ?>
 				<?php endif ?>
 							</div>
 
