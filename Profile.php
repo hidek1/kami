@@ -85,7 +85,8 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
    ================================================== -->
   <script src="js/modernizr.js"></script>
   <script src="js/pace.min.js"></script>
-
+  <script src="js/jquery-2.1.3.min.js"></script>
+  <script src="js/jquery.scrollme.js"></script>
    <!-- favicons
   ================================================== -->
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -163,8 +164,8 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
      <?php if (isset($event_joinings)) {?>
       <?php for ($i=0; $i<count($event_joinings);$i++){ ?>
        <?php if (strtotime(date('Y-m-d H:i')) < strtotime($event_joinings[$i]["starttime"])) { ?>
-        <div class="col-xs-4 col-md-4 col-lg-4">
-         <article class="brick entry format-standard animate-this" style="height: 700px; overflow: auto; background-color: white;">
+        <div class="col-xs-4 col-md-4 col-lg-4 scrollme">
+         <article class="animateme" data-when="view" data-from="0.55" data-to="0.05" data-scale="0" style="height: 700px; overflow: auto; background-color: white;">
           <div class="entry-thumb">
            <a href="eventView.php?id=<?php echo $event_joinings[$i]["event_id"]; ?>" class="thumb-link">
             <?php if (!empty($event_joinings[$i]["event_picture"])){ ?>
@@ -219,8 +220,8 @@ $sql = 'SELECT * FROM `kami_members` WHERE `member_id`=?';
     <div class="row">
      <?php if (isset($reviews)) {?>
       <?php for ($i=0; $i<count($reviews);$i++){ ?>
-       <div class="col-xs-4 col-md-4 col-lg-4">
-        <article class="brick entry format-standard animate-this" style="height: 600px; overflow: auto; background-color: white;">
+       <div class="col-xs-4 col-md-4 col-lg-4 scrollme">
+        <article class="animateme" data-when="view" data-from="0.55" data-to="0.05" data-scale="0" style="height: 600px; overflow: auto; background-color: white;">
          <div class="entry-thumb">
           <a href="store_details.php?name=<?php echo $reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $reviews[$i]["shop_name_abc"]; ?>" class="thumb-link">
            <?php if (!empty($reviews[$i]['review_picture'])){ ?>

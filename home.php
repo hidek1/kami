@@ -21,17 +21,16 @@ require('tsuuti.php');
   $page = max($page, 1);
 
   // 1ページ分の表示件数を指定
-  $view_cnt = 13;            // 1ページの表示件数
+  $view_cnt = 9;            // 1ページの表示件数
 
   // データの件数から最大ページを計算する
   // SQLで計算するデータを取得
-  $page_sql = 'SELECT COUNT(*) AS `page_count` FROM `kami_events`';
+  $page_sql = 'SELECT COUNT(*) AS `page_count` FROM `kami_events` WHERE `answer_limitation`>NOW()';
   $page_stmt = $dbh->prepare($page_sql);
   $page_stmt->execute();
 
-  // 全件取得(論理削除されていないもの)
   $page_count = $page_stmt->fetch(PDO::FETCH_ASSOC);
-
+ 
   // ceil 小数点切り上げ
   // 1~5 1ページ 6~10 2ページ...
   $all_view_cnt = ceil($page_count['page_count'] / $view_cnt);
@@ -45,7 +44,7 @@ require('tsuuti.php');
 
   $page_num = 10;            // 表示ページ数
   $page_end = $page_num - 1; // 末ベージ数計算用
-  $page_pos = 5;             // 該当ページ表示位置
+  $page_pos = 0;             // 該当ページ表示位置
 
   $start = 0; // 開始ページ
   $end = 0;   // 末ページ
@@ -66,7 +65,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
  // var_dump($_GET);
  // exit();
-$sql = "SELECT * FROM `kami_events` ORDER BY `answer_limitation` ASC LIMIT ".$st.",".$view_cnt."";
+$sql = "SELECT * FROM `kami_events`  WHERE `answer_limitation`>NOW() ORDER BY `answer_limitation` ASC LIMIT ".$st.",".$view_cnt."";
   $stmt = $dbh->prepare($sql);
     $stmt->execute();
     while(true) {
@@ -229,7 +228,7 @@ require('header.php');
          </div>
       </div>
       
-      <div class="container hoge">
+      <div class="container">
          <div class="row">
                   <div class="col-xs-9 col-md-9 col-lg-9">
                      <h1 class="sintyaku" style="margin: 0 253px 44px; border-bottom: double 5px #FFC778;">締め切り間近のイベント</h1>
@@ -404,7 +403,6 @@ margin-bottom: 30px">新着レビュー</h1>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
    <script src="js/foldscroll.js"></script>
    <script src="js/quotes.js"></script>
-   <script src="js/jquery.ripples.js"></script>
    <script type="text/javascript">
 $(function() {
         var limit = 15;
@@ -526,15 +524,6 @@ $(function() {
       return false;
    });
 });
-$(function(){
-  let $hoge = $('.hoge');
-  $hoge.ripples({
-    resolution: 400,
-    dropRadius: 25,
-    perturbance: 0.05
-  });
-});
-
 </script>
 
 </body>
