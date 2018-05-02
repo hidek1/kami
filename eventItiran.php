@@ -20,7 +20,7 @@ if (isset($_GET['page'])) {
 $page = max($page, 1);
 
   // 1ページ分の表示件数を指定
-  $view_cnt = 12;            // 1ページの表示件数
+  $view_cnt = 16;            // 1ページの表示件数
 
   // データの件数から最大ページを計算する
   // SQLで計算するデータを取得
@@ -331,7 +331,7 @@ if (strlen($keigo)>0){
  <div class="text_overflow1">
    詳細<br>
    <?php echo $kami_events[$i]["detail"]; ?>
- s</div>
+ </div>
 </div>
 </div>
 
@@ -391,7 +391,7 @@ if (strlen($keigo)>0){
     <a href="eventItiran.php?page=<?php echo $page -1; ?>"><span class="page-numbers prev">Prev</span></a>
     <?php } ?>
     <?php for($start; $start <= $end; $start++): ?>
-      <li <?= ($start == $page)? 'class="current"' : '' ?>><a href="eventItiran.php?page=<?= ($start) ?>" class="page-numbers"><?= $start ?></a></li>
+      <li><a href="eventItiran.php?page=<?= ($start) ?>" <?= ($start == $page)? 'class="current"' : '' ?> class="page-numbers"><?= $start ?></a></li>
     <?php endfor; ?>
     <?php if($page == $all_view_cnt) { ?>
     <span class="page-numbers inactive">Next</span>

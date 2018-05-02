@@ -21,7 +21,7 @@ require('tsuuti.php');
   $page = max($page, 1);
 
   // 1ページ分の表示件数を指定
-  $view_cnt = 12;            // 1ページの表示件数
+  $view_cnt = 13;            // 1ページの表示件数
 
   // データの件数から最大ページを計算する
   // SQLで計算するデータを取得
@@ -88,7 +88,7 @@ $sql = "SELECT * FROM `kami_events` ORDER BY `answer_limitation` ASC LIMIT ".$st
    }
    // var_dump($kami_events);
 
-$sql = "SELECT * FROM (`kami_reviews` LEFT JOIN `kami_members` ON `kami_reviews`.`member_id`=`kami_members`.`member_id`) LEFT JOIN `kami_shops` ON `kami_reviews`.`shop_id`=`kami_shops`.`shop_id` ORDER BY `review_created` DESC LIMIT 5";
+$sql = "SELECT * FROM (`kami_reviews` LEFT JOIN `kami_members` ON `kami_reviews`.`member_id`=`kami_members`.`member_id`) LEFT JOIN `kami_shops` ON `kami_reviews`.`shop_id`=`kami_shops`.`shop_id` ORDER BY `review_created` DESC";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 while(true) {
@@ -134,7 +134,7 @@ $kami_reviews[] = $kami_review;
    ================================================== -->
    <script src="js/modernizr.js"></script>
    <script src="js/pace.min.js"></script>
-
+   
    
    <!-- favicons
    ================================================== -->
@@ -178,7 +178,7 @@ require('header.php');
                                     <li><a href="#" >team pelo</a></li>           
                                  </ul> 
 
-                                 <h1 class="slide-title"><a href="#" title="">セブでの食事を楽しくするサービス</a></h1> 
+                                 <h1 class="slide-title">セブでの食事を楽しくするサービス</h1> 
                               </div>                                
                         
                            </div>
@@ -197,7 +197,7 @@ require('header.php');
                                     <li><a href="#">team pelo</a></li>
                                  </ul> 
 
-                                 <h1 class="slide-title"><a href="#" title="">行きたいお店がすぐに見つかる</a></h1>
+                                 <h1 class="slide-title">行きたいお店がすぐに見つかる</h1>
                               </div>                                         
                         
                            </div>
@@ -216,7 +216,7 @@ require('header.php');
                                     <li><a href="#" class="author">team pelo</a></li>               
                                  </ul> 
 
-                                 <h1 class="slide-title"><a href="#" title="">あなたの食事をマッチング</a></h1>
+                                 <h1 class="slide-title">あなたの食事をマッチング</h1>
                               </div>
 
                            </div>
@@ -229,7 +229,7 @@ require('header.php');
          </div>
       </div>
       
-      <div class="container">
+      <div class="container hoge">
          <div class="row">
                   <div class="col-xs-9 col-md-9 col-lg-9">
                      <h1 class="sintyaku" style="margin: 0 253px 44px; border-bottom: double 5px #FFC778;">締め切り間近のイベント</h1>
@@ -245,7 +245,7 @@ require('header.php');
             <!-- <div class ="container"> -->
          <!--       <div class="row">
          <div class="col-xs-10 col-md-10 col-lg-10"> -->
-            <article class="brick entry format-standard animate-this" style="background-color: white;">
+            <article class="brick entry format-standard animate-this" style="background-color: white; height: 800px; overflow: auto;">
 
                <div class="entry-thumb">
                   <a href="#" class="thumb-link">
@@ -271,10 +271,10 @@ require('header.php');
                      開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
-                     <div class="text_overflow1">
+                   <!--   <div class="text_overflow1"> -->
                      詳細<br>
                      <?php echo $kami_events[$i]["detail"]; ?>
-                     </div>
+                    <!--  </div> -->
 
 
                   </div>
@@ -288,7 +288,7 @@ require('header.php');
             <!-- <div class ="container"> -->
          <!--       <div class="row">
          <div class="col-xs-10 col-md-10 col-lg-10"> -->
-            <article class="brick entry format-standard animate-this" style="background-color: #F5A9A9;">
+            <article class="brick entry format-standard animate-this" style="background-color: #F5A9A9; height: 800px; overflow: auto;">
 
                <div class="entry-thumb">
                   <a href="#" class="thumb-link">
@@ -314,10 +314,10 @@ require('header.php');
                      開催日: <?php echo date('n月j日' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      開始時間:　<?php echo date('H時i分' , strtotime($kami_events[$i]["starttime"])); ?><br>
                      参加予定人数 <?php echo $kami_events[$i]["join_count"]; ?>人/<?php echo $kami_events[$i]["max"]; ?>人<br>
-                     <div class="text_overflow1">
+                   <!--   <div class="text_overflow1"> -->
                      詳細<br>
                      <?php echo $kami_events[$i]["detail"]; ?>
-                     </div>
+                    <!--  </div> -->
 
                   </div>
                </div>
@@ -340,40 +340,10 @@ border-bottom: solid 2px #FFC778;/*下線*/
 margin-bottom: 30px">新着レビュー</h1>
 
                   
+<section class="quotes" style="height:900px">
 
-  <?php for ($i=0; $i<count($kami_reviews);$i++){ ?>
+</section>
 
-  <li class="depth-1">
-    <div class="row">
-      <div class="col-xs-２ col-md-2 col-lg-2" style="text-align: left;">
-     <a href="ProfileOther.php?id=<?php echo $kami_reviews[$i]["member_id"]; ?>">
-     <div class="avatar">
-        <img src="picture_path/<?php echo $kami_reviews[$i]["picture_path"]; ?>" alt="building">
-     </div>
-    </a>
-     </div>
-      <div class="col-xs-8 col-md-8 col-lg-8" style="padding-bottom: 0;">
-    <a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>"><?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)</a>
-    </div>
-      <div class="col-xs-2 col-md-2 col-lg-2">
-           </div>
-      </div>
-
-     <div class="comment-content">
-      <div class="comment-info">
-         <div class="comment-meta">
-            <time class="comment-time"><?php echo $kami_reviews[$i]["review_created"]; ?></time>
-          
-         </div>
-      </div>
-
-      <div class="comment-text">
-         <p class="text_overflow2"><?php echo $kami_reviews[$i]["review"]; ?></p>
-      </div>
-
-     </div>
-    </li>
-    <?php } ?>
     </ol>
      </div>
     </div> <!-- end brick-wrapper --> 
@@ -390,7 +360,7 @@ margin-bottom: 30px">新着レビュー</h1>
              <a href="home.php?page=<?php echo $page -1; ?>"><span class="page-numbers prev">Prev</span></a>
             <?php } ?>
             <?php for($start; $start <= $end; $start++): ?>
-             <li <?= ($start == $page)? 'class="current"' : '' ?>><a href="home.php?page=<?= ($start) ?>" class="page-numbers"><?= $start ?></a></li>
+             <li><a href="home.php?page=<?= ($start) ?>" <?= ($start == $page)? 'class="current"' : '' ?> class="page-numbers"><?= $start ?></a></li>
             <?php endfor; ?>
             <?php if($page == $all_view_cnt) { ?>
               <span class="page-numbers inactive">Next</span>
@@ -428,11 +398,65 @@ margin-bottom: 30px">新着レビュー</h1>
    ================================================== --> 
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
-   <script src="js/jquery.appear.js"></script>
    <script src="js/main.js"></script>
    <script src="js/bootstrap.js"></script>
    <script src="js/modal.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
+   <script src="js/foldscroll.js"></script>
+   <script src="js/quotes.js"></script>
+   <script src="js/jquery.ripples.js"></script>
+   <script type="text/javascript">
+$(function() {
+        var limit = 15;
+        var $container = $( '.quotes' );
+
+                // Populate
+<?php for ($i=0; $i<count($kami_reviews);$i++){ ?>
+    $container.append(
+'<li class="depth-1">'+
+ '<div class="row" style="margin:10px;">'+
+  '<div class="col-xs-２ col-md-2 col-lg-2" style="text-align: left;">'+
+   '<a href="ProfileOther.php?id=<?php echo $kami_reviews[$i]["member_id"]; ?>">'+
+    '<div class="avatar">'+
+      '<img src="picture_path/<?php echo $kami_reviews[$i]["picture_path"]; ?>" alt="building">'+
+    '</div>'+
+   '</a>'+
+  '</div>'+
+  '<div class="col-xs-8 col-md-8 col-lg-8" style="padding-bottom: 0;">'+
+   '<a href="store_details.php?name=<?php echo $kami_reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>">'+
+    '<?php echo $kami_reviews[$i]["shop_name_abc"]; ?>(<?php echo $kami_reviews[$i]["shop_name"]; ?>)'+
+   '</a>'+
+  '</div>'+
+  '<div class="col-xs-2 col-md-2 col-lg-2">'+
+  '</div>'+
+ '</div>'+
+ '<div class="comment-content">'+
+  '<div class="comment-info">'+
+   '<div class="comment-meta">'+
+    '<time class="comment-time">'+
+     '<?php echo $kami_reviews[$i]["review_created"]; ?>'+
+    '</time>'+
+   '</div>'+
+  '</div>'+
+  '<div class="comment-text">'+
+   '<p class="text_overflow2">'+
+    '<?php echo $kami_reviews[$i]["review"]; ?>'+
+   '</p>'+
+   '<hr>'+
+  '</div>'+
+ '</div>'+
+'</li>');
+<?php } ?>
+
+
+  // Call the foldscroll plugin
+  $container.foldscroll({
+    perspective: 900,
+    // margin: '220px'
+  });
+});
+
+            </script>
    <script>
 
      Push.Permission.request();
@@ -443,7 +467,7 @@ function alert1() {
     Push.create('KAMI', {
 　　body: 'イベント <?php  
   echo $tsuuti_events[$i]["event_name"] ?>が成立しました！',
-　　icon: 'images/logo1.png',
+　　icon: 'images/logo2.png',
 　　timeout: 8000, // 通知が消えるタイミング
 　　vibrate: [100, 100, 100], // モバイル端末でのバイブレーション秒数
 　　   onClick: function() {
@@ -502,6 +526,15 @@ $(function() {
       return false;
    });
 });
+$(function(){
+  let $hoge = $('.hoge');
+  $hoge.ripples({
+    resolution: 400,
+    dropRadius: 25,
+    perturbance: 0.05
+  });
+});
+
 </script>
 
 </body>

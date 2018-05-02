@@ -11,7 +11,7 @@
   <div class="row header-content">
 
          <div class="logo">
-            <a href="home.php">Author</a>
+            <a href="home.php" style="background-size: 80px 90px; height: 110px;">Author</a>
          </div>
 
          <nav id="main-nav-wrap">
@@ -86,19 +86,23 @@
 
 <div id="modal-content" style="text-align: center;">
   <div style="overflow: auto; height: 500px;">
-  　<?php for ($i=count($tsuuti_events)-1; $i>=0;$i--){ ?>
-  　　<?php if (strtotime(date('Y-m-d H:i')) > strtotime($tsuuti_events[$i]["answer_limitation"])){ ?>
-     <?php if ($tsuuti_events[$i]['min']<=$tsuuti_events[$i]['join_count']){ ?>
-     <p style=" margin-bottom: 3rem;">イベント <a href="eventView.php?id=<?php echo $tsuuti_events[$i]["event_id"]; ?>"><?php  
-     echo $tsuuti_events[$i]["event_name"] ?></a>が成立しました。</p>
-     <hr>
-     <?php } else {  ?>
-     <p style=" margin-bottom: 3rem;">イベント <a href="eventView.php?id=<?php echo $tsuuti_events[$i]["event_id"]; ?>"><?php  
-     echo $tsuuti_events[$i]["event_name"] ?></a>は不成立でした。</p>
-     <hr>
-  　　　<?php } ?>
-  　　<?php } ?>
-  　<?php } ?>
+    <?php if (isset($tsuuti_events)) { ?>
+    　<?php for ($i=count($tsuuti_events)-1; $i>=0;$i--){ ?>
+    　　<?php if (strtotime(date('Y-m-d H:i')) > strtotime($tsuuti_events[$i]["answer_limitation"])){ ?>
+       <?php if ($tsuuti_events[$i]['min']<=$tsuuti_events[$i]['join_count']){ ?>
+       <p style=" margin-bottom: 3rem;">イベント <a href="eventView.php?id=<?php echo $tsuuti_events[$i]["event_id"]; ?>"><?php  
+       echo $tsuuti_events[$i]["event_name"] ?></a>が成立しました。</p>
+       <hr>
+       <?php } else {  ?>
+       <p style=" margin-bottom: 3rem;">イベント <a href="eventView.php?id=<?php echo $tsuuti_events[$i]["event_id"]; ?>"><?php  
+       echo $tsuuti_events[$i]["event_name"] ?></a>は不成立でした。</p>
+       <hr>
+    　　　<?php } ?>
+    　　<?php } ?>
+    　<?php } ?>
+    <?php } else { ?>
+    通知がありません
+    <?php } ?>
   </div>
   <p><a id="modal-close" class="button-link">閉じる</a></p>
 </div>
