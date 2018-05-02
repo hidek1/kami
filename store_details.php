@@ -227,6 +227,60 @@ require('header.php');
                           <div id="map-container"></div>
                            <div id="map-zoom-in"></div>
                             <div id="map-zoom-out"></div>
+                            <div id="map"></div>
+<style>
+#map{
+    width: 700px;
+    height: 400px;
+}</style> 
+      <script>
+                     function initMap() {
+                         //クリック時に表示したい場合適用↓
+                         // var infoWindow = new google.maps.InfoWindow;
+                         //クリック時に表示したい場合アウト↓
+                         var infowindow = new google.maps.InfoWindow({content: '<?php echo $name ?>'});
+                         //地図の基本情報
+                         var map = new google.maps.Map(document.getElementById('map'), {
+                         zoom: 16,
+                         center:  {lat: <?php echo $lan ?>, lng: <?php echo $lat ?>},
+                          });
+                         //クリック時に表示したい場合適用↓
+                         // var infowincontent = document.createElement('div');
+                         // var strong = document.createElement('strong');
+                         // strong.textContent = '<?php echo $name ?>';
+                         // infowincontent.appendChild(strong);
+                         //強調したい場所
+                         var placeMarker = new google.maps.Marker({
+                         name: '<?php echo $name ?>',
+                         map: map,
+                         position: {lat: <?php echo $lan ?>, lng: <?php echo $lat ?>},
+                         });
+                         //クリック時に表示したい場合アウト↓
+                         infowindow.open(map, placeMarker);
+                         //クリック時に表示したい場合適用↓
+                         // placeMarker.addListener('click', function() {
+                         // infoWindow.setContent(infowincontent);
+                         // infoWindow.open(map, placeMarker);
+                         // });
+                           var dormitory_infowindow = new google.maps.InfoWindow;
+                           var dormitory_infowincontent = document.createElement('div');
+                           var strong = document.createElement('strong');
+                           strong.textContent = 'lagardia Flat 2';
+                           dormitory_infowincontent.appendChild(strong);
+                           //寮などのわかりやすくするための表示(特に必須ではない)
+                           var dormitory = {lat: 10.329092, lng: 123.903811};
+                           var dormitory_Marker = new google.maps.Marker({
+                           position: dormitory,
+                           map: map,
+                           label; 寮
+                           });
+                           dormitory_Marker.addListener('click', function() {
+                           dormitory_infoWindow.setContent(dormitory_infowincontent);
+                           dormitory_infoWindow.open(map, dormitory_Marker);
+                           });
+                         }
+                       </script>
+
                         </div>
                        </div>
                        <div align="center">
@@ -256,7 +310,8 @@ require('header.php');
    ================================================== -->
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
-   <script src="http://maps.google.com/maps/api/js?v=3.13&amp;sensor=false"></script>
+   <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpUu08GcFO2jItVjyR9lxweWq7lKiRgWc&callback=initMap"></script>
    <script src="js/main.js"></script>
    <!-- <script src="js/slick.min.js"></script> -->
    <script src="js/modal.js"></script>

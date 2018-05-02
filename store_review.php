@@ -174,8 +174,38 @@ require('header.php');
                       <input name="cName" type="text" id="cName" class="full-width" placeholder="URL" value="">
 
                        <div id="map">
-<!-- GOOGLE MAP -->
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.547781743547!2d135.5327529620982!3d34.668715407946024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e0a5fec70de9%3A0xce2186a34bce6a21!2z5pel5pys44CB44CSNTM3LTAwMjQg5aSn6Ziq5bqc5aSn6Ziq5biC5p2x5oiQ5Yy65p2x5bCP5qmL77yS5LiB55uu77yV4oiS77yR77yV!5e0!3m2!1sja!2sph!4v1518861148520" width="800" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+                <script>
+    function initMap() {
+      // マップの初期化
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: {lat: 10.329092, lng: 123.903811}
+      });
+      var countElement = document.getElementById( "count" ) ;
+      // クリックイベントを追加
+      map.addListener('click', function(e) {
+        getClickLatLng(e.latLng, map);
+        countElement.value = Number( countElement.value ) + 1 ;
+      });
+    }
+    function getClickLatLng(lat_lng, map) {
+      // 座標を表示
+      document.getElementById('lat').value = lat_lng.lat();
+      document.getElementById('lng').value = lat_lng.lng();
+      // マーカーを設置
+      var marker = new google.maps.Marker({
+        position: lat_lng,
+        map: map
+      });
+      // 座標の中心をずらす
+      map.panTo(lat_lng);
+    }
+  </script>
+  <input type="hidden" id="lat"><br>
+                          <input type="hidden" id="lng"><br>
+              </div>
+
 
               </div>
 
