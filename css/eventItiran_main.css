@@ -1062,8 +1062,16 @@ input::-moz-focus-inner {
 
 .pagination .current,
 .pagination .current:hover {
-	/*background-color: #000000;*/
+	background-color: #000000;
 	color: white;
+font-family: "montserrat-bold", sans-serif;
+    font-size: 15px;
+    line-height: 24px;
+    display: inline-block;
+    padding: 6px 12px;
+    height: 36px;
+    margin-right: 6px;
+    margin-bottom: 9px;
 }
 
 .pagination .inactive,
