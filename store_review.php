@@ -18,6 +18,7 @@ if ($_POST['store_name_abc'] == '') {
 }
 
 // 登録するstoreのduplicate cheak!!
+if (!isset($error)) {
 
   $sql = 'SELECT COUNT(*) AS `name_count` FROM `kami_shops` WHERE `shop_name_abc`=?';
   $data = array($_POST['store_name_abc']);
@@ -64,7 +65,7 @@ exit();
 
 }
 }
-
+}
 
  ?>
 
@@ -158,30 +159,25 @@ require('header.php');
                          <br>
                           <br>
 
-                      <!-- 写真 -->
+<!-- 写真 -->
                       <h1>写真</h1>
                        <p class="btn_upload">画像ファイルを選択してアップロード</p>
-                      <div class="input_file" style="width: 80%;height: 320px;">
-                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
-                         <input accept="image/*" id="imgFile" type="file" name="picture">
-                        </div>
+                       <div class="view_box">
+
+                            <input type="file" class="file" name="picture[]">
                        </div>
 
 
-                      <!-- 地図 -->
-                      <div><h1>地図</h1></div>
+<!-- 地図 -->
+                      <div class="map" "><h1>地図</h1></div>
 
                       <input name="cName" type="text" id="cName" class="full-width" placeholder="URL" value="">
 
                        <div id="map">
-                <!-- GOOGLE MAP -->
+<!-- GOOGLE MAP -->
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.547781743547!2d135.5327529620982!3d34.668715407946024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e0a5fec70de9%3A0xce2186a34bce6a21!2z5pel5pys44CB44CSNTM3LTAwMjQg5aSn6Ziq5bqc5aSn6Ziq5biC5p2x5oiQ5Yy65p2x5bCP5qmL77yS5LiB55uu77yV4oiS77yR77yV!5e0!3m2!1sja!2sph!4v1518861148520" width="800" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
-                <!-- // GOOGLE MAP -->
-              </div>
 
-              <br>
-              <br>
-              <br>
+              </div>
 
                        <button type="submit" class="submit button-primary full-width-on-mobile">投稿する</button>
 
@@ -189,13 +185,13 @@ require('header.php');
                 </form> <!-- end form -->
 
         </section>
-      
+
 
       </div> <!-- end col-twelve -->
-    </div> <!-- end row -->   
+    </div> <!-- end row -->
    </section> <!-- end content -->
 
-   
+
    <!-- footer
    ================================================== -->
    <footer>
@@ -207,6 +203,9 @@ require('header.php');
 
                 <!-- end footer-bottom -->
    </footer>
+   <div id="preloader"> 
+      <div id="loader"></div>
+   </div> 
 
    <!-- Java Script
    ================================================== --> 
@@ -216,7 +215,7 @@ require('header.php');
    <script src="js/main.js"></script>
    <script src="js/modal.js"></script>
 
-   <script>$('#imgFile').change(
+  <!--  <script>$('#imgFile').change(
     function () {
         if (!this.files.length) {
             return;
@@ -231,7 +230,48 @@ require('header.php');
         fr.readAsDataURL(file);
         $(".preview img").css('opacity', 0);
     }
-   );</script>
+   );</script> -->
+
+   <script>
+     $(document).ready(function () {
+  $(".file").on('change', function(){
+     var fileprop = $(this).prop('files')[0],
+         find_img = $(this).parent().find('img'),
+         filereader = new FileReader(),
+         view_box = $(this).parent('.view_box');
+
+    if(find_img.length){
+       find_img.nextAll().remove();
+       find_img.remove();
+    }
+
+    var img = '<div class="img_view"><img alt="" class="img"><p><a href="#" class="img_del">画像を削除する</a></p></div>';
+
+    view_box.append(img);
+
+    filereader.onload = function() {
+      view_box.find('img').attr('src', filereader.result);
+      img_del(view_box);
+    }
+    filereader.readAsDataURL(fileprop);
+  });
+
+  function img_del(target){
+    target.find("a.img_del").on('click',function(){
+      var self = $(this),
+          parentBox = self.parent().parent().parent();
+      if(window.confirm('画像を削除します。\nよろしいですか？')){
+        setTimeout(function(){
+          parentBox.find('input[type=file]').val('');
+          parentBox.find('.img_view').remove();
+        } , 0);
+      }
+      return false;
+    });
+  }
+
+});
+</script>
 
 </body>
 

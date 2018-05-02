@@ -198,13 +198,13 @@ require('header.php');
    ================================================== -->
 
 <footer>
-             <center>
-
-                  <p class="keigo"><span>© kami 2018</span>
-                  <span>by team pelo</a></span></p>
-            </center>
-                <!-- end footer-bottom -->
-   </footer>
+  <center>
+  <p class="keigo">
+    <span>© kami 2018</span>
+    <span>by team pelo</a></span>
+  </p>
+  </center>
+</footer>
 
    <!-- Java Script
    ================================================== --> 
