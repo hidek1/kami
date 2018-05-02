@@ -1,5 +1,4 @@
 <?php
-
 require('function.php');
   login_check();
 
@@ -34,8 +33,7 @@ if (!isset($error)) {
 
 
     if (!isset($error)) {
-
-$ext = substr($_FILES['picture']['name'],-3);
+  $ext = substr($_FILES['picture']['name'],-3);
   $ext = strtolower($ext);
 
 
@@ -43,9 +41,9 @@ if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
 $shop_pic = date('YmdHis') . $_FILES['picture']['name'];
 move_uploaded_file($_FILES['picture']['tmp_name'], 'shop_pic/'.$shop_pic);
 
-// echo '<pre>';
-// var_dump($_FILES);
-// echo '</pre>';
+echo '<pre>';
+var_dump($_POST);
+echo '</pre>';
 // exit;
 
   $shop_name_abc = htmlspecialchars($_POST['store_name_abc']);
@@ -53,12 +51,12 @@ move_uploaded_file($_FILES['picture']['tmp_name'], 'shop_pic/'.$shop_pic);
   $shop_type = htmlspecialchars($_POST['category']);
 
 
-  $sql = 'INSERT INTO `kami_shops` SET `shop_name_abc`=? , `shop_name` =? , `shop_pic` = ? , `shop_type`=? , `created`=NOW() , `modified`=NOW()';
+  $sql = 'INSERT INTO `kami_shops` SET `shop_name_abc`=? , `shop_name` =? , `shop_pic` = ? , `shop_type`=? , `created`=NOW() , `modified`=NOW(), `shop_lat`=? , `shop_lng`=? ';
 
-$date = array($shop_name_abc,$shop_name,$shop_pic,$shop_type);
+$date = array($shop_name_abc,$shop_name,$shop_pic,$shop_type,$_POST['lat'],$_POST['lng']);
 $stmt = $dbh->prepare($sql);
 $stmt->execute($date);
-
+var_dump($_POST);
 
 header('Location: store_details.php?name='.$shop_name);
 exit();
@@ -101,6 +99,12 @@ exit();
   ================================================== -->
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    #map{
+      width: 850px;
+      height: 400px;
+    }
+  </style>
 
 </head>
 
@@ -126,7 +130,7 @@ require('header.php');
 
             <p class="lead">新しいお店を投稿しよう！！</p>
 
-            <form name="cForm" id="cForm" method="post" action="" class="form-horizontal" role="form" enctype="multipart/form-data">
+            <form name="cForm" id="cForm" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
                  <fieldset>
                        <div><h1>店名</h1></div>
                        <div class="form-field">
@@ -164,50 +168,18 @@ require('header.php');
                        <p class="btn_upload">画像ファイルを選択してアップロード</p>
                        <div class="view_box">
 
-                            <input type="file" class="file" name="picture[]">
+                            <input type="file" class="file" name="picture">
                        </div>
 
 
 <!-- 地図 -->
-                      <div class="map" "><h1>地図</h1></div>
-
-                      <input name="cName" type="text" id="cName" class="full-width" placeholder="URL" value="">
-
-                       <div id="map">
-
-                <script>
-    function initMap() {
-      // マップの初期化
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: {lat: 10.329092, lng: 123.903811}
-      });
-      var countElement = document.getElementById( "count" ) ;
-      // クリックイベントを追加
-      map.addListener('click', function(e) {
-        getClickLatLng(e.latLng, map);
-        countElement.value = Number( countElement.value ) + 1 ;
-      });
-    }
-    function getClickLatLng(lat_lng, map) {
-      // 座標を表示
-      document.getElementById('lat').value = lat_lng.lat();
-      document.getElementById('lng').value = lat_lng.lng();
-      // マーカーを設置
-      var marker = new google.maps.Marker({
-        position: lat_lng,
-        map: map
-      });
-      // 座標の中心をずらす
-      map.panTo(lat_lng);
-    }
-  </script>
-  <input type="hidden" id="lat"><br>
-                          <input type="hidden" id="lng"><br>
-              </div>
-
-
-              </div>
+                  <div class="map">
+                    <h1>地図</h1>
+                  <div id="map">
+                  </div>
+                    <input type="hidden" name="lat" id="lat"><br>
+                    <input type="hidden" name="lng" id="lng"><br>
+                  </div>
 
                        <button type="submit" class="submit button-primary full-width-on-mobile">投稿する</button>
 
@@ -241,7 +213,34 @@ require('header.php');
    ================================================== --> 
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
-   <script src="http://maps.google.com/maps/api/js?v=3.13&amp;sensor=false"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpUu08GcFO2jItVjyR9lxweWq7lKiRgWc&callback=initMap"></script> 
+    <script>
+      function initMap() {
+        // マップの初期化
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: {lat: 10.329092, lng: 123.903811}
+        });
+        var countElement = document.getElementById( "count" ) ;
+        // クリックイベントを追加
+        map.addListener('click', function(e) {
+          getClickLatLng(e.latLng, map);
+        });
+      }
+      function getClickLatLng(lat_lng, map) {
+        // 座標を表示
+        document.getElementById('lat').value = lat_lng.lat();
+        document.getElementById('lng').value = lat_lng.lng();
+        // マーカーを設置
+        var marker = new google.maps.Marker({
+          position: lat_lng,
+          map: map
+        });
+        // 座標の中心をずらす
+        map.panTo(lat_lng);
+      }
+   </script>
    <script src="js/main.js"></script>
    <script src="js/modal.js"></script>
 
@@ -285,7 +284,6 @@ require('header.php');
     }
     filereader.readAsDataURL(fileprop);
   });
-
   function img_del(target){
     target.find("a.img_del").on('click',function(){
       var self = $(this),
