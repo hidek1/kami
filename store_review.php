@@ -51,7 +51,7 @@ echo '</pre>';
   $shop_type = htmlspecialchars($_POST['category']);
 
 
-  $sql = 'INSERT INTO `kami_shops` SET `shop_name_abc`=? , `shop_name` =? , `shop_pic` = ? , `shop_type`=? , `created`=NOW() , `modified`=NOW(), `lat`=? , `lng`=? ';
+  $sql = 'INSERT INTO `kami_shops` SET `shop_name_abc`=? , `shop_name` =? , `shop_pic` = ? , `shop_type`=? , `created`=NOW() , `modified`=NOW(), `shop_lat`=? , `shop_lng`=? ';
 
 $date = array($shop_name_abc,$shop_name,$shop_pic,$shop_type,$_POST['lat'],$_POST['lng']);
 $stmt = $dbh->prepare($sql);

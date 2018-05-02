@@ -215,21 +215,20 @@ require('header.php');
    ================================================== --> 
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
-   <script async defer
+    <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpUu08GcFO2jItVjyR9lxweWq7lKiRgWc&callback=initMap"></script> 
     <script>
       function initMap() {
         // マップの初期化
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 16,
-          center: {lat: 10.329092, lng: 123.903811}
+          center: {lat: <?php echo $store_infoo['shop_lat'] ?>, lng: <?php echo $store_infoo['shop_lng'] ?>}
         });
         var countElement = document.getElementById( "count" ) ;
         // クリックイベントを追加
         map.addListener('click', function(e) {
           getClickLatLng(e.latLng, map);
         });
-        alert('おっぱい');
       }
       function getClickLatLng(lat_lng, map) {
         // 座標を表示

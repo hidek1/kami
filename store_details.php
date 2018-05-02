@@ -276,7 +276,7 @@ require('header.php');
         content: '寮'
       })
                   infowindow1.open(map, marker);
-        var shop = {lat: <?php echo $store_detail['lat'] ?>, lng: <?php echo $store_detail['lng'] ?>};
+        var shop = {lat: <?php echo $store_detail['shop_lat'] ?>, lng: <?php echo $store_detail['shop_lng'] ?>};
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 16,
           center: shop
