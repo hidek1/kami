@@ -33,15 +33,15 @@ if (!isset($error)) {
 }
 
 
-    if (!isset($error)) {
+  if (!isset($error)) {
 
-$ext = substr($_FILES['picture']['name'],-3);
-  $ext = strtolower($ext);
+   $ext = substr($_FILES['picture']['name'],-3);
+   $ext = strtolower($ext);
 
 
-if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
-$shop_pic = date('YmdHis') . $_FILES['picture']['name'];
-move_uploaded_file($_FILES['picture']['tmp_name'], 'shop_pic/'.$shop_pic);
+  if ($ext == 'jpg' || $ext == 'png' || $ext == 'gif') {
+    $shop_pic = date('YmdHis') . $_FILES['picture']['name'];
+    move_uploaded_file($_FILES['picture']['tmp_name'], 'shop_pic/'.$shop_pic);
 
 // echo '<pre>';
 // var_dump($_FILES);
@@ -141,11 +141,9 @@ require('header.php');
                      <?php } ?>
                        </div>
 
-                       <br>
-                       <br>
-                       <br>
 
-                       <div><h1>ジャンル</h1>
+
+                       <div style="margin-top: 100px;"><h1>ジャンル</h1>
                         <select name="category">
                          <option value="未選択">選択してください</option>
                           <option value="比国">比国🍔</option>
@@ -155,16 +153,13 @@ require('header.php');
                               <option value="洋食">洋食🍕</option>
                         </select>
                        </div>
-                        <br>
-                         <br>
-                          <br>
 
 <!-- 写真 -->
-                      <h1>写真</h1>
+                      <h1 style="margin-top: 133px;">写真</h1>
                        <p class="btn_upload">画像ファイルを選択してアップロード</p>
                        <div class="view_box">
 
-                            <input type="file" class="file" name="picture[]">
+                            <input type="file" class="file" name="picture">
                        </div>
 
 
