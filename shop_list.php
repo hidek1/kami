@@ -175,6 +175,8 @@ $sql = "SELECT * FROM `kami_shops` ORDER BY `modified` DESC LIMIT ".$st.",".$vie
    ================================================== -->
   <script src="js/modernizr.js"></script>
   <script src="js/pace.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="js/jquery.scrollme.js"></script>
 
    <!-- favicons
   ================================================== -->
@@ -219,7 +221,8 @@ require('header.php');
     <?php if (!empty($_GET['shop'])) { ?>
       <?php for ($i=0; $i<count($kami_search_shops);$i++){ ?>
 
-                    <li class="depth-1">
+   <li class="depth-1 scrollme animateme" data-when="enter" data-from="0.5" data-to="0" data-crop="false" data-opacity="0" data-scale="1.5" >
+
                    <div class="container">
          <div class="row">
                      <div class="col-xs-1 col-md-1 col-lg-1" >
@@ -257,7 +260,7 @@ require('header.php');
                  <?php } ?>
   <?php } else { ?>
   <?php for ($i=0; $i<count($kami_shops);$i++){ ?>
-   <li class="depth-1">
+   <li class="depth-1 scrollme animateme" data-when="enter" data-from="0.5" data-to="0" data-crop="false" data-opacity="0" data-scale="1.5" >
                    <div class="container">
          <div class="row">
             <div class="col-xs-1 col-md-1 col-lg-1" >
@@ -314,7 +317,7 @@ require('header.php');
             <a href="shop_list.php?page=<?php echo $page -1; ?>"><span class="page-numbers prev">Prev</span></a>
             <?php } ?>
             <?php for($start; $start <= $end; $start++): ?>
-            <li <?= ($start == $page)? 'class="current"' : '' ?>><a href="shop_list.php?page=<?= ($start) ?>" class="page-numbers"><?= $start ?></a></li>
+            <li><a href="shop_list.php?page=<?= ($start) ?>" <?= ($start == $page)? 'class="current"' : '' ?> class="page-numbers"><?= $start ?></a></li>
             <?php endfor; ?>
             <?php if($page == $all_view_cnt) { ?>
             <span class="page-numbers inactive">Next</span>

@@ -302,6 +302,9 @@ require('header.php');
 
                 <!-- end footer-bottom -->
    </footer>
+   <div id="preloader">
+      <div id="loader"></div>
+   </div> 
 
    <!-- Java Script
    ================================================== -->

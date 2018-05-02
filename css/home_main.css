@@ -1114,7 +1114,7 @@ input::-moz-focus-inner {
 
 .pagination .current,
 .pagination .current:hover {
-	/*background-color: #000000;*/
+	background-color: #000000;
 	color: white;
 }
 

@@ -49,9 +49,9 @@ $shop_pic = date('YmdHis') . $_FILES['picture_edit']['name'];
 move_uploaded_file($_FILES['picture_edit']['tmp_name'], 'shop_pic/'.$shop_pic);
 
 
- $shop_name_abc = htmlspecialchars($_POST['store_name_abc']);
-  $shop_name = htmlspecialchars($_POST['store_name']);
-  $shop_type = htmlspecialchars($_POST['category']);
+ $shop_name_abc = htmlspecialchars($_POST['store_name_abc'], ENT_QUOTES);
+  $shop_name = htmlspecialchars($_POST['store_name'], ENT_QUOTES);
+  $shop_type = htmlspecialchars($_POST['category'], ENT_QUOTES);
 
 
 $sql = 'UPDATE `kami_shops` SET `shop_name_abc`=?,`shop_name`=?,`shop_pic`=?,`shop_type`=?,`modified`=NOW() WHERE `shop_name`=?';
@@ -141,13 +141,13 @@ require('header.php');
                         </h1>
                        </div>
                        <div class="form-field">
-                        <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="">
+                        <input name="store_name_abc" type="text" id="cName" class="full-width" placeholder="アルファベット" value="<?php echo $store_infoo['shop_name_abc'] ; ?>">
                         <?php if (isset($error['store_name_abc']) && $error['store_name_abc'] == 'blank') { ?>
                          <P class="error"><font color="red">入力をお忘れでは？？</font></P>
                         <?php } elseif (isset($error['store_name_abc']) && $error['store_name_abc'] == 'duplicated'){ ?>
                          <p class="error"><font color="red">そのお店...既にありますから〜〜</font></p>
                         <?php } ?>
-                      <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="">
+                      <input name="store_name" type="text" id="cName" class="full-width" placeholder="カタカナ" value="<?php echo $store_infoo['shop_name'] ; ?>">
                       <?php if (isset($error['store_name']) && $error['store_name'] == 'blank') { ?>
                       <p class="error"><font color="red">なんか入れてよ！</p>
                       <?php } ?>

@@ -18,6 +18,7 @@ if ($_POST['store_name_abc'] == '') {
 }
 
 // 登録するstoreのduplicate cheak!!
+if (!isset($error)) {
 
   $sql = 'SELECT COUNT(*) AS `name_count` FROM `kami_shops` WHERE `shop_name_abc`=?';
   $data = array($_POST['store_name_abc']);
@@ -64,7 +65,7 @@ exit();
 
 }
 }
-
+}
 
  ?>
 
@@ -158,22 +159,22 @@ require('header.php');
                          <br>
                           <br>
 
-                      <!-- 写真 -->
+<!-- 写真 -->
                       <h1>写真</h1>
                        <p class="btn_upload">画像ファイルを選択してアップロード</p>
-                      <div class="input_file" style="width: 80%;height: 320px;">
-                        <div class="preview" style="width: 250px;height: 250px; background-size: cover; background-position:50% 50%;">
-                         <input accept="image/*" id="imgFile" type="file" name="picture">
-                        </div>
+                       <div class="view_box">
+
+                            <input type="file" class="file" name="picture[]">
                        </div>
 
 
-                      <!-- 地図 -->
-                      <div><h1>地図</h1></div>
+<!-- 地図 -->
+                      <div class="map" "><h1>地図</h1></div>
 
                       <input name="cName" type="text" id="cName" class="full-width" placeholder="URL" value="">
 
                        <div id="map">
+
                 <script>
     function initMap() {
       // マップの初期化
@@ -205,9 +206,8 @@ require('header.php');
                           <input type="hidden" id="lng"><br>
               </div>
 
-              <br>
-              <br>
-              <br>
+
+              </div>
 
                        <button type="submit" class="submit button-primary full-width-on-mobile">投稿する</button>
 
@@ -215,13 +215,13 @@ require('header.php');
                 </form> <!-- end form -->
 
         </section>
-      
+
 
       </div> <!-- end col-twelve -->
-    </div> <!-- end row -->   
+    </div> <!-- end row -->
    </section> <!-- end content -->
 
-   
+
    <!-- footer
    ================================================== -->
    <footer>
@@ -233,6 +233,9 @@ require('header.php');
 
                 <!-- end footer-bottom -->
    </footer>
+   <div id="preloader"> 
+      <div id="loader"></div>
+   </div> 
 
    <!-- Java Script
    ================================================== --> 
@@ -242,7 +245,7 @@ require('header.php');
    <script src="js/main.js"></script>
    <script src="js/modal.js"></script>
 
-   <script>$('#imgFile').change(
+  <!--  <script>$('#imgFile').change(
     function () {
         if (!this.files.length) {
             return;
@@ -257,7 +260,48 @@ require('header.php');
         fr.readAsDataURL(file);
         $(".preview img").css('opacity', 0);
     }
-   );</script>
+   );</script> -->
+
+   <script>
+     $(document).ready(function () {
+  $(".file").on('change', function(){
+     var fileprop = $(this).prop('files')[0],
+         find_img = $(this).parent().find('img'),
+         filereader = new FileReader(),
+         view_box = $(this).parent('.view_box');
+
+    if(find_img.length){
+       find_img.nextAll().remove();
+       find_img.remove();
+    }
+
+    var img = '<div class="img_view"><img alt="" class="img"><p><a href="#" class="img_del">画像を削除する</a></p></div>';
+
+    view_box.append(img);
+
+    filereader.onload = function() {
+      view_box.find('img').attr('src', filereader.result);
+      img_del(view_box);
+    }
+    filereader.readAsDataURL(fileprop);
+  });
+
+  function img_del(target){
+    target.find("a.img_del").on('click',function(){
+      var self = $(this),
+          parentBox = self.parent().parent().parent();
+      if(window.confirm('画像を削除します。\nよろしいですか？')){
+        setTimeout(function(){
+          parentBox.find('input[type=file]').val('');
+          parentBox.find('.img_view').remove();
+        } , 0);
+      }
+      return false;
+    });
+  }
+
+});
+</script>
 
 </body>
 

@@ -176,7 +176,7 @@ while(true) {
         <?php if (isset($event_joinings)) {?>
         <?php for ($i=0; $i<count($event_joinings);$i++){ ?>
         <div class="col-xs-4 col-md-4 col-lg-4">
-          <article class="brick entry format-standard animate-this">
+          <article class="brick entry format-standard animate-this" style="height: 700px; overflow: auto; background-color: white;">
 
             <div class="entry-thumb">
               <a href="eventView.php?id=<?php echo $event_joinings[$i]["event_id"]; ?>" class="thumb-link">
@@ -237,7 +237,7 @@ while(true) {
 
         <div class="col-xs-4 col-md-4 col-lg-4">
 
-          <article class="brick entry format-standard animate-this">
+          <article class="brick entry format-standard animate-this" style="height: 600px; overflow: auto; background-color: white;">
 
             <div class="entry-thumb">
               <a href="store_details.php?name=<?php echo $reviews[$i]["shop_name"]; ?>&name_abc=<?php echo $reviews[$i]["shop_name_abc"]; ?>" class="thumb-link">
