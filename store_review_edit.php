@@ -53,7 +53,9 @@ move_uploaded_file($_FILES['picture_edit']['tmp_name'], 'shop_pic/'.$shop_pic);
   $shop_name = htmlspecialchars($_POST['store_name'], ENT_QUOTES);
   $shop_type = htmlspecialchars($_POST['category'], ENT_QUOTES);
 
-
+if (!isset($shop_pic)) {
+  $shop_pic = $store_infoo['shop_pic'];
+}
 $sql = 'UPDATE `kami_shops` SET `shop_name_abc`=?,`shop_name`=?,`shop_pic`=?,`shop_type`=?,`modified`=NOW() WHERE `shop_name`=?';
 $data = array($shop_name_abc , $shop_name , $shop_pic , $shop_type , $_GET['name']);
 $stmt = $dbh->prepare($sql);
@@ -179,7 +181,7 @@ require('header.php');
                        <br>
                       <span class="retty-btn fileinput-button fileinput-button-mypage">
                       <div class="add_files"><h1>写真（外観１枚）</h1></div>
-                       <input id="fileupload_file" type="file" name="picture_edit" multiple=""></span>
+                       <input id="fileupload_file" type="file" name="picture_edit" multiple="" value="<?php $store_infoo['shop_pic']; ?>"></span>
 
                       <br>
                       <br>
@@ -205,16 +207,19 @@ require('header.php');
    ================================================== -->
    <footer>
 
-                  <p class="keigo"><span>© kami 2018</span>
-                  <span>by team pelo</a></span></p>
+                  <div align="center">
+                    <p class="keigo"><span>© kami 2018</span>
+                    <span>by team pelo</a></span></p>
+                  </div>
 
                 <!-- end footer-bottom -->
    </footer>
 
    <!-- Java Script
-   ================================================== --> 
+   ================================================== -->
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
+
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpUu08GcFO2jItVjyR9lxweWq7lKiRgWc&callback=initMap"></script> 
     <script>
