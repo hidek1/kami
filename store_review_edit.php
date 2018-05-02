@@ -108,7 +108,12 @@ exit();
   ================================================== -->
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-
+    <style>
+    #map{
+      width: 850px;
+      height: 400px;
+    }
+  </style>
 </head>
 
 <body id="top">
@@ -181,41 +186,13 @@ require('header.php');
                       <br>
                       <br>
                       <br>
-                      <div><h1>地図</h1></div>
-                       <div id="map">
-                <div id="map"></div>
-                              <script>
-    function initMap() {
-      // マップの初期化
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: {lat: 10.329092, lng: 123.903811}
-      });
-      var countElement = document.getElementById( "count" ) ;
-      // クリックイベントを追加
-      map.addListener('click', function(e) {
-        getClickLatLng(e.latLng, map);
-        countElement.value = Number( countElement.value ) + 1 ;
-      });
-    }
-    function getClickLatLng(lat_lng, map) {
-      // 座標を表示
-      document.getElementById('lat').value = lat_lng.lat();
-      document.getElementById('lng').value = lat_lng.lng();
-      // マーカーを設置
-      var marker = new google.maps.Marker({
-        position: lat_lng,
-        map: map
-      });
-      // 座標の中心をずらす
-      map.panTo(lat_lng);
-    }
-      </script>
-
-                          <input type="hidden" id="lat"><br>
-                          <input type="hidden" id="lng"><br>
-
-              </div>
+                  <div class="map">
+                    <h1>地図</h1>
+                  <div id="map">
+                  </div>
+                    <input type="hidden" id="lat"><br>
+                    <input type="hidden" id="lng"><br>
+                  </div>
                <br>
                 <br>
                  <br>
@@ -242,9 +219,36 @@ require('header.php');
    ================================================== -->
    <script src="js/jquery-2.1.3.min.js"></script>
    <script src="js/plugins.js"></script>
-   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpUu08GcFO2jItVjyR9lxweWq7lKiRgWc&callback=initMap"></script>
-   <script src="js/main.js"></script>
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpUu08GcFO2jItVjyR9lxweWq7lKiRgWc&callback=initMap"></script> 
+    <script>
+      function initMap() {
+        // マップの初期化
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: {lat: <?php echo $store_infoo['shop_lat'] ?>, lng: <?php echo $store_infoo['shop_lng'] ?>}
+        });
+        var countElement = document.getElementById( "count" ) ;
+        // クリックイベントを追加
+        map.addListener('click', function(e) {
+          getClickLatLng(e.latLng, map);
+        });
+      }
+      function getClickLatLng(lat_lng, map) {
+        // 座標を表示
+        document.getElementById('lat').value = lat_lng.lat();
+        document.getElementById('lng').value = lat_lng.lng();
+        // マーカーを設置
+        var marker = new google.maps.Marker({
+          position: lat_lng,
+          map: map
+        });
+        // 座標の中心をずらす
+        map.panTo(lat_lng);
+      }
+   </script>
+   <script src="js/main.js"></script>  
    <script src="js/modal.js"></script>
 </body>
 

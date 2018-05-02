@@ -84,7 +84,7 @@
 
 
 
-<div id="modal-content" style="text-align: center;">
+<div id="modal-content" style="text-align: center; font-size: 18px;">
   <div style="overflow: auto; height: 500px;">
     <?php if (isset($tsuuti_events)) { ?>
     　<?php for ($i=count($tsuuti_events)-1; $i>=0;$i--){ ?>

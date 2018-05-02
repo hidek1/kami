@@ -20,11 +20,11 @@ if (isset($_GET['page'])) {
 $page = max($page, 1);
 
   // 1ページ分の表示件数を指定
-  $view_cnt = 16;            // 1ページの表示件数
+  $view_cnt = 12;            // 1ページの表示件数
 
   // データの件数から最大ページを計算する
   // SQLで計算するデータを取得
-  $page_sql = 'SELECT COUNT(*) AS `page_count` FROM `kami_events`';
+  $page_sql = 'SELECT COUNT(*) AS `page_count` FROM `kami_events` WHERE `answer_limitation`>NOW()';
   $page_stmt = $dbh->prepare($page_sql);
   $page_stmt->execute();
 
@@ -67,7 +67,7 @@ $end = ($all_view_cnt <= $page_num)? $all_view_cnt : $start + $page_end;
 
  // var_dump($_GET);
  // exit();
-$sql = "SELECT * FROM `kami_events` ORDER BY `answer_limitation` ASC LIMIT ".$st.",".$view_cnt."";
+$sql = "SELECT * FROM `kami_events` WHERE `answer_limitation`>NOW() ORDER BY `answer_limitation` ASC LIMIT ".$st.",".$view_cnt."";
 $stmt = $dbh->prepare($sql);
 $stmt->execute();
 while(true) {
@@ -104,7 +104,7 @@ if (strlen($keigo)>0){
   $where = "WHERE ";
 
   for($i = 0; $i < count($array);$i++){
-    $where .= "(event_name collate utf8_unicode_ci LIKE '%$array[$i]%' OR detail collate utf8_unicode_ci LIKE '%$array[$i]%')";
+    $where .= "(`answer_limitation`>NOW() AND event_name collate utf8_unicode_ci LIKE '%$array[$i]%' OR detail collate utf8_unicode_ci LIKE '%$array[$i]%')";
     if ($i <count($array) -1){
       $where .= " AND ";
     }
