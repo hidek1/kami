@@ -460,6 +460,7 @@ $(function() {
      Push.Permission.request();
 
 function alert1() {
+<?php if (isset($tsuuti_events)) { ?>
 <?php for ($i=0; $i<count($tsuuti_events);$i++){ ?>
   <?php if ($tsuuti_events[$i]['min']<=$tsuuti_events[$i]['join_count']): ?>
     Push.create('KAMI', {
@@ -474,6 +475,7 @@ function alert1() {
 　　           }
   });
  <?php endif ?>
+<?php } ?>
 <?php } ?>
 };
 setTimeout(alert1, 300);
