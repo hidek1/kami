@@ -107,7 +107,7 @@ $count = count($records);
 #dist-label{
   color: #2E9AFE;
 }
-</style> 
+</style>
 </head>
 
 <body id="top">
@@ -187,7 +187,7 @@ require('header.php');
                      <div class="comment-info">
 <!-- レビュー投稿 -->
                      <img width="50" height="50" class="avatar" src="picture_path/<?php echo $records[$i]['picture_path']; ?>" alt="">
-                      <div>nickname (<?php echo $records[$i]['nickname']; ?>)</div>
+                      <!-- <div>nickname (<?php echo $records[$i]['nickname']; ?>)</div> -->
                        <div class="comment-meta">
                         <a href="Profile.php?member_id=<?php echo $records[$i]['member_id']; ?>" style="font-size: 16px;"><span class="name">nickname (<?php echo $records[$i]['nickname']; ?>)</span></a>
                         <time class="comment-time" datetime="2014-07-12T23:05"><?php echo date('Y/m/d',strtotime($records[$i]['review_created']));?></time>
@@ -298,11 +298,12 @@ require('header.php');
    </script>
    <script src="js/main.js"></script>
    <!-- <script src="js/slick.min.js"></script> -->
-   <script src="js/modal.js"></script>
-   <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="js/modal.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
   <script type="text/javascript" src="js/slick-1.8.0/slick/slick.min.js"></script>
- <script>
+
+  <script>
       $('.slider').slick({
          dots: true,
   infinite: true,
@@ -312,9 +313,8 @@ require('header.php');
       });
 
   </script>
-
-   <script src="js/lightbox.min.js"></script>
-   <script src="js/lightbox-plus-jquery.min.js"></script>
+<script src="js/lightbox.min.js"></script>
+ <!--  <script src="js/lightbox-plus-jquery.min.js"></script> -->
    <script>
     lightbox.option({
       'resizeDuration': 200,
