@@ -463,7 +463,7 @@ function alert1() {
 <?php for ($i=0; $i<count($tsuuti_events);$i++){ ?>
   <?php if ($tsuuti_events[$i]['min']<=$tsuuti_events[$i]['join_count']): ?>
     Push.create('KAMI', {
-　　body: 'イベント <?php  
+　　body: 'イベント <?php
   echo $tsuuti_events[$i]["event_name"] ?>が成立しました！',
 　　icon: 'images/logo2.png',
 　　timeout: 8000, // 通知が消えるタイミング
@@ -477,7 +477,8 @@ function alert1() {
 <?php } ?>
 };
 setTimeout(alert1, 300);
-
+           </script>
+   <script>
     $(function() {
     var count = 250;
  $('.text_overflow1').each(function() {
