@@ -31,10 +31,11 @@ $sql = 'SELECT COUNT(*) AS `name_count` FROM `kami_shops` WHERE `shop_name_abc`=
   $stmt->execute($data);
 
   $name_count = $stmt->fetch(PDO::FETCH_ASSOC);
-
-  if ($name_count['name_count'] >=1) {
+if ($_POST['store_name_abc'] == $store_infoo['shop_name_abc']) {
+}elseif ($name_count['name_count'] >=1) {
     $error['store_name_abc'] = 'duplicated';
  }
+
 
 
 if (!isset($error)) {
