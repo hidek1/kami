@@ -9,7 +9,6 @@ require('dbconnect.php');
 require('tsuuti.php');
 //詳細を見るイベントの表示
 
-
 //ホームや一覧からの表示
 	$event_sql='SELECT * FROM `kami_events` WHERE `event_id` = ? ';
 	$event_data= array($_GET['id']);
@@ -61,9 +60,6 @@ if ($store_detail == true) {
 	if($store_detail == false ){
   $caution = 'no_pic' ;
 }
-
-// var_dump($reviews);
-// exit();
 
 
 //イベントの参加者+自分の参加/状況取得
@@ -191,7 +187,14 @@ if ($store_detail == true) {
 	================================================== -->
 	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
-
+<style>
+#map{height: 430px; 
+		object-fit: cover;
+		}
+#dist-label{
+ 
+}
+</style>
 </head>
 
 <body id="top" style="background-color: whitesmoke;">
@@ -254,18 +257,10 @@ require('header.php');
 					</section>
 
 	<!-- Gallery -->
+						<?php if ($store_detail == true): ?>
 							<div class="gallery style2 medium lightbox onscroll-fade-in" style="margin-top: 120px">
 								<article>
-									<a href="img/images.jpg" class="image">
-										<img src="img/images.jpg" alt=""  style="height: 430px; object-fit: cover;"/>
-									</a>
-									<div class="caption">
-										<h3>地図</h3>
-								<!-- 		<p>Lorem ipsum dolor amet, consectetur magna etiam elit. Etiam sed ultrices.</p> -->
-										<ul class="actions">
-											<li><span class="button small">地図を表示</span></li>
-										</ul>
-									</div>
+										<div id='map'></div>
 								</article>
 								<?php if (!isset($caution) && !empty($pictures)): ?>
      	<?php while ( (list($key1, $pic) = each($pictures))  
@@ -285,10 +280,8 @@ require('header.php');
         <?php } ?>
 				<?php endif ?>
 							</div>
+						<?php endif; ?>
 
-
-						
-    
 
 					<section class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
 						<div class="content">
@@ -407,6 +400,37 @@ require('header.php');
 	<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript" src="js/slick-1.8.0/slick/slick.min.js"></script>
 
+   <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpUu08GcFO2jItVjyR9lxweWq7lKiRgWc&callback=initMap"></script>
+        <script>
+
+      function initMap() {
+              var infowindow1 = new google.maps.InfoWindow({
+        content: '<p style="color: black; margin:0;"><?php echo $store_detail['shop_name_abc'] ?></p>',
+      })
+              var infowindow2 = new google.maps.InfoWindow({
+        content: '寮'
+      })
+                  infowindow1.open(map, marker);
+        var shop = {lat: <?php echo $store_detail['shop_lat'] ?>, lng: <?php echo $store_detail['shop_lng'] ?>};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: shop
+        });
+      var dormitory = {lat: 10.329092, lng: 123.903811};
+       var dormitory_marker = new google.maps.Marker({
+       position: dormitory,
+       map: map,
+       content: '寮'
+       });
+        var marker = new google.maps.Marker({
+          position: shop,
+          map: map,
+          content: '<p style=" color: black;"><?php echo $store_detail['shop_name_abc'] ?></p>',
+        });
+       //寮などのわかりやすくするための表示(特に必須ではない)
+             infowindow1.open(map, marker);
+}</script>
 
 <script>
 $('.slider-for').slick({
